@@ -42,8 +42,10 @@ public class AutonWithAction extends LinearOpMode {
 
         Actions.runBlocking(
                 new SequentialAction(
-                        aServo.OpenServo(),
-                        chosenTrajectory,
+                        new ParallelAction(
+                                aServo.OpenServo(),
+                                chosenTrajectory
+                        ),
                         aServo.CloseServo()
                 )
         );

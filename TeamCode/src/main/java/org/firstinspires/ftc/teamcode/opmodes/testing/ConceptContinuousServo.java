@@ -32,6 +32,10 @@ public class ConceptContinuousServo extends LinearOpMode {
                 continousServo.setPosition(0.0);
                 telemetry.addData("Servo", "backward");
             }
+            else if(gamepad1.y) {
+                continousServo.setPosition(0.6);
+                telemetry.addData("Servo", "slight forward");
+            }
             else {
                 continousServo.setPosition(0.5);
                 telemetry.addData("Servo", "stopped");
