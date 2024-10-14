@@ -57,15 +57,15 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
  */
 
 @TeleOp(name="Robot: Teleop FOC", group="Robot")
-@Disabled
 public class RobotTeleopFOC_Linear extends LinearOpMode {
 
     /* Declare OpMode members. */
     MecanumDrive drive;
-    Gamepad driver_controller = gamepad1;
+    Gamepad driver_controller;
 
     @Override
     public void runOpMode() {
+        driver_controller = gamepad1;
 
         Pose2d initialPose = new Pose2d(0, 0, 0);
         drive = new MecanumDrive(hardwareMap, initialPose);
@@ -87,7 +87,11 @@ public class RobotTeleopFOC_Linear extends LinearOpMode {
             double strafe = -driver_controller.left_stick_x;
             double rotation = -driver_controller.right_stick_x;
 
-            Vector2d translation_in_world_coordinates = Rotation2d.exp(heading).times(new Vector2d(forward, strafe));
+            forward = forward * Math.abs(forward);
+            strafe = strafe * Math.abs(strafe);
+
+            //Vector2d translation_in_world_coordinates = Rotation2d.exp(heading).times(new Vector2d(forward, strafe));
+            Vector2d translation_in_world_coordinates = rotate(forward, strafe, heading);
 
             //Chassis drive is run independent of robot state
             drive.setDrivePowers(
@@ -103,10 +107,17 @@ public class RobotTeleopFOC_Linear extends LinearOpMode {
             telemetry.addData("Field forward",  "Offset = %.2f", translation_in_world_coordinates.x);
             telemetry.addData("Field strafe",  "%.2f", translation_in_world_coordinates.y);
             telemetry.addData("rotation", "%.2f", rotation);
+            telemetry.addData("heading", "%.2f", heading);
             telemetry.update();
 
             // Pace this loop so jaw action is reasonable speed.
             sleep(50);
         }
     }
+
+    private Vector2d rotate(double x, double y, double theta) {
+        return new Vector2d(x * Math.cos(theta) + y * Math.sin(theta),
+                            -x * Math.sin(theta) + y * Math.cos(theta));
+    }
+
 }
