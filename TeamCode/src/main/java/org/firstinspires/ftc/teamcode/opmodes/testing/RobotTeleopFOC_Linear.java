@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode.opmodes.testing;
 
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.PoseVelocity2d;
+import com.acmerobotics.roadrunner.Rotation2d;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -80,26 +81,28 @@ public class RobotTeleopFOC_Linear extends LinearOpMode {
         while (opModeIsActive()) {
 
             double heading = drive.lazyImu.get().getRobotYawPitchRollAngles().getYaw();
+            heading = Math.toRadians(heading);
 
             double forward = -driver_controller.left_stick_y;
             double strafe = -driver_controller.left_stick_x;
             double rotation = -driver_controller.right_stick_x;
 
-            Vector2d robot_orientied_control = new Vector2d(forward, strafe);
+            Vector2d translation_in_world_coordinates = Rotation2d.exp(heading).times(new Vector2d(forward, strafe));
 
             //Chassis drive is run independent of robot state
             drive.setDrivePowers(
                     new PoseVelocity2d(
-                            new Vector2d(forward, strafe),
+                            translation_in_world_coordinates,
                             rotation
                     )
             );
 
-
-            // Send telemetry message to signify robot running;
-//            telemetry.addData("claw",  "Offset = %.2f", clawOffset);
-//            telemetry.addData("left",  "%.2f", left);
-//            telemetry.addData("right", "%.2f", right);
+            //Send telemetry message to signify robot running;
+            telemetry.addData("Robot forward",  "Offset = %.2f", forward);
+            telemetry.addData("Robot strafe",  "%.2f", strafe);
+            telemetry.addData("Field forward",  "Offset = %.2f", translation_in_world_coordinates.x);
+            telemetry.addData("Field strafe",  "%.2f", translation_in_world_coordinates.y);
+            telemetry.addData("rotation", "%.2f", rotation);
             telemetry.update();
 
             // Pace this loop so jaw action is reasonable speed.
