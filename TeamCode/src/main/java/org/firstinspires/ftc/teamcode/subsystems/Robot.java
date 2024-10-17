@@ -21,7 +21,7 @@ public class Robot {
     public void updateTeleOp(Telemetry telemetry) {
         driveStation.update();
         sweeper.update(0,0);
-        chassis.update(driveStation.forward, driveStation.strafe, driveStation.rotation);
+        chassis.update(driveStation.forward, driveStation.strafe, driveStation.rotation,true);
 
     }
 }
