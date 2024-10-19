@@ -23,7 +23,7 @@ public class Lift {
     }
 
     public void log(Telemetry tele) {
-        tele.addData("Life current encoder ticks",
+        tele.addData("Lift current encoder ticks",
                 lift_motor.getCurrentPosition());
         tele.addData("Lift motor current (A)",
                 lift_motor.getCurrent(CurrentUnit.AMPS));
