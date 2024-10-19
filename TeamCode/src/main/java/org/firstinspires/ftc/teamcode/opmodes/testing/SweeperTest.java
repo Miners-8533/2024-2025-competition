@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.testing;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
@@ -13,48 +15,61 @@ public class SweeperTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         double elbowPos;
         double wheel;
+        double elbowPosSet = 0.5;
+        double wheelSet = 0.5;
         sweeper = new Sweeper(hardwareMap);
 
         waitForStart();
 
         while (opModeIsActive()) {
-            if(gamepad1.a) {
+            //map joystick range onto servo range [-1.0,1.0] -> [0.0,1.0]
+            double desiredWheelSet = (gamepad1.left_stick_x + 1.0) / 2.0;
+            double desiredElbowSet = (gamepad1.left_stick_y + 1.0) / 2.0;
+
+
+            if(gamepad1.y) {
                 wheel = 1.0;
-                telemetry.addData("Servo", "forward");
             }
-            else if(gamepad1.b) {
+            else if(gamepad1.a) {
                 wheel = 0.0;
-                telemetry.addData("Servo", "backward");
             }
-            else if(gamepad1.y) {
-                wheel = 0.6;
-                telemetry.addData("Servo", "slight forward");
+            else if(gamepad1.b || gamepad1.x) {
+                wheel = wheelSet;
+            }
+            else if(gamepad1.right_bumper) {
+                wheel = desiredWheelSet;
+                wheelSet = wheel;
             }
             else {
                 wheel = 0.5;
-                telemetry.addData("Servo", "stopped");
             }
 
-            if(gamepad2.a) {
+            if(gamepad1.dpad_up) {
                 elbowPos = 1.0;
-                telemetry.addData("Servo", "forward");
             }
-            else if(gamepad2.b) {
+            else if(gamepad1.dpad_down) {
                 elbowPos = 0.0;
-                telemetry.addData("Servo", "backward");
             }
-            else if(gamepad2.y) {
-                elbowPos = 0.6; // Close to aquasistion
-                telemetry.addData("Servo", "slight forward");
+            else if(gamepad1.dpad_right || gamepad1.dpad_left) {
+                elbowPos = 0.5;
+            }
+            else if(gamepad1.left_bumper) {
+                elbowPos = desiredElbowSet;
+                elbowPosSet = elbowPos;
             }
             else {
-                elbowPos = 0.5; //closer to down
-                telemetry.addData("Servo", "stopped");
+                elbowPos = elbowPosSet;
             }
 
+            telemetry.addData("Desired Elbow Set", desiredElbowSet);
+            telemetry.addData("Desired Wheel Set", desiredWheelSet);
+            telemetry.addData("Commanded Wheel", wheel);
+            telemetry.addData("Commanded Elbow", elbowPos);
             sweeper.update(elbowPos, wheel);
+            telemetry.addData("Color detected:", sweeper.pattern);
             telemetry.update();
         }
 
