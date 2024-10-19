@@ -3,6 +3,7 @@ package com.example.meepmeeptesting;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 
 import org.rowlandhall.meepmeep.MeepMeep;
+import org.rowlandhall.meepmeep.core.colorscheme.scheme.ColorSchemeBlueLight;
 import org.rowlandhall.meepmeep.roadrunner.DefaultBotBuilder;
 import org.rowlandhall.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
 
@@ -10,7 +11,7 @@ public class MeepMeepTesting {
     public static void main(String[] args) {
 
 
-        MeepMeep meepMeep = new MeepMeep(800);
+        MeepMeep meepMeep = new MeepMeep(600);
 
         Pose2d initialPose = new Pose2d(-24,-63, Math.toRadians(90));
 //        Pose2d initialPose = new Pose2d(0,0,0);
@@ -21,7 +22,7 @@ public class MeepMeepTesting {
 
         Pose2d scoreRedBasketLeft = new Pose2d(-41,-60, Math.toRadians(180));
 
-        Pose2d stepFour = new Pose2d(-41,-22.25, Math.toRadians(180));
+        Pose2d firstSpikeMark = new Pose2d(-41,-22.25, Math.toRadians(180));
 
         Pose2d stepSix = new Pose2d(-51.75,-25.75, Math.toRadians(180));
 
@@ -32,17 +33,11 @@ public class MeepMeepTesting {
                         .splineToLinearHeading(scoreChamber, Math.toRadians(90))
                         .waitSeconds(2)
                         .setReversed(true)
-////                        .splineToLinearHeading(safeChamber, Math.toRadians(90))
                         .splineToLinearHeading(scoreRedBasketLeft, Math.toRadians(180))
                         .waitSeconds(2)
-////                        .setReversed(false)
-                        .splineToLinearHeading(stepFour, Math.toRadians(180))
+                        .splineToLinearHeading(firstSpikeMark, Math.toRadians(180))
                         .waitSeconds(2)
-//                        .splineToLinearHeading(scoreRedBasketLeft, Math.toRadians(180))
-//                        .splineToLinearHeading(stepFour, Math.toRadians(180))
-//                        .splineToLinearHeading(scoreRedBasketLeft, Math.toRadians(180))
-//                        .splineToLinearHeading(stepSix, Math.toRadians(180))
-//                        .splineToLinearHeading(stepFour, Math.toRadians(180))
+                        .splineToLinearHeading(scoreRedBasketLeft, Math.toRadians(180))
                         .build());
 
         // The heading interpolates to the heading specified in `endPose`.
@@ -53,7 +48,7 @@ public class MeepMeepTesting {
 //                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 11)
 //                .setColorScheme(new ColorSchemeBlueLight())
 //                .followTrajectorySequence(drive -> drive.trajectorySequenceBuilder(initialPose)
-//                                .splineToLinearHeading(scoreChamber, 90)
+//                                .splineToLinearHeading(scoreChamber, Math.toRadians(180))
 //                                .build());
 
 
