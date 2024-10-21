@@ -37,6 +37,17 @@ public class AutonBasicTrajectory extends LinearOpMode {
                 .waitSeconds(2)
                 .splineTo(scoreRedBasketLeft.position, Math.toRadians(180));
 
+        TrajectoryActionBuilder trajectoryOne = drive.actionBuilder(initialPose)
+                .splineToLinearHeading(scoreChamber, Math.toRadians(90))
+                .waitSeconds(2)
+                .setReversed(true)
+                .splineToLinearHeading(scoreRedBasketLeft, Math.toRadians(180))
+                .waitSeconds(2)
+                .splineToLinearHeading(firstSpikeMark, Math.toRadians(180))
+                .waitSeconds(2)
+                .splineToLinearHeading(scoreRedBasketLeft, Math.toRadians(180));
+
+
         // Wait for the game to start (driver presses START)
         waitForStart();
 
