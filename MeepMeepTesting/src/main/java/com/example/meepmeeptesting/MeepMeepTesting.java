@@ -29,9 +29,11 @@ public class MeepMeepTesting {
                 .setReversed(true)
                 .splineToLinearHeading(scoreRedBasketLeft, Math.toRadians(180))
                 .waitSeconds(2)
-                .splineToLinearHeading(firstSpikeMark, Math.toRadians(90))
+                .splineTo(firstSpikeMark.position, Math.toRadians(180))
                 .waitSeconds(2)
                 .strafeTo(scoreRedBasketLeft.position)
+                .waitSeconds(2)
+                //.splineToLinearHeading(initialPose, Math.toRadians(90))
                 .build());
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
