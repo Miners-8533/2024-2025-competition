@@ -11,17 +11,13 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 11)
+                .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 11)
                 .build();
 
 
-        Pose2d initialPose = new Pose2d(-18.5,-63, Math.toRadians(90));
+        Pose2d initialPose = new Pose2d(-16,-63, Math.toRadians(90));
 
         Pose2d scoreChamber = new Pose2d(-8,-31, Math.toRadians(90));
-
-//        Pose2d avoidSubmersibleGusset = new Pose2d(-35, -35, Math.toRadians(150));
-
-//        Pose2d scoreRedBasketLeft = new Pose2d(-41,-60, Math.toRadians(180));
 
         Pose2d scoreHighBasket = new Pose2d(-48, -48, Math.toRadians(225));
 
@@ -29,7 +25,7 @@ public class MeepMeepTesting {
 
         Pose2d secondSpikeMark = new Pose2d(-45, -35, Math.toRadians(150));
 
-        Pose2d parkNearSubmersible = new Pose2d(-24, -12.5, 0);
+        Pose2d parkNearSubmersible = new Pose2d(-24, -6.5, Math.toRadians(180));
 
         myBot.runAction(myBot.getDrive().actionBuilder(initialPose)
                 .splineToLinearHeading(scoreChamber, Math.toRadians(90))
