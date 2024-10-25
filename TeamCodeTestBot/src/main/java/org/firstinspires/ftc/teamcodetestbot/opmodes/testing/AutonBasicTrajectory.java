@@ -1,19 +1,19 @@
-package com.example.meepmeeptesting;
+package org.firstinspires.ftc.teamcodetestbot.opmodes.testing;
 
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
-import com.noahbres.meepmeep.MeepMeep;
-import com.noahbres.meepmeep.roadrunner.DefaultBotBuilder;
-import com.noahbres.meepmeep.roadrunner.entity.RoadRunnerBotEntity;
+import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-public class MeepMeepTesting {
-    public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(600);
+import org.firstinspires.ftc.teamcodetestbot.roadrunner.MecanumDrive;
 
-        RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
-                // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 11)
-                .build();
+@Autonomous(name="Auton Basic Trajectory", group="Testing")
+public class AutonBasicTrajectory extends LinearOpMode {
 
+    @Override
+    public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(-16,-63, Math.toRadians(90));
 
@@ -27,7 +27,9 @@ public class MeepMeepTesting {
 
         Pose2d parkNearSubmersible = new Pose2d(-24, -6.5, Math.toRadians(180));
 
-        myBot.runAction(myBot.getDrive().actionBuilder(initialPose)
+        MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
+
+        TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
                 .splineToLinearHeading(scoreChamber, Math.toRadians(90))
                 .waitSeconds(2)
                 .setReversed(true)
@@ -39,13 +41,15 @@ public class MeepMeepTesting {
                 .waitSeconds(2)
                 .splineToLinearHeading(scoreHighBasket, Math.toRadians(180))
                 .waitSeconds(2)
-                .splineToLinearHeading(parkNearSubmersible, Math.toRadians(0))
-                .build());
+                .splineToLinearHeading(parkNearSubmersible, Math.toRadians(0));
+        // Wait for the game to start (driver presses START)
+        waitForStart();
 
-        meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
-                .setDarkMode(true)
-                .setBackgroundAlpha(0.95f)
-                .addEntity(myBot)
-                .start();
+        Action chosenTrajectory;
+        chosenTrajectory = tab1.build();
+
+        Actions.runBlocking(
+                chosenTrajectory
+        );
     }
 }

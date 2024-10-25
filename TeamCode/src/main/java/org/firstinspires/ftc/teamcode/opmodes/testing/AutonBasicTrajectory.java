@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.testing;
 
 import com.acmerobotics.roadrunner.Action;
+import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.Pose2dDual;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
@@ -74,6 +75,18 @@ public class AutonBasicTrajectory extends LinearOpMode {
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
                 .lineToX(24)
                 .lineToX(-24);
+
+        TrajectoryActionBuilder trajectoryOne = drive.actionBuilder(initialPose)
+                .splineToLinearHeading(scoreChamber, Math.toRadians(90))
+                .waitSeconds(2)
+                .setReversed(true)
+                .splineToLinearHeading(scoreRedBasketLeft, Math.toRadians(180))
+                .waitSeconds(2)
+                .splineTo(firstSpikeMark.position, Math.toRadians(180))
+                .waitSeconds(2)
+                .strafeTo(scoreRedBasketLeft.position)
+                .waitSeconds(2)
+                /*.splineToLinearHeading(initialPose, Math.toRadians(90))*/;
 
         // Wait for the game to start (driver presses START)
         waitForStart();
