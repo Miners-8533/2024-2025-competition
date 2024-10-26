@@ -112,7 +112,7 @@ public class ObservationZoneRedValidateMenuLogic {
     }
 
     public static void main(String[] args) {
-        MeepMeep meepMeep = new MeepMeep(800);
+        MeepMeep meepMeep = new MeepMeep(600);
 
 
         AllianceColor allianceColor = AllianceColor.RED;
