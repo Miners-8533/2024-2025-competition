@@ -11,6 +11,16 @@ public class Gantry {
     private Sweeper sweeper;
     private Servo gripper;
 
+    public enum GantryStates {
+        START,
+        READY,
+        LIFT_HIGH_CHAMBER,
+        REACH_FOR_SAMPLE,
+        AQUIRE_SAMPLE,
+        LIFT_HIGH_BASKET,
+        LIFT_AND_REACH_HIGH_BASKET,
+    }
+
     public Gantry(HardwareMap hardwareMap) {
         lift = new Lift(hardwareMap);
         reach = new Reach(hardwareMap);

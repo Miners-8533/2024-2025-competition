@@ -16,12 +16,18 @@ public class Robot {
     private DriveStation driveStation;
 
     public Robot(HardwareMap hardwareMap, Gamepad driverController, Gamepad operatorController) {
-        chassis = new Chassis(hardwareMap, new Pose2d(0,0,0));
+        Pose2d initialPos = new Pose2d(0,0,0);
+        chassis = new Chassis(hardwareMap, initialPos);
         driveStation = new DriveStation(driverController, operatorController);
     }
 
     public void updateTeleOp(Telemetry telemetry) {
+        //get fresh inputs first
         driveStation.update();
+
+        //Put finite state machine here
+
+        //set all outputs here
         chassis.update(driveStation.forward, driveStation.strafe, driveStation.rotation,true);
     }
 }
