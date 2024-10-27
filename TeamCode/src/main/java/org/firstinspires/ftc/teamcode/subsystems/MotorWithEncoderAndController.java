@@ -25,7 +25,7 @@ public class MotorWithEncoderAndController {
     public void log(Telemetry tele) {
         tele.addData("Lift current encoder ticks",   motor.getCurrentPosition());
         tele.addData("Lift motor current (A)",       motor.getCurrent(CurrentUnit.AMPS));
-        tele.addData("Lift current target position", motor.getTargetPosition());
+        tele.addData("Lift current target position", ffc.targetPosition);
         tele.addData("Lift motor power (+/-%FS)",    motor.getPower());
     }
     public static class Config {

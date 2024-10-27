@@ -17,10 +17,10 @@ public class Gantry {
         gripper = hardwareMap.get(Servo.class, "gripper");
         gripper.setDirection(Servo.Direction.FORWARD);
     }
-    public void update(SubSystemConfigs.GantryStates gantryStates, double wheelSpd, double gripperPos) {
-        lift.update(gantryStates.liftPos);
-        reach.update(gantryStates.reachPos);
-        sweeper.update(gantryStates.elbowPos, wheelSpd);
+    public void update(SubSystemConfigs.GantryState gantryState, double wheelSpd, double gripperPos) {
+        lift.update(gantryState.liftPos);
+        reach.update(gantryState.reachPos);
+        sweeper.update(gantryState.elbowPos, wheelSpd);
         gripper.setPosition(gripperPos);
     }
     public void log(Telemetry tele) {

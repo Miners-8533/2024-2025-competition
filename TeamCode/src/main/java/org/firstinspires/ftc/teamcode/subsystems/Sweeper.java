@@ -19,7 +19,7 @@ public class Sweeper {
     public Sweeper(HardwareMap hardwareMap) {
         elbow = hardwareMap.get(Servo.class, "elbow");
         wheel = hardwareMap.get(Servo.class, "wheel");
-        color_sensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
+        color_sensor = hardwareMap.get(NormalizedColorSensor.class, "color");
     }
     public void update(double elbow_pos, double wheel_speed) {
         elbow.setPosition(elbow_pos);

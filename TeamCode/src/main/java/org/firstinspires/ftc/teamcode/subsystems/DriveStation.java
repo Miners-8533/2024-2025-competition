@@ -9,6 +9,8 @@ public class DriveStation {
     public double forward;
     public double strafe;
     public double rotation;
+    public boolean isClimbPrep;
+    public boolean isClimb;
     public DriveStation(Gamepad driverController, Gamepad operatorController) {
         driver = driverController;
         operator = operatorController;
@@ -18,5 +20,6 @@ public class DriveStation {
         forward = -driver.left_stick_y;
         strafe = -driver.left_stick_x;
         rotation = -driver.right_stick_x;
+
     }
 }

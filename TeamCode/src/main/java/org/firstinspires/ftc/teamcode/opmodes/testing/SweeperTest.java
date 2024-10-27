@@ -21,6 +21,8 @@ public class SweeperTest extends LinearOpMode {
         double elbowPosSet = 0.5;
         double wheelSet = 0.5;
         sweeper = new Sweeper(hardwareMap);
+        Servo gripper = hardwareMap.get(Servo.class, "gripper");
+        Servo bumper = hardwareMap.get(Servo.class, "bumper");
 
         waitForStart();
 
@@ -63,6 +65,9 @@ public class SweeperTest extends LinearOpMode {
             else {
                 elbowPos = elbowPosSet;
             }
+
+            gripper.setPosition(gamepad1.left_trigger);
+            bumper.setPosition(gamepad1.right_trigger);
 
             telemetry.addData("Desired Elbow Set", desiredElbowSet);
             telemetry.addData("Desired Wheel Set", desiredWheelSet);

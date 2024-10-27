@@ -33,7 +33,7 @@ public class FeedForwardController {
                     //errorSum * coefficients.i +
                     errorDeriv * coefficients.d +
                     coefficients.f;
-            output = (Math.abs(output) < 0.001) ? (0.0) : (output + Math.signum(output) * kStiction);
+            output = (Math.abs(output) < 0.01) ? (0.0) : (output + Math.signum(output) * kStiction);
             return Math.min(Math.max(output, -1.0), 1.0);
         }
     }

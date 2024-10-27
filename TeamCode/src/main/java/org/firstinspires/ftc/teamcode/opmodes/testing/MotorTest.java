@@ -28,7 +28,7 @@ public class MotorTest extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         //climb, lift, or reach
-        motor = hardwareMap.get(DcMotorEx.class, "lift");
+        motor = hardwareMap.get(DcMotorEx.class, "climber");
         motor.setDirection(DcMotorEx.Direction.FORWARD);
 
         waitForStart();
@@ -70,7 +70,7 @@ public class MotorTest extends LinearOpMode {
         tele.addData("Climb motor current (A)",
                 motor.getCurrent(CurrentUnit.AMPS));
         tele.addData("Climb current target position",
-                motor.getTargetPosition());
+                ffc.targetPosition);
         tele.addData("Climb motor power (+/-%FS)",
                 motor.getPower());
         tele.addData("Coef:", ffc.coefficients);
