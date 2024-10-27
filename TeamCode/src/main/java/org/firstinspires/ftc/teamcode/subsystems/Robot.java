@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 public class Robot {
     private Chassis chassis;
     private Gantry gantry;
-    private Climber climber;
+    private MotorWithEncoderAndController climber;
     private RevBlinkinLedDriver lights;
     private DriveStation driveStation;
 
