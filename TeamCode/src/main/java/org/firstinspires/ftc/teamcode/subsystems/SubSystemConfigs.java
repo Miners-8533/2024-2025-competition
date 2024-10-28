@@ -25,6 +25,8 @@ public class SubSystemConfigs {
     public static final int CLIMB_HOME = -50;
     public static final int CLIMB_PRE_CLIMB = -5500;
     public static final int CLIMB_ASCENT_1 = -10950;
+    public static final double BUMPER_UP = 0.0;
+    public static final double BUMPER_DOWN = 1.0;
     public static final MotorWithEncoderAndController.Config liftConfig =
             new MotorWithEncoderAndController.Config(
                 "lift",
@@ -46,21 +48,22 @@ public class SubSystemConfigs {
                 0.08,
                 DcMotorSimple.Direction.FORWARD
             );
-    public enum GantryState {
-        START(LIFT_HOME_POS,REACH_HOME_POS,ELBOW_UP_POS),
-        READY(LIFT_HOME_POS,REACH_HOME_POS,ELBOW_READY_POS),
-        LIFT_HIGH_CHAMBER(LIFT_HIGH_CHAMBER_POS,REACH_HOME_POS,ELBOW_UP_POS),
-        REACH_FOR_SAMPLE(LIFT_HOME_POS,REACH_FULL_EXTEND_POS,ELBOW_AQUIRE_POS),
-        AQUIRE_SAMPLE(LIFT_HOME_POS,REACH_HOME_POS,ELBOW_AQUIRE_POS),
-        LIFT_HIGH_BASKET(LIFT_HIGH_BASKET_POS,REACH_HOME_POS,ELBOW_SCORE_BASKET_POS),
-        LIFT_AND_REACH_HIGH_BASKET(LIFT_HIGH_BASKET_POS,REACH_FULL_EXTEND_POS,ELBOW_SCORE_BASKET_POS);
-        public final int liftPos;
-        public final int reachPos;
-        public final double elbowPos;
-        GantryState(int liftPos, int reachPos, double  elbowPos) {
-            this.liftPos = liftPos;
-            this.reachPos = reachPos;
-            this.elbowPos = elbowPos;
-        }
-    }
+//    public enum GantryState {
+//        START(LIFT_HOME_POS,REACH_HOME_POS,ELBOW_UP_POS),
+//        READY(LIFT_HOME_POS,REACH_HOME_POS,ELBOW_READY_POS),
+//        LIFT_HIGH_CHAMBER(LIFT_HIGH_CHAMBER_POS,REACH_HOME_POS,ELBOW_UP_POS),
+//        SCORE_HIGH_CHAMBER(LIFT_HIGH_CHAMBER_SCORE_POS,REACH_HOME_POS,ELBOW_UP_POS),
+//        REACH_FOR_SAMPLE(LIFT_HOME_POS,REACH_FULL_EXTEND_POS,ELBOW_AQUIRE_POS),
+//        AQUIRE_SAMPLE(LIFT_HOME_POS,REACH_HOME_POS,ELBOW_AQUIRE_POS),
+//        LIFT_HIGH_BASKET(LIFT_HIGH_BASKET_POS,REACH_HOME_POS,ELBOW_SCORE_BASKET_POS),
+//        LIFT_AND_REACH_HIGH_BASKET(LIFT_HIGH_BASKET_POS,REACH_FULL_EXTEND_POS,ELBOW_SCORE_BASKET_POS);
+//        public final int liftPos;
+//        public final int reachPos;
+//        public final double elbowPos;
+//        GantryState(int liftPos, int reachPos, double  elbowPos) {
+//            this.liftPos = liftPos;
+//            this.reachPos = reachPos;
+//            this.elbowPos = elbowPos;
+//        }
+//    }
 }

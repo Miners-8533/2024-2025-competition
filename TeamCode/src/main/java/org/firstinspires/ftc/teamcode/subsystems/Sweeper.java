@@ -13,13 +13,13 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class Sweeper {
     private Servo elbow;
     private Servo wheel;
-    private NormalizedColorSensor color_sensor;
-    public RevBlinkinLedDriver.BlinkinPattern pattern;
+    private NormalizedColorSensor colorSensor;
+    public RevBlinkinLedDriver.BlinkinPattern colorDetected;
 
     public Sweeper(HardwareMap hardwareMap) {
         elbow = hardwareMap.get(Servo.class, "elbow");
         wheel = hardwareMap.get(Servo.class, "wheel");
-        color_sensor = hardwareMap.get(NormalizedColorSensor.class, "color");
+        colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color");
     }
     public void update(double elbow_pos, double wheel_speed) {
         elbow.setPosition(elbow_pos);
@@ -29,7 +29,7 @@ public class Sweeper {
     private void parse_color() {
         final float[] hsvValues = new float[3];
 
-        NormalizedRGBA colors = color_sensor.getNormalizedColors();
+        NormalizedRGBA colors = colorSensor.getNormalizedColors();
         Color.colorToHSV(colors.toColor(), hsvValues);
 
 //        double distance = ((DistanceSensor) color_sensor).getDistance(DistanceUnit.CM);
@@ -45,18 +45,18 @@ public class Sweeper {
 //            pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
 //        } else
         if (hsvValues[0] >= redMin && hsvValues[0] <= redMax){
-            pattern = RevBlinkinLedDriver.BlinkinPattern.RED;
+            colorDetected = RevBlinkinLedDriver.BlinkinPattern.RED;
         } else if (hsvValues[0] >= yellowMin && hsvValues[0] <= yellowMax){
-            pattern = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
+            colorDetected = RevBlinkinLedDriver.BlinkinPattern.YELLOW;
         } else if (hsvValues[0] >= blueMin && hsvValues[0] <= blueMax){
-            pattern = RevBlinkinLedDriver.BlinkinPattern.BLUE;
+            colorDetected = RevBlinkinLedDriver.BlinkinPattern.BLUE;
         } else {
-            pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
+            colorDetected = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
         }
     }
     public void log(Telemetry tele) {
         tele.addData("Elbow Position: ", elbow.getPosition());
         tele.addData("Wheel Speed: ", wheel.getPosition());
-        tele.addData("Color Detected: ", pattern);
+        tele.addData("Color Detected: ", colorDetected);
     }
 }

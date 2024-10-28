@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -10,6 +11,7 @@ public class Gantry {
     private MotorWithEncoderAndController reach;
     private Sweeper sweeper;
     private Servo gripper;
+    public RevBlinkinLedDriver.BlinkinPattern colorDetected;
     public Gantry(HardwareMap hardwareMap) {
         lift = new MotorWithEncoderAndController(hardwareMap,SubSystemConfigs.liftConfig);
         reach = new MotorWithEncoderAndController(hardwareMap,SubSystemConfigs.reachConfig);
@@ -17,10 +19,11 @@ public class Gantry {
         gripper = hardwareMap.get(Servo.class, "gripper");
         gripper.setDirection(Servo.Direction.FORWARD);
     }
-    public void update(SubSystemConfigs.GantryState gantryState, double wheelSpd, double gripperPos) {
-        lift.update(gantryState.liftPos);
-        reach.update(gantryState.reachPos);
-        sweeper.update(gantryState.elbowPos, wheelSpd);
+    public void update(int liftPos, int reachPos, double elbowPos, double wheelSpd, double gripperPos) {
+        lift.update(liftPos);
+        reach.update(reachPos);
+        sweeper.update(elbowPos, wheelSpd);
+        colorDetected = sweeper.colorDetected;
         gripper.setPosition(gripperPos);
     }
     public void log(Telemetry tele) {

@@ -4,7 +4,6 @@ import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.subsystems.Sweeper;
@@ -74,7 +73,7 @@ public class SweeperTest extends LinearOpMode {
             telemetry.addData("Commanded Wheel", wheel);
             telemetry.addData("Commanded Elbow", elbowPos);
             sweeper.update(elbowPos, wheel);
-            telemetry.addData("Color detected:", sweeper.pattern);
+            telemetry.addData("Color detected:", sweeper.colorDetected);
             telemetry.update();
         }
 

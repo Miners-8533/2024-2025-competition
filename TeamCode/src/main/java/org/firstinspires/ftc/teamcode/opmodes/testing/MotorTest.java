@@ -29,6 +29,7 @@ public class MotorTest extends LinearOpMode {
 
         //climb, lift, or reach
         motor = hardwareMap.get(DcMotorEx.class, "reach");
+
         motor.setDirection(DcMotorEx.Direction.FORWARD);
 
         waitForStart();
@@ -73,6 +74,7 @@ public class MotorTest extends LinearOpMode {
                 ffc.targetPosition);
         tele.addData("Climb motor power (+/-%FS)",
                 motor.getPower());
+        tele.addData("Velocity: ", motor.getVelocity());
         tele.addData("Coef:", ffc.coefficients);
     }
 }
