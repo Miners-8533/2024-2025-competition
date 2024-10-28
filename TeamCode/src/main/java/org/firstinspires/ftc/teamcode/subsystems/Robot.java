@@ -117,7 +117,7 @@ public class Robot {
                 }
 
                 newRobotOutputs(
-                        SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_POS,
+                        SubSystemConfigs.LIFT_HIGH_BASKET_POS,
                         SubSystemConfigs.BUMPER_UP,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
                         SubSystemConfigs.GRIPPER_OPEN_POS,

@@ -10,7 +10,7 @@ public class SubSystemConfigs {
     public static final int LIFT_HIGH_CHAMBER_POS = -2565;
     public static final int LIFT_HIGH_CHAMBER_SCORE_POS = -1610;
     public static final int REACH_HOME_POS = 0;
-    public static final int REACH_FULL_EXTEND_POS = 0;
+    public static final int REACH_FULL_EXTEND_POS = -1500;//-1562;
     public static final double ELBOW_UP_POS = 0.18;
     public static final double ELBOW_READY_POS = 0.22;
     public static final double ELBOW_SCORE_BASKET_POS = 0.38;
