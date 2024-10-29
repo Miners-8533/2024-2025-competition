@@ -1,5 +1,9 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import androidx.annotation.NonNull;
+
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
+import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.Gamepad;
@@ -196,5 +200,31 @@ public class Robot {
         robotOutputs.elbow = elbowPos;
         robotOutputs.gripper = gripperPos;
         robotOutputs.wheel = wheelSpd;
+    }
+
+    public Action scoreSpecimen(){
+        return new Action(){
+
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+
+                gantry.update(
+                        SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_READY_POS,
+                        SubSystemConfigs.WHEEL_STOP_SPD,
+                        SubSystemConfigs.GRIPPER_CLOSED_POS
+                );
+
+                double pos = gantry.getLiftPosition();
+                packet.put("Current Lift Position", pos);
+                if (pos <= SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_POS){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        };
     }
 }

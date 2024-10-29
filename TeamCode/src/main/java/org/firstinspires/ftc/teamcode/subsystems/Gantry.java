@@ -27,6 +27,10 @@ public class Gantry {
         colorDetected = sweeper.colorDetected;
         gripper.setPosition(gripperPos);
     }
+
+    public int getLiftPosition(){
+        return lift.getPosition();
+    }
     public void log(Telemetry tele) {
         lift.log(tele);
         reach.log(tele);
