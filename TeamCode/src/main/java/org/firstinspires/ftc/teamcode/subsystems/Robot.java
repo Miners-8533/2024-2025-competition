@@ -201,13 +201,28 @@ public class Robot {
         robotOutputs.gripper = gripperPos;
         robotOutputs.wheel = wheelSpd;
     }
-
-    public Action scoreSpecimen(){
+    public Action autonStart(){
         return new Action(){
-
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-
+                gantry.update(
+                        SubSystemConfigs.LIFT_HIGH_CHAMBER_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_READY_POS,
+                        SubSystemConfigs.WHEEL_STOP_SPD,
+                        SubSystemConfigs.GRIPPER_CLOSED_POS
+                );
+                bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return gantry.isLiftDone();
+            }
+        };
+    }
+    public Action scoreSpecimen(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.update(
                         SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_POS,
                         SubSystemConfigs.REACH_HOME_POS,
@@ -215,15 +230,118 @@ public class Robot {
                         SubSystemConfigs.WHEEL_STOP_SPD,
                         SubSystemConfigs.GRIPPER_CLOSED_POS
                 );
-
-                double pos = gantry.getLiftPosition();
-                packet.put("Current Lift Position", pos);
-                if (pos <= SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_POS){
-                    return true;
-                }
-                else {
-                    return false;
-                }
+                bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return gantry.isLiftDone();
+            }
+        };
+    }
+    public Action goToReadyPose(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gantry.update(
+                        SubSystemConfigs.LIFT_HOME_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_READY_POS,
+                        SubSystemConfigs.WHEEL_STOP_SPD,
+                        SubSystemConfigs.GRIPPER_OPEN_POS
+                );
+                bumper.setPosition(SubSystemConfigs.BUMPER_UP);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return gantry.isLiftDone();
+            }
+        };
+    }
+    public Action floorAcquire(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gantry.update(
+                        SubSystemConfigs.LIFT_HOME_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_ACQUIRE_POS,
+                        SubSystemConfigs.WHEEL_ACQUIRE_SPD,
+                        SubSystemConfigs.GRIPPER_OPEN_POS
+                );
+                bumper.setPosition(SubSystemConfigs.BUMPER_UP);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return (gantry.colorDetected != RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE);
+            }
+        };
+    }
+    public Action prepareScoreHighBasket(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gantry.update(
+                        SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
+                        SubSystemConfigs.WHEEL_HOLD_SPD,
+                        SubSystemConfigs.GRIPPER_OPEN_POS
+                );
+                bumper.setPosition(SubSystemConfigs.BUMPER_UP);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return gantry.isLiftDone();
+            }
+        };
+    }
+    public Action scoreHighBasket(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gantry.update(
+                        SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
+                        SubSystemConfigs.WHEEL_SCORE_SPD,
+                        SubSystemConfigs.GRIPPER_OPEN_POS
+                );
+                bumper.setPosition(SubSystemConfigs.BUMPER_UP);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return true; //need to use external timer
+            }
+        };
+    }
+    public Action outakeSampleGround(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gantry.update(
+                        SubSystemConfigs.LIFT_HOME_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
+                        SubSystemConfigs.WHEEL_SCORE_SPD,
+                        SubSystemConfigs.GRIPPER_OPEN_POS
+                );
+                bumper.setPosition(SubSystemConfigs.BUMPER_UP);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return true; //need to use external timer
+            }
+        };
+    }
+    public Action acquireSpecimen(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gantry.update(
+                        SubSystemConfigs.LIFT_HOME_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_READY_POS,
+                        SubSystemConfigs.WHEEL_STOP_SPD,
+                        SubSystemConfigs.GRIPPER_CLOSED_POS
+                );
+                bumper.setPosition(SubSystemConfigs.BUMPER_UP);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return true; //need to use external timer
             }
         };
     }

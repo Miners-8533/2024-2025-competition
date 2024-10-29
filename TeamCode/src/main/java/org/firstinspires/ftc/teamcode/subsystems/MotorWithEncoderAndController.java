@@ -24,9 +24,9 @@ public class MotorWithEncoderAndController {
         ffc.targetPosition = targetPosition;
         motor.setPower(ffc.update(motor.getCurrentPosition()));
     }
-
-    public int getPosition(){
-        return motor.getCurrentPosition();
+    public boolean isDone() {
+        int error = motor.getCurrentPosition() - ffc.targetPosition;
+        return Math.abs(error) < SubSystemConfigs.FFC_TOLERANCE;
     }
     public void log(Telemetry tele) {
         tele.addData(name + "current encoder ticks",   motor.getCurrentPosition());

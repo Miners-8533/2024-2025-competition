@@ -29,6 +29,7 @@ public class SubSystemConfigs {
     public static final double BUMPER_DOWN = 1.0;
     public static final int REACH_SCRUB_SPD = 100;
     public static final int LIFT_SCRUB_SPD = 100;
+    public static final int FFC_TOLERANCE = 30;
     public static final MotorWithEncoderAndController.Config liftConfig =
             new MotorWithEncoderAndController.Config(
                 "lift",
