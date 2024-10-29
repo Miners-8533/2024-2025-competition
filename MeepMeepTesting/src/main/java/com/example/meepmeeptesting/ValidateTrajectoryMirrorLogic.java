@@ -207,7 +207,7 @@ public class ValidateTrajectoryMirrorLogic {
                 .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 11)
                 .build();
 
-        AllianceColor allianceColor = AllianceColor.BLUE;
+        AllianceColor allianceColor = AllianceColor.RED;
         FieldStartPosition fieldStartPosition = FieldStartPosition.RIGHT;
 
 
