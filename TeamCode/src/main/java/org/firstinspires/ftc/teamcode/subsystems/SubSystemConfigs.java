@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 public class SubSystemConfigs {
 
-    public static final int LIFT_HOME_POS = 50;
+    public static final int LIFT_HOME_POS = -50;
     public static final int LIFT_HIGH_BASKET_POS = -5800;
     public static final int LIFT_HIGH_CHAMBER_POS = -2565;
     public static final int LIFT_HIGH_CHAMBER_SCORE_POS = -1610;
@@ -30,14 +30,14 @@ public class SubSystemConfigs {
     public static final MotorWithEncoderAndController.Config liftConfig =
             new MotorWithEncoderAndController.Config(
                 "lift",
-                new PIDFCoefficients(0.002,0.0,0.0,0.3),
+                new PIDFCoefficients(0.005,0.0,0.0,0.3),
                 0.04,
                 DcMotorSimple.Direction.FORWARD
             );
     public static final MotorWithEncoderAndController.Config reachConfig =
             new MotorWithEncoderAndController.Config(
                 "reach",
-                new PIDFCoefficients(0.006,0.0,0.0,0.0),
+                new PIDFCoefficients(0.002,0.0,0.0,0.0),
                 0.08,
                 DcMotorSimple.Direction.FORWARD
             );

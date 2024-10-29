@@ -20,6 +20,7 @@ public class Sweeper {
         elbow = hardwareMap.get(Servo.class, "elbow");
         wheel = hardwareMap.get(Servo.class, "wheel");
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color");
+        colorDetected = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
     }
     public void update(double elbow_pos, double wheel_speed) {
         elbow.setPosition(elbow_pos);

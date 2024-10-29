@@ -101,7 +101,7 @@ public class Robot {
                         SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_POS,
                         SubSystemConfigs.BUMPER_DOWN,
                         SubSystemConfigs.ELBOW_READY_POS,
-                        SubSystemConfigs.GRIPPER_OPEN_POS,//TODO test?
+                        SubSystemConfigs.GRIPPER_CLOSED_POS,
                         SubSystemConfigs.WHEEL_STOP_SPD
                 );
 
@@ -151,6 +151,10 @@ public class Robot {
         climber.update(robotOutputs.climber);
         gantry.update(robotOutputs.lift,robotOutputs.reach,robotOutputs.elbow,robotOutputs.wheel,robotOutputs.gripper);
         chassis.update(driveStation.forward, driveStation.strafe, driveStation.rotation,true);
+
+        climber.log(telemetry);
+        gantry.log(telemetry);
+        telemetry.update();
     }
 
     private void newRobotOutputs(int liftPos, double bumperPos, double elbowPos, double gripperPos, double wheelSpd) {

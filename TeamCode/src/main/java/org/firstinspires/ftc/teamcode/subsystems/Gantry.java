@@ -18,6 +18,7 @@ public class Gantry {
         sweeper = new Sweeper(hardwareMap);
         gripper = hardwareMap.get(Servo.class, "gripper");
         gripper.setDirection(Servo.Direction.FORWARD);
+        colorDetected = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
     }
     public void update(int liftPos, int reachPos, double elbowPos, double wheelSpd, double gripperPos) {
         lift.update(liftPos);
