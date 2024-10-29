@@ -19,29 +19,39 @@ public class DriveStation {
     public boolean isScoreSpecimen;
     public boolean isScoreBasket;
     public double reachScrub;
+    public double liftScrub;
     public DriveStation(Gamepad driverController, Gamepad operatorController) {
         driver = driverController;
         operator = operatorController;
     }
 
     public void update() {
+        //driver move
         forward = -driver.left_stick_y;
         strafe = -driver.left_stick_x;
         rotation = -driver.right_stick_x;
 
-        isClimb = driver.dpad_up;
-        isClimbPrep = driver.dpad_right;
-        isClimbReset = driver.dpad_down;
+        //driver score
+        isScoreSpecimen = driver.a;
+        isOutakeSample = driver.a;
 
-        isAquireSpecimen = driver.right_bumper;
-        isScoreSpecimen = driver.left_bumper;
-
-        isAquireSample = driver.a;
-        isOutakeSample = driver.b;
-        isScoreBasket = driver.x;
-
+        //driver reset
         isReady = driver.y;
 
-        reachScrub = driver.right_trigger;
+        //operator climb
+        isClimb = operator.dpad_up;
+        isClimbPrep = operator.dpad_right;
+        isClimbReset = operator.dpad_down;
+
+        //operator acquire
+        isAquireSpecimen = operator.right_bumper;
+        isAquireSample = operator.a;
+
+        //operator prepare for high basket
+        isScoreBasket = operator.y;
+
+        //operator scrubs
+        reachScrub = -operator.left_stick_y;
+        liftScrub = -operator.right_stick_y;
     }
 }
