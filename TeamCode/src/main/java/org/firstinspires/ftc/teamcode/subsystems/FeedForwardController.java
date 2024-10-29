@@ -7,7 +7,7 @@ public class FeedForwardController {
     private ElapsedTime timer = new ElapsedTime();
     private double lastError = Double.NaN;
     private double lastTime = Double.NaN;
-    //private double errorSum = 0.0;
+    private double errorSum = 0.0;
     public PIDFCoefficients coefficients;
     public double kStiction = 0.0;
     public int targetPosition = 0;
@@ -23,14 +23,14 @@ public class FeedForwardController {
             return 0.0;
         } else {
             double dt = currentTime - lastTime;
-            //errorSum += 0.5 * (error + lastError) * dt;
+            errorSum += error * coefficients.i * dt;
             double errorDeriv = (error - lastError) / dt;
 
             lastError = error;
             lastTime = currentTime;
 
             double output = error * coefficients.p +
-                    //errorSum * coefficients.i +
+                    errorSum +
                     errorDeriv * coefficients.d +
                     coefficients.f;
             output = (Math.abs(output) < 0.01) ? (0.0) : (output + Math.signum(output) * kStiction);
