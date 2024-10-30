@@ -303,9 +303,7 @@ public class ValidateTrajectoryMirrorLogic {
                     getTrajectory(myBot,allianceColor,fieldStartPosition, new Pose2d(getObservationZonePose().position.x, getObservationZonePose().position.y, Math.toRadians(270)), new Pose2d(getObservationZonePose().position.x, getInitialPose().position.y, Math.toRadians(270)), 180, false, "LINETOY"),
                     getTrajectory(myBot,allianceColor,fieldStartPosition, new Pose2d(getObservationZonePose().position.x, getInitialPose().position.y, Math.toRadians(270)), getChamberThreePose(), 90, true, "SPLINE"),
                     getTrajectory(myBot,allianceColor,fieldStartPosition, getChamberThreePose(), getObservationZonePose(), 270, true, "SPLINE")
-            )
-
-            );
+            ));
         }
 
 

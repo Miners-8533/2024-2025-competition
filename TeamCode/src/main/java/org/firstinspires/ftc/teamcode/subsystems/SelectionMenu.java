@@ -55,6 +55,7 @@ public class SelectionMenu {
     //    private ScoreStrategy scoreStrategy = ScoreStrategy.SCORE;
     private int currentOptionIndex = 0; // Index of the currently selected option
     private ElapsedTime debounceTimer = new ElapsedTime();
+    private String targetQuadrant = "LOWER_RIGHT";
 
     /**
      * constructor
@@ -202,8 +203,16 @@ public class SelectionMenu {
             case FIELD_START_POSITION:
                 if (currentOptionIndex == 0) {
                     fieldStartPosition = FieldStartPosition.LEFT;
+                    if (allianceColor == AllianceColor.RED){
+                        targetQuadrant = "LOWER_LEFT";
+                    } else {
+                        targetQuadrant = "UPPER_RIGHT";
+                    }
                 } else if (currentOptionIndex == 1) {
                     fieldStartPosition = FieldStartPosition.RIGHT;
+                    if (allianceColor == AllianceColor.BLUE){
+                        targetQuadrant = "UPPER_LEFT";
+                    }
                 }
                 setMenuState(MenuState.CONFIRMATION);
                 break;
@@ -288,6 +297,10 @@ public class SelectionMenu {
     }
     public FieldStartPosition getFieldStartPosition() {
         return fieldStartPosition;
+    }
+
+    public String getTargetQuadrant(){
+        return targetQuadrant;
     }
 
 //    public FieldParkPosition getFieldParkPosition() {

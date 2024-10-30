@@ -15,36 +15,64 @@ public class TrajectoryConfig {
         this.rrdrive = autonDrive;
     }
 
-    static Pose2d mirrorPose(double x, double y, double heading) {
-        // Flip the X and Y coordinates
-        double mirroredX = -x;
-        double mirroredY = -y;
+public static Pose2d mirrorPose(double x, double y, double heading, String targetQuadrant) {
+    double mirroredX = x;
+    double mirroredY = y;
+    double mirroredHeading = heading;
 
-        // Adjust the heading to be mirrored
-        double mirroredHeading = heading + Math.PI;
-
-        // Normalize the heading to be within [-PI, PI]
-        mirroredHeading = (mirroredHeading + Math.PI) % (2 * Math.PI) - Math.PI;
-
-        return new Pose2d(mirroredX, mirroredY, mirroredHeading);
+    switch (targetQuadrant){
+        case "UPPER_RIGHT":
+            mirroredY = -y;
+            mirroredHeading = -heading;
+            break;
+        case "UPPER_LEFT":
+            mirroredX = -x;
+            mirroredY = -y;
+            mirroredHeading = Math.PI + heading;
+            break;
+        case "LOWER_LEFT":
+            mirroredX = -x;
+            mirroredHeading = Math.PI - heading;
+            break;
+        case "LOWER_RIGHT":
+            break;
+        default:
+            throw new IllegalArgumentException("Invalid target quadrant: " + targetQuadrant);
     }
 
-    static double mirrorAxis(double component){
-        return -component;
-    }
+    mirroredHeading = (mirroredHeading + 2 * Math.PI) % (2 * Math.PI);
+    return new Pose2d(mirroredX, mirroredY, mirroredHeading);
+}
+    static double mirrorComponent(double component, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
+        if (allianceColor == AllianceColor.BLUE || fieldStartPosition == FieldStartPosition.LEFT){
+            component += 180;
+        }
+        return (component % 360 + 360) % 360;
+    };
 
-    static Pose2d[] DetermineStartAndEndPose(Pose2d startPose, Pose2d endPose, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
+    static Pose2d[] getStartAndEndPose(Pose2d startPose, Pose2d endPose, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
         Pose2d[] returnArray = new Pose2d[2];
+        String targetQuadrant = "LOWER_RIGHT";
 
-        if (fieldStartPosition == FieldStartPosition.LEFT){
-            startPose = new Pose2d(mirrorAxis(startPose.position.x), startPose.position.y, startPose.heading.toDouble());
-            endPose = new Pose2d(mirrorAxis(endPose.position.x), endPose.position.y, endPose.heading.toDouble());
-        }
+        switch(allianceColor){
+            case BLUE:
+                if (fieldStartPosition == FieldStartPosition.LEFT){
+                    targetQuadrant = "UPPER_RIGHT";
+                }
+                else {
+                    targetQuadrant = "UPPER_LEFT";
+                }
+                break;
+            case RED:
+            default:
+                if (fieldStartPosition == FieldStartPosition.LEFT){
+                    targetQuadrant = "LOWER_LEFT";
+                }
+                break;
 
-        if (allianceColor == AllianceColor.BLUE){
-            startPose = mirrorPose(startPose.position.x, startPose.position.y, startPose.heading.toDouble());
-            endPose = mirrorPose(endPose.position.x, endPose.position.y, endPose.heading.toDouble());
         }
+        startPose = mirrorPose(startPose.position.x, startPose.position.y, startPose.heading.toDouble(), targetQuadrant);
+        endPose = mirrorPose(endPose.position.x,endPose.position.y, endPose.heading.toDouble(), targetQuadrant);
 
         returnArray[0] = startPose;
         returnArray[1] = endPose;
@@ -52,34 +80,40 @@ public class TrajectoryConfig {
         return returnArray;
     }
 
-    static double DetermineEndTangent(double endTangent, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
+    static double getEndTangent(double endTangent, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
         if (allianceColor == AllianceColor.BLUE){
             endTangent += 180;
         }
-        endTangent = (endTangent % 360 + 360) % 360;
-        System.out.printf(String.valueOf(endTangent));
 
-        return endTangent;
+        return (endTangent % 360 + 360) % 360;
     }
-    // assume start position is always lower right quadrant, aka red observation zone
-    public Action ScoreChamberTrajectory(AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
-        Pose2d[] startAndEndPose = DetermineStartAndEndPose(poseConfig.getInitialPose(), poseConfig.getChamberPose(), allianceColor, fieldStartPosition);
+
+    public static Action getTrajectory(MecanumDrive mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition,
+                                Pose2d startPose, Pose2d endPose, double tangentAngle, boolean isReversed, String pathOption) {
+
+        TrajectoryActionBuilder tab;
+        Pose2d[] startAndEndPose = getStartAndEndPose(startPose, endPose, allianceColor, fieldStartPosition);
         Pose2d initialPose = startAndEndPose[0];
-        Pose2d chamberPose = startAndEndPose[1];
+        Pose2d finalPose = startAndEndPose[1];
 
-        TrajectoryActionBuilder tab = rrdrive.actionBuilder(initialPose)
-                .splineToLinearHeading(chamberPose, Math.toRadians(DetermineEndTangent(90, allianceColor, fieldStartPosition)));
-
-        return tab.build();
-    }
-    public Action FirstSpikeMarkTrajectory(AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
-        Pose2d[] startAndEndPose = DetermineStartAndEndPose(poseConfig.getChamberPose(), poseConfig.getFirstSpikeMarkPose(), allianceColor, fieldStartPosition);
-        Pose2d chamberPose = startAndEndPose[0];
-        Pose2d firstSpikeMarkPose = startAndEndPose[1];
-
-        TrajectoryActionBuilder tab = rrdrive.actionBuilder(chamberPose)
-                .setReversed(true)
-                .splineToLinearHeading(firstSpikeMarkPose, Math.toRadians(DetermineEndTangent(90, allianceColor, fieldStartPosition)));
+        switch (pathOption){
+            case "TURN":
+                tab = mybot.actionBuilder(initialPose)
+                        .setReversed(isReversed)
+                        .turnTo(finalPose.heading);
+                break;
+            case "LINETOY":
+                tab = mybot.actionBuilder(initialPose)
+                        .setReversed(isReversed)
+                        .lineToY(finalPose.position.y);
+                break;
+            case "SPLINE":
+            default:
+                tab = mybot.actionBuilder(initialPose)
+                        .setReversed(isReversed)
+                        .splineToLinearHeading(finalPose, Math.toRadians(getEndTangent(tangentAngle, allianceColor, fieldStartPosition)));
+                break;
+        }
 
         return tab.build();
     }
