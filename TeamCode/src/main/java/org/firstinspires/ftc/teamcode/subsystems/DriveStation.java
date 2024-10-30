@@ -20,6 +20,7 @@ public class DriveStation {
     public boolean isScoreBasket;
     public double reachScrub;
     public double liftScrub;
+    public boolean isBumperDown;
     public DriveStation(Gamepad driverController, Gamepad operatorController) {
         driver = driverController;
         operator = operatorController;
@@ -29,7 +30,7 @@ public class DriveStation {
         //driver move
         forward = -driver.left_stick_y;
         strafe = -driver.left_stick_x;
-        rotation = -driver.right_stick_x;
+        rotation = -driver.right_stick_x / 2.0;
 
         //driver score
         isScoreSpecimen = driver.a;
@@ -47,11 +48,14 @@ public class DriveStation {
         isAquireSpecimen = operator.right_bumper;
         isAquireSample = operator.a;
 
+        //operator bumper overide
+        isBumperDown = operator.start;
+
         //operator prepare for high basket
         isScoreBasket = operator.y;
 
         //operator scrubs
-        reachScrub = -operator.left_stick_y;
-        liftScrub = -operator.right_stick_y;
+        reachScrub = operator.left_stick_y;
+        liftScrub = operator.right_stick_y;
     }
 }

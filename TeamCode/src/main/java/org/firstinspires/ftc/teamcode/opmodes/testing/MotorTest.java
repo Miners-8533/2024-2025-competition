@@ -28,7 +28,7 @@ public class MotorTest extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         //climb, lift, or reach
-        motor = hardwareMap.get(DcMotorEx.class, "reach");
+        motor = hardwareMap.get(DcMotorEx.class, "lift");
         motor.setDirection(DcMotorEx.Direction.FORWARD);
 
         waitForStart();
@@ -43,7 +43,7 @@ public class MotorTest extends LinearOpMode {
                 ffc.targetPosition = TARGET_POS;
             }
             else {
-                ffc.targetPosition = 0;
+                ffc.targetPosition = -100;
             }
 
             if(gamepad1.right_bumper) {

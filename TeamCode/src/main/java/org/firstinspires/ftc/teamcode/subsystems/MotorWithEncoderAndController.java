@@ -29,10 +29,10 @@ public class MotorWithEncoderAndController {
         return Math.abs(error) < SubSystemConfigs.FFC_TOLERANCE;
     }
     public void log(Telemetry tele) {
-        tele.addData(name + "current encoder ticks",   motor.getCurrentPosition());
-        tele.addData(name + "motor current (A)",       motor.getCurrent(CurrentUnit.AMPS));
-        tele.addData(name + "current target position", ffc.targetPosition);
-        tele.addData(name + "motor power (+/-%FS)",    motor.getPower());
+        tele.addData(name + " current encoder ticks",   motor.getCurrentPosition());
+        tele.addData(name + " motor current (A)",       motor.getCurrent(CurrentUnit.AMPS));
+        tele.addData(name + " current target position", ffc.targetPosition);
+        tele.addData(name + " motor power (+/-%FS)",    motor.getPower());
     }
     public static class Config {
         public String deviceName;

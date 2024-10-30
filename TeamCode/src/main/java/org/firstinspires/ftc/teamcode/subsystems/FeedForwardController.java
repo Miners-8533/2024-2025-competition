@@ -23,8 +23,8 @@ public class FeedForwardController {
             return 0.0;
         } else {
             double dt = currentTime - lastTime;
-            errorSum += error * coefficients.i * dt;
-            double errorDeriv = (error - lastError) / dt;
+            errorSum += error * coefficients.i;// * dt;
+            double errorDeriv = (error - lastError);// / dt;
 
             lastError = error;
             lastTime = currentTime;
