@@ -4,11 +4,9 @@ import com.acmerobotics.roadrunner.Pose2d;
 
 public class PoseConfig {
     public Pose2d getInitialPose(){
-        return new Pose2d(16,-63, Math.toRadians(90));
+        return new Pose2d(16,-62, Math.toRadians(90));
     }
-    public Pose2d getChamberPose(){
-        return new Pose2d(8,-31, Math.toRadians(90));
-    }
+    public Pose2d getChamberPose(){return new Pose2d(8,-31, Math.toRadians(90));}
     public Pose2d getChamberTwoPose(){
         return new Pose2d(5,-31, Math.toRadians(90));
     }
@@ -30,5 +28,4 @@ public class PoseConfig {
     public Pose2d getParkSubmersiblePose(){
         return new Pose2d(-24, -6.5, Math.toRadians(180));
     }
-
 }
