@@ -31,26 +31,26 @@ public class ValidateTrajectoryMirrorLogic {
     static Pose2d getChamberPose(){
         return new Pose2d(8,-31, Math.toRadians(90));
     }
-    public Pose2d getChamberTwoPose(){
+    static Pose2d getChamberTwoPose(){
         return new Pose2d(5,-31, Math.toRadians(90));
     }
-    public Pose2d getChamberThreePose(){
+    static Pose2d getChamberThreePose(){
         return new Pose2d(2,-31, Math.toRadians(90));
     }
-    public Pose2d getFirstSpikeMarkPose(){
+    static Pose2d getFirstSpikeMarkPose(){
         return new Pose2d(35, -35, Math.toRadians(30));
     }
-    public Pose2d getSecondSpikeMarkPose(){
+    static Pose2d getSecondSpikeMarkPose(){
         return new Pose2d(45, -35, Math.toRadians(30));
     }
-    public Pose2d getObservationZonePose(){
+    static Pose2d getObservationZonePose(){
         return new Pose2d(47, -58, Math.toRadians(315));
     }
-    public Pose2d getBasketPose(){
-        return new Pose2d(-48, -48, Math.toRadians(225));
+    static Pose2d getBasketPose(){
+        return new Pose2d(48, -48, Math.toRadians(315));
     }
-    public Pose2d getParkSubmersiblePose(){
-        return new Pose2d(-24, -6.5, Math.toRadians(180));
+    static Pose2d getParkSubmersiblePose(){
+        return new Pose2d(24, -6.5, Math.toRadians(0));
     }
 
     static Pose2d mirrorPose(double x, double y, double heading, String targetQuadrant) {
@@ -79,9 +79,14 @@ public class ValidateTrajectoryMirrorLogic {
         }
 
         mirroredHeading = (mirroredHeading + 2 * Math.PI) % (2 * Math.PI);
-//        System.out.printf(String.valueOf(mirroredX), String.valueOf(mirroredY), String.valueOf(mirroredHeading));
         return new Pose2d(mirroredX, mirroredY, mirroredHeading);
     }
+    static double mirrorComponent(double component, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
+        if (allianceColor == AllianceColor.BLUE || fieldStartPosition == FieldStartPosition.LEFT){
+            component += 180;
+        }
+        return (component % 360 + 360) % 360;
+    };
 
     static Pose2d[] getStartAndEndPose(Pose2d startPose, Pose2d endPose, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
         Pose2d[] returnArray = new Pose2d[2];
@@ -118,84 +123,135 @@ public class ValidateTrajectoryMirrorLogic {
         if (allianceColor == AllianceColor.BLUE){
             endTangent += 180;
         }
-        endTangent = (endTangent % 360 + 360) % 360;
-//        System.out.printf(String.valueOf(endTangent));
 
-        return endTangent;
+        return (endTangent % 360 + 360) % 360;
     }
 
-//    static Action getTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition,
-//                                Pose2d startPose, Consumer<TrajectoryActionBuilder> trajectoryConfigurer) {
-//        DriveShim rrdrive = mybot.getDrive();
-//        if (rrdrive == null) {
-//            System.out.println("DriveShim is null; check mybot.getDrive() implementation.");
-//            return null;
-//        }
-//
-//        Pose2d[] startAndEndPose = getStartAndEndPose(startPose, startPose, allianceColor, fieldStartPosition);  // Use startPose array for both if needed
-//        Pose2d initialPose = startAndEndPose[0];
-//
-//        TrajectoryActionBuilder tab = rrdrive.actionBuilder(initialPose);
-//
-//        // Apply the custom trajectory configurations using lambda
-//        trajectoryConfigurer.accept(tab);
-//
-//        Action action = tab.build();
-//        if (action == null) {
-//            System.out.println("Action is null; check TrajectoryActionBuilder configuration.");
-//        } else {
-//            System.out.println("Action successfully created.");
-//        }
-//
-//        return action;
-//    }
+    static Action getTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition,
+                                Pose2d startPose, Pose2d endPose, double tangentAngle, boolean isReversed, String pathOption) {
+        DriveShim rrdrive = mybot.getDrive();
+        TrajectoryActionBuilder tab;
+        if (rrdrive == null) {
+            System.out.println("DriveShim is null; check mybot.getDrive() implementation.");
+            return null;
+        }
+
+        Pose2d[] startAndEndPose = getStartAndEndPose(startPose, endPose, allianceColor, fieldStartPosition);
+        Pose2d initialPose = startAndEndPose[0];
+        Pose2d finalPose = startAndEndPose[1];
+
+        System.out.println("Initial Pose: " + initialPose);
+        System.out.println("Final Pose: " + finalPose);
+        switch (pathOption){
+            case "TURN":
+                tab = rrdrive.actionBuilder(initialPose)
+                        .setReversed(isReversed)
+                        .turnTo(finalPose.heading);
+                break;
+            case "LINETOY":
+                tab = rrdrive.actionBuilder(initialPose)
+                        .setReversed(isReversed)
+                        .lineToY(finalPose.position.y);
+                break;
+            case "SPLINE":
+            default:
+                tab = rrdrive.actionBuilder(initialPose)
+                        .setReversed(isReversed)
+                        .splineToLinearHeading(finalPose, Math.toRadians(getEndTangent(tangentAngle, allianceColor, fieldStartPosition)));
+                break;
+
+        }
 
 
+        return tab.build();
+    }
+    static Action getScoreChamberTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition) {
+        return getTrajectory(
+                mybot,
+                allianceColor,
+                fieldStartPosition,
+                getInitialPose(),
+                getChamberPose(),
+                90,
+                false,
+                "SPLINE"
+        );
+    }
+    static Action getFirstSpikeMarkTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition) {
+        return getTrajectory(
+                mybot,
+                allianceColor,
+                fieldStartPosition,
+                getChamberPose(),
+                getFirstSpikeMarkPose(),
+                90,
+                true,
+                "SPLINE"
+        );
+    }
+    static Action getObservationZoneTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition) {
+        return getTrajectory(
+                mybot,
+                allianceColor,
+                fieldStartPosition,
+                getFirstSpikeMarkPose(),
+                getObservationZonePose(),
+                270,
+                false,
+                "SPLINE"
+        );
+    }
+    static Action getScoreSecondSpecimenTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition) {
+        return getTrajectory(
+                mybot,
+                allianceColor,
+                fieldStartPosition,
+                getObservationZonePose(),
+                getChamberTwoPose(),
+                90,
+                false,
+                "SPLINE"
+        );
+    }
     // assume start position is always lower right quadrant, aka red observation zone
-    static Action getScoreChamberTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
-        DriveShim rrdrive = mybot.getDrive();
-
-        Pose2d[] startAndEndPose = getStartAndEndPose(new Pose2d(16,-63, Math.toRadians(90)), new Pose2d(8,-31, Math.toRadians(90)), allianceColor, fieldStartPosition);
-        Pose2d initialPose = startAndEndPose[0];
-        Pose2d endPose = startAndEndPose[1];
-
-        TrajectoryActionBuilder tab = rrdrive.actionBuilder(initialPose)
-                .splineToLinearHeading(endPose, Math.toRadians(getEndTangent(90, allianceColor, fieldStartPosition)));
-
-        return tab.build();
-    }
-//    static Action getScoreChamberTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition) {
-//        return getTrajectory(mybot, allianceColor, fieldStartPosition,
-//                getInitialPose(),
-//                tab -> tab.splineToLinearHeading(getChamberPose(),
-//                        Math.toRadians(getEndTangent(90, allianceColor, fieldStartPosition))));
+//    static Action getScoreChamberTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
+//        DriveShim rrdrive = mybot.getDrive();
+//
+//        Pose2d[] startAndEndPose = getStartAndEndPose(new Pose2d(16,-63, Math.toRadians(90)), new Pose2d(8,-31, Math.toRadians(90)), allianceColor, fieldStartPosition);
+//        Pose2d initialPose = startAndEndPose[0];
+//        Pose2d endPose = startAndEndPose[1];
+//
+//        TrajectoryActionBuilder tab = rrdrive.actionBuilder(initialPose)
+//                .splineToLinearHeading(endPose, Math.toRadians(getEndTangent(90, allianceColor, fieldStartPosition)));
+//
+//        return tab.build();
 //    }
 
-        static Action getFirstSpikeMarkTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
-        DriveShim rrdrive = mybot.getDrive();
-
-        Pose2d[] startAndEndPose = getStartAndEndPose(new Pose2d(8,-31, Math.toRadians(90)), new Pose2d(35, -35, Math.toRadians(30)), allianceColor, fieldStartPosition);
-        Pose2d initialPose = startAndEndPose[0];
-        Pose2d endPose = startAndEndPose[1];
-
-        TrajectoryActionBuilder tab = rrdrive.actionBuilder(initialPose)
-                .setReversed(true)
-                .splineToLinearHeading(endPose, Math.toRadians(getEndTangent(90, allianceColor, fieldStartPosition)));
-
-        return tab.build();
-    }
-    static Action getObservationZoneTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
-        DriveShim rrdrive = mybot.getDrive();
-
-        Pose2d[] startAndEndPose = getStartAndEndPose(new Pose2d(35, -35, Math.toRadians(30)), new Pose2d(47, -58, Math.toRadians(315)), allianceColor, fieldStartPosition);
-        Pose2d initialPose = startAndEndPose[0];
-        Pose2d endPose = startAndEndPose[1];
-
-        TrajectoryActionBuilder tab = rrdrive.actionBuilder(initialPose)
-                .splineToLinearHeading(endPose, Math.toRadians(getEndTangent(270, allianceColor, fieldStartPosition)));
-
-        return tab.build();
-    }
+//        static Action getFirstSpikeMarkTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
+//        DriveShim rrdrive = mybot.getDrive();
+//
+//        Pose2d[] startAndEndPose = getStartAndEndPose(new Pose2d(8,-31, Math.toRadians(90)), new Pose2d(35, -35, Math.toRadians(30)), allianceColor, fieldStartPosition);
+//        Pose2d initialPose = startAndEndPose[0];
+//        Pose2d endPose = startAndEndPose[1];
+//
+//        TrajectoryActionBuilder tab = rrdrive.actionBuilder(initialPose)
+//                .setReversed(true)
+//                .splineToLinearHeading(endPose, Math.toRadians(getEndTangent(90, allianceColor, fieldStartPosition)));
+//
+//        return tab.build();
+//    }
+//    static Action getObservationZoneTrajectory(RoadRunnerBotEntity mybot, AllianceColor allianceColor, FieldStartPosition fieldStartPosition){
+//        DriveShim rrdrive = mybot.getDrive();
+//
+//        Pose2d[] startAndEndPose = getStartAndEndPose(new Pose2d(35, -35, Math.toRadians(30)), new Pose2d(47, -58, Math.toRadians(315)), allianceColor, fieldStartPosition);
+//        Pose2d initialPose = startAndEndPose[0];
+//        Pose2d endPose = startAndEndPose[1];
+//
+//        TrajectoryActionBuilder tab = rrdrive.actionBuilder(initialPose)
+//                .splineToLinearHeading(endPose, Math.toRadians(getEndTangent(270, allianceColor, fieldStartPosition)));
+//
+//        return tab.build();
+//    }
 
 
     public static void main(String[] args) {
@@ -207,26 +263,49 @@ public class ValidateTrajectoryMirrorLogic {
                 .setConstraints(40, 40, Math.toRadians(180), Math.toRadians(180), 11)
                 .build();
 
-        AllianceColor allianceColor = AllianceColor.RED;
-        FieldStartPosition fieldStartPosition = FieldStartPosition.RIGHT;
+        AllianceColor allianceColor = AllianceColor.BLUE;
+        FieldStartPosition fieldStartPosition = FieldStartPosition.LEFT;
 
 
-        Action scoreChamberTraj = getScoreChamberTrajectory(myBot, allianceColor, fieldStartPosition);
-        Action firstSpikeMarkTraj = getFirstSpikeMarkTrajectory(myBot, allianceColor, fieldStartPosition);
-        Action observationZoneTraj = getObservationZoneTrajectory(myBot, allianceColor, fieldStartPosition);
+//        Action scoreChamberTraj = getScoreChamberTrajectory(myBot, allianceColor, fieldStartPosition);
+//        Action firstSpikeMarkTraj = getFirstSpikeMarkTrajectory(myBot, allianceColor, fieldStartPosition);
+//        Action observationZoneTraj = getObservationZoneTrajectory(myBot, allianceColor, fieldStartPosition);
+//        Action scoreChamberTraj = getTrajectory(myBot,allianceColor,fieldStartPosition,getInitialPose(),getChamberPose(),90,false);
+//        Action firstSpikeMarkTraj = getTrajectory(myBot, allianceColor, fieldStartPosition, getChamberPose(),getFirstSpikeMarkPose(), 90, true);
+//        Action observationZoneTraj = getTrajectory(myBot, allianceColor,fieldStartPosition,getFirstSpikeMarkPose(), getObservationZonePose(), 270, false);
+//        Action secondSpikeMarkTraj = getTrajectory(myBot, allianceColor, fieldStartPosition, getObservationZonePose(), getSecondSpikeMarkPose(), 180, true);
+//        Action secondObservationZoneTraj = getTrajectory(myBot)
+
+
 
         if (fieldStartPosition == FieldStartPosition.LEFT){
             myBot.runAction(new SequentialAction(
-                    scoreChamberTraj,
-                    firstSpikeMarkTraj
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getInitialPose(),getChamberPose(),90,false, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getChamberPose(),getFirstSpikeMarkPose(), 180, true, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getFirstSpikeMarkPose(),getBasketPose(), 180, false, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getBasketPose(),getSecondSpikeMarkPose(),180, false, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getSecondSpikeMarkPose(),getBasketPose(),180,false,"SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getBasketPose(),getParkSubmersiblePose(),0, true, "SPLINE")
             ));
         }
         else{
             myBot.runAction(new SequentialAction(
-                    scoreChamberTraj,
-                    firstSpikeMarkTraj,
-                    observationZoneTraj
-            ));
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getInitialPose(),getChamberPose(),90,false, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getChamberPose(), getFirstSpikeMarkPose(), 90, true, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getFirstSpikeMarkPose(),getObservationZonePose(),270, false,"SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getObservationZonePose(),getSecondSpikeMarkPose(),180, true, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition,getSecondSpikeMarkPose(),getObservationZonePose(),180, false, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition, getObservationZonePose(), new Pose2d(getObservationZonePose().position.x, getObservationZonePose().position.y, Math.toRadians(270)),180,false,"TURN"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition, new Pose2d(getObservationZonePose().position.x, getObservationZonePose().position.y, Math.toRadians(270)), new Pose2d(getObservationZonePose().position.x, getInitialPose().position.y, Math.toRadians(270)), 180, false, "LINETOY"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition, new Pose2d(getObservationZonePose().position.x, getInitialPose().position.y, Math.toRadians(270)), getChamberTwoPose(), 90, true, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition, getChamberTwoPose(), getObservationZonePose(),270,true,"SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition, getObservationZonePose(), new Pose2d(getObservationZonePose().position.x, getObservationZonePose().position.y, Math.toRadians(270)),180,false,"TURN"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition, new Pose2d(getObservationZonePose().position.x, getObservationZonePose().position.y, Math.toRadians(270)), new Pose2d(getObservationZonePose().position.x, getInitialPose().position.y, Math.toRadians(270)), 180, false, "LINETOY"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition, new Pose2d(getObservationZonePose().position.x, getInitialPose().position.y, Math.toRadians(270)), getChamberThreePose(), 90, true, "SPLINE"),
+                    getTrajectory(myBot,allianceColor,fieldStartPosition, getChamberThreePose(), getObservationZonePose(), 270, true, "SPLINE")
+            )
+
+            );
         }
 
 
