@@ -24,6 +24,7 @@ public class Robot {
     private int liftScrub = 0;
     private int reachScrub = 0;
     private ElapsedTime darylsTimer = new ElapsedTime();
+    private boolean isScoreRetract = false;
     private enum RobotState {
         READY,
         ACQUIRING_SPECIMEN,
@@ -64,15 +65,17 @@ public class Robot {
                 double elbowState;
                 double wheelState;
 
-                if(gantry.colorDetected != RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE) {
+                isScoreRetract = false;
+
+                if(driveStation.isOutakeSample) {
+                    elbowState = SubSystemConfigs.ELBOW_READY_POS;
+                    wheelState = SubSystemConfigs.WHEEL_SCORE_SPD;
+                } else if(gantry.colorDetected != RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE) {
                     elbowState = SubSystemConfigs.ELBOW_READY_POS;
                     wheelState = SubSystemConfigs.WHEEL_HOLD_SPD;
                 } else if(driveStation.isAquireSample) {
                     elbowState = SubSystemConfigs.ELBOW_ACQUIRE_POS;
                     wheelState = SubSystemConfigs.WHEEL_ACQUIRE_SPD;
-                } else if(driveStation.isOutakeSample) {
-                    elbowState = SubSystemConfigs.ELBOW_READY_POS;
-                    wheelState = SubSystemConfigs.WHEEL_SCORE_SPD;
                 } else {
                     elbowState = SubSystemConfigs.ELBOW_READY_POS;
                     wheelState = SubSystemConfigs.WHEEL_STOP_SPD;
@@ -156,14 +159,39 @@ public class Robot {
         }
 
         //reach manual control
-        if(robotState == RobotState.READY || robotState == RobotState.SCORE_HIGH_BASKET) {
+        if(robotState == RobotState.READY) {
             reachScrub += SubSystemConfigs.REACH_SCRUB_SPD * driveStation.reachScrub;
             //limit scrub to between max and min targets
-            reachScrub = Math.min(Math.max(reachScrub,SubSystemConfigs.REACH_HOME_POS),SubSystemConfigs.REACH_FULL_EXTEND_POS);
+            if(gantry.colorDetected == RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE) {
+                reachScrub = Math.max(Math.min(reachScrub, SubSystemConfigs.REACH_HOME_POS), SubSystemConfigs.REACH_FULL_EXTEND_POS);
+            } else {
+                reachScrub = SubSystemConfigs.REACH_HOME_POS;
+            }
+        } else if(robotState == RobotState.SCORE_HIGH_BASKET) {
+            if(driveStation.isOutakeSample && (darylsTimer.seconds() > 0.5)) {
+                if(isScoreRetract) {
+                    reachScrub = SubSystemConfigs.REACH_HOME_POS;
+                    isScoreRetract = false;
+                } else {
+                    darylsTimer.reset();
+                    isScoreRetract = true;
+                }
+            } else {
+                reachScrub += SubSystemConfigs.REACH_SCRUB_SPD * driveStation.reachScrub;
+                //limit scrub to between max and min targets
+                reachScrub = Math.max(Math.min(reachScrub, SubSystemConfigs.REACH_HOME_POS), SubSystemConfigs.REACH_FULL_EXTEND_POS);
+            }
         } else {
             reachScrub = SubSystemConfigs.REACH_HOME_POS;
         }
         robotOutputs.reach = reachScrub;
+
+        telemetry.addData("Daryl's timer ", darylsTimer);
+        telemetry.addData("isScoreRetract", isScoreRetract);
+        telemetry.addData("isOutakeSample",driveStation.isOutakeSample);
+
+        //TODO WE NEED GYRO RESET
+        //TODO Movement limits when lift is up high basket
 
         //state independent
         if(driveStation.isClimb) {
@@ -182,12 +210,20 @@ public class Robot {
             liftScrub = 0;
         }
 
+        //bumper down overide
+        if(driveStation.isBumperDown) {
+            robotOutputs.bumper = SubSystemConfigs.BUMPER_DOWN;
+        }
+
         //all outputs update
         lights.setPattern(gantry.colorDetected);
         bumper.setPosition(robotOutputs.bumper);
         climber.update(robotOutputs.climber);
         gantry.update(robotOutputs.lift,robotOutputs.reach,robotOutputs.elbow,robotOutputs.wheel,robotOutputs.gripper);
         chassis.update(driveStation.forward, driveStation.strafe, driveStation.rotation,true);
+
+        telemetry.addData("State ", robotState);
+        telemetry.addData("Reach Scrub", driveStation.reachScrub);
 
         climber.log(telemetry);
         gantry.log(telemetry);
