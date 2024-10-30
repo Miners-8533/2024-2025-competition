@@ -251,7 +251,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return gantry.isLiftDone();
+                return !gantry.isLiftDone();
             }
         };
     }
@@ -269,7 +269,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return gantry.isLiftDone();
+                return !gantry.isLiftDone();
             }
         };
     }
@@ -287,7 +287,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return gantry.isLiftDone();
+                return !gantry.isLiftDone();
             }
         };
     }
@@ -305,7 +305,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return (gantry.colorDetected != RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE);
+                return (gantry.colorDetected == RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE);
             }
         };
     }
@@ -323,7 +323,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return gantry.isLiftDone();
+                return !gantry.isLiftDone();
             }
         };
     }
@@ -341,7 +341,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return true; //need to use external timer
+                return false; //need to use external timer
             }
         };
     }
@@ -359,7 +359,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return true; //need to use external timer
+                return false; //need to use external timer
             }
         };
     }
@@ -377,7 +377,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return true; //need to use external timer
+                return false; //need to use external timer
             }
         };
     }
