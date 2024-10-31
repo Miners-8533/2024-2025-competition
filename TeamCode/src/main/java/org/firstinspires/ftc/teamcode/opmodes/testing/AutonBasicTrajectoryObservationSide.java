@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.opmodes.testing;
 
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -8,13 +7,14 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
-
-@Autonomous(name="Auton - Net Side", group="Competition")
-public class AutonBasicTrajectory extends LinearOpMode {
+@Disabled
+@Autonomous(name="Auton - Observation Side", group="Competition")
+public class AutonBasicTrajectoryObservationSide extends LinearOpMode {
 
     @Override
     public void runOpMode() {
