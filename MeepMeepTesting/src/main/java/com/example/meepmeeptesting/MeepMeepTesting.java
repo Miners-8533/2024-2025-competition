@@ -25,20 +25,27 @@ public class MeepMeepTesting {
 
         Pose2d secondSpikeMark = new Pose2d(-45, -35, Math.toRadians(150));
 
+        Pose2d thirdSpikeMark = new Pose2d(-49, -40, Math.toRadians(150));
+
         Pose2d parkNearSubmersible = new Pose2d(-24, -6.5, Math.toRadians(180));
 
         myBot.runAction(myBot.getDrive().actionBuilder(initialPose)
                 .splineToLinearHeading(scoreChamber, Math.toRadians(90))
-                .waitSeconds(2)
+                .waitSeconds(0.5)
                 .setReversed(true)
                 .splineToLinearHeading(firstSpikeMark, Math.toRadians(180))
-                .waitSeconds(2)
+                .waitSeconds(1.5)
                 .splineToLinearHeading(scoreHighBasket, Math.toRadians(180))
-                .waitSeconds(2)
+                .waitSeconds(1.5)
                 .splineToLinearHeading(secondSpikeMark,Math.toRadians(180))
-                .waitSeconds(2)
+                .waitSeconds(1.5)
                 .splineToLinearHeading(scoreHighBasket, Math.toRadians(180))
-                .waitSeconds(2)
+                .waitSeconds(1.5)
+                .splineToLinearHeading(thirdSpikeMark,Math.toRadians(180))
+                .waitSeconds(1.5)
+                .splineToLinearHeading(scoreHighBasket, Math.toRadians(180))
+                .waitSeconds(1.5)
+                .setReversed(true)
                 .splineToLinearHeading(parkNearSubmersible, Math.toRadians(0))
                 .build());
 
