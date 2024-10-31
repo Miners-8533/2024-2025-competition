@@ -91,7 +91,7 @@ public class AutonBasicTrajectoryObservationSide extends LinearOpMode {
                 ),
                 new ParallelAction(
                         robot.outakeSampleGround(),
-                        new SleepAction(0.3)
+                        new SleepAction(0.3)//may not need sleep for this one as we drive backwards while out-taking
                 ),
                 new ParallelAction(
                         new SequentialAction(
@@ -105,11 +105,14 @@ public class AutonBasicTrajectoryObservationSide extends LinearOpMode {
                         secondObservationZoneTab.build(),
                         robot.goToReadyPose()
                 ),
+                //may want to reach here to make the sample drop further away from robot before turn
                 new ParallelAction(
                         robot.outakeSampleGround(),
                         new SleepAction(0.3)
                 ),
                 turnToSpecimenTab.build(),
+                //I think we are missing a step here where we drive forward onto the hanging specimen
+                //It would be the .lineToY(initialPose.position.y) in MeepMeep
                 new ParallelAction(
                         robot.autonStart(),
                         secondScoreChamberTab.build()
@@ -120,6 +123,8 @@ public class AutonBasicTrajectoryObservationSide extends LinearOpMode {
                         robot.goToReadyPose()
                 ),
                 turnToSpecimenTab.build(),
+                //Same missing a step here where we drive forward onto the hanging specimen
+                //It would be the .lineToY(initialPose.position.y) in MeepMeep
                 new ParallelAction(
                         robot.autonStart(),
                         thirdScoreChamberTab.build()
