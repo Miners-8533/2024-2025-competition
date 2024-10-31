@@ -23,9 +23,9 @@ public class PoseConfig {
         return new Pose2d(47, -58, Math.toRadians(315));
     }
     public Pose2d getBasketPose(){
-        return new Pose2d(-48, -48, Math.toRadians(225));
+        return new Pose2d(48, -48, Math.toRadians(315));
     }
     public Pose2d getParkSubmersiblePose(){
-        return new Pose2d(-24, -6.5, Math.toRadians(180));
+        return new Pose2d(24, -6.5, Math.toRadians(180));
     }
 }

@@ -30,6 +30,7 @@ public class Gantry {
     public boolean isLiftDone() {
         return lift.isDone();
     }
+    public boolean isReachDone() {return reach.isDone();}
     public void log(Telemetry tele) {
         lift.log(tele);
         reach.log(tele);
