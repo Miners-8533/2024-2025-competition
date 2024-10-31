@@ -311,19 +311,30 @@ public class Robot {
     }
     public Action floorAcquireReach(){
         return new Action(){
+            private boolean intialized = false;
+            private int tempReachVal;
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
+                if (!intialized){
+                    tempReachVal = 0;
+                    intialized = true;
+                }
                 gantry.update(
                         SubSystemConfigs.LIFT_HOME_POS,
-                        SubSystemConfigs.REACH_FLOOR_EXTEND_POS,
+                        tempReachVal,
                         SubSystemConfigs.ELBOW_ACQUIRE_POS,
                         SubSystemConfigs.WHEEL_ACQUIRE_SPD,
                         SubSystemConfigs.GRIPPER_OPEN_POS
                 );
+                tempReachVal -= SubSystemConfigs.REACH_SCRUB_SPD_AUTON;
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return !gantry.isReachDone();
+                if (tempReachVal >= SubSystemConfigs.REACH_FLOOR_EXTEND_POS){
+                    return true;
+                } else{
+                    return false;
+                }
             }
         };
     }
@@ -351,7 +362,7 @@ public class Robot {
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.update(
                         SubSystemConfigs.LIFT_HIGH_BASKET_POS,
-                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.REACH_HIGH_BASKET_EXTEND_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
                         SubSystemConfigs.WHEEL_SCORE_SPD,
                         SubSystemConfigs.GRIPPER_OPEN_POS
@@ -377,7 +388,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return false; //need to use external timer
+                return !gantry.isReachDone(); //need to use external timer
             }
         };
     }

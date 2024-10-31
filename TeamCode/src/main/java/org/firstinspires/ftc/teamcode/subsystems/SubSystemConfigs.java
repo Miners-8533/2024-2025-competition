@@ -11,8 +11,8 @@ public class SubSystemConfigs {
     public static final int LIFT_HIGH_CHAMBER_SCORE_POS = -1800;//-1610;
     public static final int REACH_HOME_POS = 0;
     public static final int REACH_FULL_EXTEND_POS = -1500;
-    public static final int REACH_FLOOR_EXTEND_POS = -300;
-    public static final int REACH_HIGH_BASKET_EXTEND_POS = -300;
+    public static final int REACH_FLOOR_EXTEND_POS = -1200;
+    public static final int REACH_HIGH_BASKET_EXTEND_POS = -600;
     public static final double ELBOW_UP_POS = 0.18;
     public static final double ELBOW_READY_POS = 0.21;
     public static final double ELBOW_SCORE_BASKET_POS = 0.38;
@@ -30,27 +30,34 @@ public class SubSystemConfigs {
     public static final double BUMPER_UP = 0.0;
     public static final double BUMPER_DOWN = 1.0;
     public static final int REACH_SCRUB_SPD = 50;
+    public static final int REACH_SCRUB_SPD_AUTON = 15;
     public static final int LIFT_SCRUB_SPD = 50;
+    public static final int LIFT_FFC_TOLERANCE = 50;
     public static final int FFC_TOLERANCE = 30;
+
+
     public static final MotorWithEncoderAndController.Config liftConfig =
             new MotorWithEncoderAndController.Config(
                 "lift",
                 new PIDFCoefficients(0.02,0.0,0.0,0.3),
                 0.04,
-                DcMotorSimple.Direction.FORWARD
+                DcMotorSimple.Direction.FORWARD,
+                LIFT_FFC_TOLERANCE
             );
     public static final MotorWithEncoderAndController.Config reachConfig =
             new MotorWithEncoderAndController.Config(
                 "reach",
                 new PIDFCoefficients(0.006,0.0,0.0,0.0),
                 0.08,
-                DcMotorSimple.Direction.FORWARD
+                DcMotorSimple.Direction.FORWARD,
+                FFC_TOLERANCE
             );
     public static final MotorWithEncoderAndController.Config climbConfig =
             new MotorWithEncoderAndController.Config(
                 "climber",
                 new PIDFCoefficients(0.002,0.0,0.0,0.0),
                 0.08,
-                DcMotorSimple.Direction.FORWARD
+                DcMotorSimple.Direction.FORWARD,
+                FFC_TOLERANCE
             );
 }

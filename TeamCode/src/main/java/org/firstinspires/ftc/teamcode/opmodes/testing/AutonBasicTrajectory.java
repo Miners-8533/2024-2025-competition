@@ -23,13 +23,13 @@ public class AutonBasicTrajectory extends LinearOpMode {
 
         Pose2d scoreChamber = new Pose2d(-8,-29, Math.toRadians(90));
 
-        Pose2d scoreHighBasket = new Pose2d(-52, -52, Math.toRadians(225));
+        Pose2d scoreHighBasket = new Pose2d(-53, -49, Math.toRadians(225));
 
         Pose2d firstSpikeMark = new Pose2d(-33, -33, Math.toRadians(150));
 
-        Pose2d secondSpikeMark = new Pose2d(-46.5, -31.5, Math.toRadians(150));
+        Pose2d secondSpikeMark = new Pose2d(-39, -30, Math.toRadians(150));
 
-        Pose2d parkNearSubmersible = new Pose2d(-24, -6.5, Math.toRadians(180));
+        Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
@@ -87,21 +87,29 @@ public class AutonBasicTrajectory extends LinearOpMode {
                                 robot.goToReadyPose(),
                                 robot.floorAcquire()
                         ),
-                        tab4.build()
+                        new SequentialAction(
+                                tab4.build(),
+                                new SleepAction(0.5)
+                        )
                 ),
+                robot.floorAcquireReach(),
                 new ParallelAction(
                         robot.prepareScoreHighBasket(),
                         tab5.build()
                 ),
+                robot.highBasketReach(),
                 new ParallelAction(
                         new SleepAction(0.3),
                         robot.scoreHighBasket()
                 ),
                 new ParallelAction(
-                        new SleepAction(0.2),
-                        robot.goToReadyPose(),
+                        new SequentialAction(
+                                robot.prepareScoreHighBasket(),
+                                robot.goToReadyPose()
+                        ),
                         tab6.build()
-                )
+                ),
+                robot.goToReadyPose()
         ));
     }
 }

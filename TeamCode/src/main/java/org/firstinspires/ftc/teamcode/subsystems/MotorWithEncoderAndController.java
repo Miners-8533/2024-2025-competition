@@ -9,6 +9,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 
 public class MotorWithEncoderAndController {
+    private int tolerance;
     private DcMotorEx motor;
     private FeedForwardController ffc;
     private final String name;
@@ -19,6 +20,7 @@ public class MotorWithEncoderAndController {
         ffc.kStiction = config.kStiction;
         motor.setDirection(config.direction);
         motor.setMotorEnable();
+        tolerance = config.tolerance;
     }
     public void update(int targetPosition) {
         ffc.targetPosition = targetPosition;
@@ -26,7 +28,7 @@ public class MotorWithEncoderAndController {
     }
     public boolean isDone() {
         int error = motor.getCurrentPosition() - ffc.targetPosition;
-        boolean temp = Math.abs(error) < SubSystemConfigs.FFC_TOLERANCE;
+        boolean temp = Math.abs(error) < tolerance;
         if (temp){
             motor.setPower(0);
         }
@@ -43,14 +45,16 @@ public class MotorWithEncoderAndController {
         public PIDFCoefficients coefficients;
         public double kStiction;
         public DcMotorSimple.Direction direction;
+        public int tolerance;
         public Config(String deviceName,
                       PIDFCoefficients coefficients,
                       double kStiction,
-                      DcMotorSimple.Direction direction) {
+                      DcMotorSimple.Direction direction, int tolerance) {
             this.deviceName = deviceName;
             this.coefficients = coefficients;
             this.kStiction = kStiction;
             this.direction = direction;
+            this.tolerance = tolerance;
         }
     }
 }
