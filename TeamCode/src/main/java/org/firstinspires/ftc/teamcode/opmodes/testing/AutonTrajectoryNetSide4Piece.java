@@ -13,7 +13,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 
-@Disabled
 @Autonomous(name="Auton - Net Side 4 Piece", group="Competition")
 public class AutonTrajectoryNetSide4Piece extends LinearOpMode {
     @Override
@@ -29,7 +28,7 @@ public class AutonTrajectoryNetSide4Piece extends LinearOpMode {
 
         Pose2d secondSpikeMark = new Pose2d(-39, -30, Math.toRadians(150));
 
-        Pose2d thirdSpikeMark = new Pose2d(-49, -40, Math.toRadians(150));
+        Pose2d thirdSpikeMark = new Pose2d(-49, -27, Math.toRadians(150));
 
         Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(180));
 
