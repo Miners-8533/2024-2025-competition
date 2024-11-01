@@ -242,7 +242,7 @@ public class Robot {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.update(
-                        SubSystemConfigs.LIFT_HIGH_CHAMBER_POS,
+                        SubSystemConfigs.LIFT_HIGH_CHAMBER_AUTON_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_READY_POS,
                         SubSystemConfigs.WHEEL_STOP_SPD,
@@ -260,7 +260,7 @@ public class Robot {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.update(
-                        SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_POS,
+                        SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_AUTO_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_READY_POS,
                         SubSystemConfigs.WHEEL_STOP_SPD,

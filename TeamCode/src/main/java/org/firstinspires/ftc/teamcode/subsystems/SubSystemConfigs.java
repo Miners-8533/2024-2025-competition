@@ -8,7 +8,9 @@ public class SubSystemConfigs {
     public static final int LIFT_HOME_POS = -50;
     public static final int LIFT_HIGH_BASKET_POS = -5850;
     public static final int LIFT_HIGH_CHAMBER_POS = -2565;
-    public static final int LIFT_HIGH_CHAMBER_SCORE_POS = -1800;//-1610;
+    public static final int LIFT_HIGH_CHAMBER_AUTON_POS = -2615;
+    public static final int LIFT_HIGH_CHAMBER_SCORE_POS = -1850;
+    public static final int LIFT_HIGH_CHAMBER_SCORE_AUTO_POS = -1800;
     public static final int REACH_HOME_POS = 0;
     public static final int REACH_FULL_EXTEND_POS = -1500;
     public static final int REACH_FLOOR_EXTEND_POS = -1200;

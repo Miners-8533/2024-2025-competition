@@ -111,8 +111,6 @@ public class AutonBasicTrajectoryObservationSide extends LinearOpMode {
                         new SleepAction(0.3)
                 ),
                 turnToSpecimenTab.build(),
-                //I think we are missing a step here where we drive forward onto the hanging specimen
-                //It would be the .lineToY(initialPose.position.y) in MeepMeep
                 new ParallelAction(
                         robot.autonStart(),
                         secondScoreChamberTab.build()
@@ -123,8 +121,6 @@ public class AutonBasicTrajectoryObservationSide extends LinearOpMode {
                         robot.goToReadyPose()
                 ),
                 turnToSpecimenTab.build(),
-                //Same missing a step here where we drive forward onto the hanging specimen
-                //It would be the .lineToY(initialPose.position.y) in MeepMeep
                 new ParallelAction(
                         robot.autonStart(),
                         thirdScoreChamberTab.build()
