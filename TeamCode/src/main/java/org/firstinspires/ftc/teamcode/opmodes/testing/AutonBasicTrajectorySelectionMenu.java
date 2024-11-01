@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -19,7 +20,7 @@ import org.firstinspires.ftc.teamcode.subsystems.SelectionMenu.MenuState;
 import org.firstinspires.ftc.teamcode.subsystems.SelectionMenu.FieldStartPosition;
 import org.firstinspires.ftc.teamcode.subsystems.PoseConfig;
 import org.firstinspires.ftc.teamcode.subsystems.TrajectoryConfig;
-
+@Disabled
 @Autonomous(name="Auton Basic Trajectory w/Menu", group="Testing")
 public class AutonBasicTrajectorySelectionMenu extends LinearOpMode {
     public ElapsedTime runtime = new ElapsedTime();

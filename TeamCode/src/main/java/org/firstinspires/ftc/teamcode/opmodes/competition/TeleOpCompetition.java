@@ -1,17 +1,14 @@
-package org.firstinspires.ftc.teamcode.opmodes.testing;
+package org.firstinspires.ftc.teamcode.opmodes.competition;
 
 import com.acmerobotics.dashboard.FtcDashboard;
-import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
-@Disabled
-@TeleOp(name="TeleOp Test")
-public class TeleOpTest extends LinearOpMode {
+
+@TeleOp(name="TeleOp - Competition", group="Competition")
+public class TeleOpCompetition extends LinearOpMode {
     @Override
     public void runOpMode() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());

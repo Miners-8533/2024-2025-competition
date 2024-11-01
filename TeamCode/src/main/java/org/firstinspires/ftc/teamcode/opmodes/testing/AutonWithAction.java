@@ -18,7 +18,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
-
+@Disabled
 @Autonomous(name="Auton With Action", group="Testing")
 public class AutonWithAction extends LinearOpMode {
 

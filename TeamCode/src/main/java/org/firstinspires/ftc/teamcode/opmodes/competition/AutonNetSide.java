@@ -1,6 +1,5 @@
-package org.firstinspires.ftc.teamcode.opmodes.testing;
+package org.firstinspires.ftc.teamcode.opmodes.competition;
 
-import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
 import com.acmerobotics.roadrunner.SequentialAction;
@@ -8,29 +7,22 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 
-@Disabled
 @Autonomous(name="Auton - Net Side", group="Competition")
-public class AutonBasicTrajectory extends LinearOpMode {
+public class AutonNetSide extends LinearOpMode {
 
     @Override
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(-16,-62, Math.toRadians(90));
-
         Pose2d scoreChamber = new Pose2d(-8,-29, Math.toRadians(90));
-
         Pose2d scoreHighBasket = new Pose2d(-53, -49, Math.toRadians(225));
-
         Pose2d firstSpikeMark = new Pose2d(-33, -33, Math.toRadians(150));
-
         Pose2d secondSpikeMark = new Pose2d(-39, -30, Math.toRadians(150));
-
         Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
