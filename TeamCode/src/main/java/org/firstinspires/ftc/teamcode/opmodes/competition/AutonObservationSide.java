@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -73,11 +74,14 @@ public class AutonObservationSide extends LinearOpMode {
         waitForStart();
 
         Actions.runBlocking(new SequentialAction(
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         robot.autonStart(),
                         scoreChamberTab.build()
                 ),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_FOREST_PALETTE),
                 robot.scoreSpecimen(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         new SequentialAction(
                                 robot.goToReadyPose(),
@@ -86,6 +90,7 @@ public class AutonObservationSide extends LinearOpMode {
                         firstSpikeMarkTab.build()
                 ),
                 robot.floorAcquireReach(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.YELLOW),
                 new ParallelAction(
                         firstObservationTab.build(),
                         robot.goToReadyPose()
@@ -94,6 +99,7 @@ public class AutonObservationSide extends LinearOpMode {
                         robot.outakeSampleGround(),
                         new SleepAction(0.3)//may not need sleep for this one as we drive backwards while out-taking
                 ),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         new SequentialAction(
                                 robot.goToReadyPose(),
@@ -102,6 +108,7 @@ public class AutonObservationSide extends LinearOpMode {
                         secondSpikeMarkTab.build()
                 ),
                 robot.floorAcquireReach(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.YELLOW),
                 new ParallelAction(
                         secondObservationZoneTab.build(),
                         robot.goToReadyPose()
@@ -111,12 +118,15 @@ public class AutonObservationSide extends LinearOpMode {
                         robot.outakeSampleGround(),
                         new SleepAction(0.3)
                 ),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 turnToSpecimenTab.build(),
                 new ParallelAction(
                         robot.autonStart(),
                         secondScoreChamberTab.build()
                 ),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_FOREST_PALETTE),
                 robot.scoreSpecimen(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         thirdObservationZoneTab.build(),
                         robot.goToReadyPose()
@@ -126,11 +136,14 @@ public class AutonObservationSide extends LinearOpMode {
                         robot.autonStart(),
                         thirdScoreChamberTab.build()
                 ),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_FOREST_PALETTE),
                 robot.scoreSpecimen(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         robot.goToReadyPose(),
                         parkInObservationZone.build()
-                )
+                ),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_RAINBOW_PALETTE)
         ));
     }
 }

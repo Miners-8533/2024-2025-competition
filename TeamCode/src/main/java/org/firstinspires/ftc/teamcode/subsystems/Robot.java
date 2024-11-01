@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.R;
 
 public class Robot {
     private Chassis chassis;
@@ -136,6 +137,8 @@ public class Robot {
 
                 if(driveStation.isReady) {
                     robotState = RobotState.READY;
+                } else if (driveStation.isAquireSpecimen){
+                    robotState = RobotState.ACQUIRED_SPECIMEN;
                 }
                 break;
             case SCORE_HIGH_BASKET:
@@ -425,6 +428,17 @@ public class Robot {
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
                 return false; //need to use external timer
+            }
+        };
+    }
+    public Action setLights(RevBlinkinLedDriver.BlinkinPattern blinkinPattern){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                lights.setPattern(blinkinPattern);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return false;
             }
         };
     }

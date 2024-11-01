@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
+import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -53,11 +54,14 @@ public class AutonNetSide extends LinearOpMode {
         waitForStart();
 
         Actions.runBlocking(new SequentialAction(
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         robot.autonStart(),
                         tab1.build()
                 ),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_FOREST_PALETTE),
                 robot.scoreSpecimen(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         new SequentialAction(
                                 robot.goToReadyPose(),
@@ -66,15 +70,18 @@ public class AutonNetSide extends LinearOpMode {
                         tab2.build()
                 ),
                 robot.floorAcquireReach(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.VIOLET),
                 new ParallelAction(
                         tab3.build(),
                         robot.prepareScoreHighBasket()
                 ),
                 robot.highBasketReach(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_FOREST_PALETTE),
                 new ParallelAction(
                         new SleepAction(0.3),
                         robot.scoreHighBasket()
                 ),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         new SequentialAction(
                                 robot.prepareScoreHighBasket(),
@@ -87,15 +94,18 @@ public class AutonNetSide extends LinearOpMode {
                         )
                 ),
                 robot.floorAcquireReach(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.VIOLET),
                 new ParallelAction(
                         robot.prepareScoreHighBasket(),
                         tab5.build()
                 ),
                 robot.highBasketReach(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_FOREST_PALETTE),
                 new ParallelAction(
                         new SleepAction(0.3),
                         robot.scoreHighBasket()
                 ),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         new SequentialAction(
                                 robot.prepareScoreHighBasket(),
@@ -103,7 +113,8 @@ public class AutonNetSide extends LinearOpMode {
                         ),
                         tab6.build()
                 ),
-                robot.goToReadyPose()
+                robot.goToReadyPose(),
+                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_RAINBOW_PALETTE)
         ));
     }
 }
