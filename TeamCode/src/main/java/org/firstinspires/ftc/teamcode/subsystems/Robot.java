@@ -43,7 +43,7 @@ public class Robot {
     }
     private RobotOutputs robotOutputs;
     public Robot(HardwareMap hardwareMap, Gamepad driverController, Gamepad operatorController) {
-        Pose2d initialPos = new Pose2d(0,0,0);
+        Pose2d initialPos = new Pose2d(0,0,Math.toRadians(180));
         chassis = new Chassis(hardwareMap, initialPos);
         driveStation = new DriveStation(driverController, operatorController);
         bumper = hardwareMap.get(Servo.class, "bumper");
@@ -220,7 +220,7 @@ public class Robot {
         bumper.setPosition(robotOutputs.bumper);
         climber.update(robotOutputs.climber);
         gantry.update(robotOutputs.lift,robotOutputs.reach,robotOutputs.elbow,robotOutputs.wheel,robotOutputs.gripper);
-        chassis.update(driveStation.forward, driveStation.strafe, driveStation.rotation,true);
+        chassis.update(driveStation.forward, driveStation.strafe, driveStation.rotation,true, driveStation.isGyroReset);
 
         telemetry.addData("State ", robotState);
         telemetry.addData("Reach Scrub", driveStation.reachScrub);

@@ -10,15 +10,20 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 public class Chassis {
     private MecanumDrive drive;
+    private double gyroOffset = 0;
 
     public Chassis(HardwareMap hardwareMap, Pose2d inital_pose) {
         drive = new MecanumDrive(hardwareMap, inital_pose);
     }
 
-    public void update(double forward, double strafe, double rotation, boolean isFieldOrientedControl) {
+    public void update(double forward, double strafe, double rotation, boolean isFieldOrientedControl, boolean isGyroReset) {
         Vector2d commanded_translation;
         double heading = drive.lazyImu.get().getRobotYawPitchRollAngles().getYaw();
         heading = Math.toRadians(heading);
+        if (isGyroReset){
+            gyroOffset = heading;
+        }
+        heading = heading - gyroOffset;
 
         if(isFieldOrientedControl) {
             commanded_translation = rotate(forward, strafe, heading);

@@ -21,6 +21,7 @@ public class DriveStation {
     public double reachScrub;
     public double liftScrub;
     public boolean isBumperDown;
+    public boolean isGyroReset;
     public DriveStation(Gamepad driverController, Gamepad operatorController) {
         driver = driverController;
         operator = operatorController;
@@ -31,6 +32,7 @@ public class DriveStation {
         forward = -driver.left_stick_y;
         strafe = -driver.left_stick_x;
         rotation = -driver.right_stick_x / 2.0;
+        isGyroReset = driver.start;
 
         //driver score
         isScoreSpecimen = driver.a;
