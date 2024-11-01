@@ -132,7 +132,7 @@ public class AutonBasicTrajectoryObservationSide extends LinearOpMode {
                 robot.scoreSpecimen(),
                 new ParallelAction(
                         robot.goToReadyPose(),
-                        thirdObservationZoneTab.build()
+                        parkInObservationZone.build()
                 )
         ));
     }
