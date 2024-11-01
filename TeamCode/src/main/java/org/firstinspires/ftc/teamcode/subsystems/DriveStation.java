@@ -43,7 +43,7 @@ public class DriveStation {
 
         //operator climb
         isClimb = operator.dpad_up;
-        isClimbPrep = operator.dpad_right;
+        isClimbPrep = operator.dpad_right || operator.dpad_left;
         isClimbReset = operator.dpad_down;
 
         //operator acquire
