@@ -20,12 +20,13 @@ public class AutonObservationSide extends LinearOpMode {
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
-        Pose2d scoreChamber = new Pose2d(8,-29, Math.toRadians(90));
+        Pose2d scoreChamber = new Pose2d(8,-28, Math.toRadians(90));
         Pose2d firstSpikeMark = new Pose2d(33, -33, Math.toRadians(30));
         Pose2d secondSpikeMark = new Pose2d(39, -30, Math.toRadians(30));
         Pose2d observationZonePose = new Pose2d(47, -58, Math.toRadians(315));
         Pose2d chamberTwoPose = new Pose2d(5,-31, Math.toRadians(90));
         Pose2d chamberThreePose = new Pose2d(2,-31, Math.toRadians(90));
+        Pose2d parkOnWall = new Pose2d(47, -64, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
@@ -66,7 +67,7 @@ public class AutonObservationSide extends LinearOpMode {
 
         TrajectoryActionBuilder parkInObservationZone = drive.actionBuilder(chamberThreePose)
                 .setReversed(true)
-                .splineToLinearHeading(observationZonePose, Math.toRadians(270));
+                .splineToLinearHeading(parkOnWall, Math.toRadians(270));
 
         // Wait for the game to start (driver presses START)
         waitForStart();

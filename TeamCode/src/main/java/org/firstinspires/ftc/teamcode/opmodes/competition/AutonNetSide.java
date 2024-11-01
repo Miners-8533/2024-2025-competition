@@ -19,7 +19,7 @@ public class AutonNetSide extends LinearOpMode {
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(-16,-62, Math.toRadians(90));
-        Pose2d scoreChamber = new Pose2d(-8,-29, Math.toRadians(90));
+        Pose2d scoreChamber = new Pose2d(-8,-28, Math.toRadians(90));
         Pose2d scoreHighBasket = new Pose2d(-53, -49, Math.toRadians(225));
         Pose2d firstSpikeMark = new Pose2d(-33, -33, Math.toRadians(150));
         Pose2d secondSpikeMark = new Pose2d(-39, -30, Math.toRadians(150));
