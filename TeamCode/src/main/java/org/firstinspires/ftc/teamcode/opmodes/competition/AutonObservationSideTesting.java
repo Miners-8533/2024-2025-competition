@@ -8,22 +8,21 @@ import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 
-@Autonomous(name="Auton - Observation Side", group="Competition")
-public class AutonObservationSide extends LinearOpMode {
+@Autonomous(name="Auton - Observation Side - TEST", group="Competition")
+public class AutonObservationSideTesting extends LinearOpMode {
 
     @Override
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-28, Math.toRadians(90));
-        Pose2d firstSpikeMark = new Pose2d(33, -33, Math.toRadians(30));
-        Pose2d secondSpikeMark = new Pose2d(39, -30, Math.toRadians(30));
+        Pose2d firstSpikeMark = new Pose2d(33, -36, Math.toRadians(27.5));
+        Pose2d secondSpikeMark = new Pose2d(39, -30, Math.toRadians(27.5));
         Pose2d observationZonePose = new Pose2d(47, -58, Math.toRadians(315));
         Pose2d chamberTwoPose = new Pose2d(5,-31, Math.toRadians(90));
         Pose2d chamberThreePose = new Pose2d(2,-31, Math.toRadians(90));
@@ -74,14 +73,11 @@ public class AutonObservationSide extends LinearOpMode {
         waitForStart();
 
         Actions.runBlocking(new SequentialAction(
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         robot.autonStart(),
                         scoreChamberTab.build()
                 ),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_FOREST_PALETTE),
                 robot.scoreSpecimen(),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         new SequentialAction(
                                 robot.goToReadyPose(),
@@ -91,7 +87,6 @@ public class AutonObservationSide extends LinearOpMode {
                         firstSpikeMarkTab.build()
                 ),
                 robot.floorAcquireReach(),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.YELLOW),
                 new ParallelAction(
                         firstObservationTab.build(),
                         robot.goToReadyPose()
@@ -100,16 +95,13 @@ public class AutonObservationSide extends LinearOpMode {
                         robot.outakeSampleGround(),
                         new SleepAction(0.3)//may not need sleep for this one as we drive backwards while out-taking
                 ),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         new SequentialAction(
-                                robot.goToReadyPose(),
-                                robot.floorAcquire()
+                                robot.goToReadyPose()
                         ),
                         secondSpikeMarkTab.build()
                 ),
                 robot.floorAcquireReach(),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.YELLOW),
                 new ParallelAction(
                         secondObservationZoneTab.build(),
                         robot.goToReadyPose()
@@ -117,34 +109,37 @@ public class AutonObservationSide extends LinearOpMode {
                 //may want to reach here to make the sample drop further away from robot before turn
                 new ParallelAction(
                         robot.outakeSampleGround(),
-                        new SleepAction(0.3)
+                        new SleepAction(0.3),
+                        robot.goToReadyPose()
                 ),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 turnToSpecimenTab.build(),
                 new ParallelAction(
-                        robot.autonStart(),
+                        new SequentialAction(
+                                robot.acquireSpecimen(),
+                                new SleepAction(0.3),
+                                robot.autonStart()
+                        ),
                         secondScoreChamberTab.build()
                 ),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_FOREST_PALETTE),
                 robot.scoreSpecimen(),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         thirdObservationZoneTab.build(),
                         robot.goToReadyPose()
                 ),
                 turnToSpecimenTab.build(),
                 new ParallelAction(
-                        robot.autonStart(),
+                        new SequentialAction(
+                                robot.acquireSpecimen(),
+                                new SleepAction(0.3),
+                                robot.autonStart()
+                        ),
                         thirdScoreChamberTab.build()
                 ),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_FOREST_PALETTE),
                 robot.scoreSpecimen(),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE),
                 new ParallelAction(
                         robot.goToReadyPose(),
                         parkInObservationZone.build()
-                ),
-                robot.setLights(RevBlinkinLedDriver.BlinkinPattern.BEATS_PER_MINUTE_RAINBOW_PALETTE)
+                )
         ));
     }
 }
