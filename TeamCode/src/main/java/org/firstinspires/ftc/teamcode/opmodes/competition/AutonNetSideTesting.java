@@ -24,6 +24,7 @@ public class AutonNetSideTesting extends LinearOpMode {
         Pose2d scoreHighBasket = new Pose2d(-55, -47, Math.toRadians(225));
         Pose2d firstSpikeMark = new Pose2d(-33, -33, Math.toRadians(152.5));
         Pose2d secondSpikeMark = new Pose2d(-39, -30, Math.toRadians(152.5));
+        Pose2d thirdSpikeMark = new Pose2d(-49, -30, Math.toRadians(152.5));
         Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
@@ -49,6 +50,9 @@ public class AutonNetSideTesting extends LinearOpMode {
         TrajectoryActionBuilder tab6 = drive.actionBuilder(scoreHighBasket)
                 .setReversed(true)
                 .splineToLinearHeading(parkNearSubmersible, Math.toRadians(0));
+
+        TrajectoryActionBuilder tab7 = drive.actionBuilder(scoreHighBasket)
+                .splineToLinearHeading(thirdSpikeMark,Math.toRadians(180));
 
         // Wait for the game to start (driver presses START)
         waitForStart();
@@ -88,6 +92,27 @@ public class AutonNetSideTesting extends LinearOpMode {
                         ),
                         new SequentialAction(
                                 tab4.build(),
+                                new SleepAction(0.5)
+                        )
+                ),
+                robot.floorAcquireReach(),
+                new ParallelAction(
+                        robot.prepareScoreHighBasket(),
+                        tab5.build()
+                ),
+                robot.highBasketReach(),
+                new ParallelAction(
+                        new SleepAction(0.3),
+                        robot.scoreHighBasket()
+                ),
+                robot.prepareScoreHighBasket(),
+                new ParallelAction(
+                        new SequentialAction(
+                                robot.goToReadyPose(),
+                                robot.floorAcquire()
+                        ),
+                        new SequentialAction(
+                                tab7.build(),
                                 new SleepAction(0.5)
                         )
                 ),
