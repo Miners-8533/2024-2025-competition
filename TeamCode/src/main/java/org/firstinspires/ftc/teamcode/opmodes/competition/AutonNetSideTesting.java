@@ -80,9 +80,9 @@ public class AutonNetSideTesting extends LinearOpMode {
                         new SleepAction(0.3),
                         robot.scoreHighBasket()
                 ),
+                robot.prepareScoreHighBasket(),
                 new ParallelAction(
                         new SequentialAction(
-                                robot.prepareScoreHighBasket(),
                                 robot.goToReadyPose(),
                                 robot.floorAcquire()
                         ),
@@ -101,11 +101,9 @@ public class AutonNetSideTesting extends LinearOpMode {
                         new SleepAction(0.3),
                         robot.scoreHighBasket()
                 ),
+                robot.prepareScoreHighBasket(),
                 new ParallelAction(
-                        new SequentialAction(
-                                robot.prepareScoreHighBasket(),
-                                robot.goToReadyPose()
-                        ),
+                        robot.goToReadyPose(),
                         tab6.build()
                 ),
                 robot.goToReadyPose()
