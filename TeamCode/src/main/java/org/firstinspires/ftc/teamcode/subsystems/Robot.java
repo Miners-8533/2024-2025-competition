@@ -26,6 +26,7 @@ public class Robot {
     private int reachScrub = 0;
     private ElapsedTime darylsTimer = new ElapsedTime();
     private boolean isScoreRetract = false;
+    private boolean isMaintain;
     private enum RobotState {
         READY,
         ACQUIRING_SPECIMEN,
@@ -242,8 +243,13 @@ public class Robot {
     }
     public Action autonStart(){
         return new Action(){
+            private boolean initialized = false;
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
+                if (!initialized){
+                    initialized = true;
+                    isMaintain = true;
+                }
                 gantry.update(
                         SubSystemConfigs.LIFT_HIGH_CHAMBER_AUTON_POS,
                         SubSystemConfigs.REACH_HOME_POS,
@@ -254,7 +260,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return (!gantry.isLiftDone() || !gantry.isReachDone());
+                return isMaintain;
             }
         };
     }
@@ -272,7 +278,16 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return (!gantry.isLiftDone() || !gantry.isReachDone());
+                return !gantry.isLiftDone(); //|| !gantry.isReachDone());
+            }
+        };
+    }
+    public Action cancelMaintain(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+               isMaintain = false;
+               return false;
             }
         };
     }

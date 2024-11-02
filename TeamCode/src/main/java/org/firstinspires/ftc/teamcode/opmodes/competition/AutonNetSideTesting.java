@@ -56,7 +56,10 @@ public class AutonNetSideTesting extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         robot.autonStart(),
-                        tab1.build()
+                        new SequentialAction(
+                                tab1.build(),
+                                robot.cancelMaintain()
+                        )
                 ),
                 robot.scoreSpecimen(),
                 new ParallelAction(
