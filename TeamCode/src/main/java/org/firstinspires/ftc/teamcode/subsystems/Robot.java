@@ -243,13 +243,8 @@ public class Robot {
     }
     public Action autonStart(){
         return new Action(){
-            private boolean initialized = false;
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                if (!initialized){
-                    initialized = true;
-                    isMaintain = true;
-                }
                 gantry.update(
                         SubSystemConfigs.LIFT_HIGH_CHAMBER_AUTON_POS,
                         SubSystemConfigs.REACH_HOME_POS,
@@ -260,7 +255,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return isMaintain;
+                return !gantry.isLiftDone();
             }
         };
     }
@@ -361,7 +356,7 @@ public class Robot {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.update(
-                        SubSystemConfigs.LIFT_HIGH_BASKET_POS,
+                        SubSystemConfigs.LIFT_LOW_BASKET_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
                         SubSystemConfigs.WHEEL_HOLD_SPD,
@@ -379,7 +374,7 @@ public class Robot {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.update(
-                        SubSystemConfigs.LIFT_HIGH_BASKET_POS,
+                        SubSystemConfigs.LIFT_LOW_BASKET_POS,
                         SubSystemConfigs.REACH_HIGH_BASKET_EXTEND_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
                         SubSystemConfigs.WHEEL_SCORE_SPD,
@@ -397,7 +392,7 @@ public class Robot {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.update(
-                        SubSystemConfigs.LIFT_HIGH_BASKET_POS,
+                        SubSystemConfigs.LIFT_LOW_BASKET_POS,
                         SubSystemConfigs.REACH_HIGH_BASKET_EXTEND_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
                         SubSystemConfigs.WHEEL_SCORE_SPD,

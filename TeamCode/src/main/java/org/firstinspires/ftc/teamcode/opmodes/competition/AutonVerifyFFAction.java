@@ -6,15 +6,14 @@ import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
-import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 
-@Autonomous(name="Auton - Observation Side - TEST", group="Competition")
-public class AutonObservationSideTesting extends LinearOpMode {
+@Autonomous(name="Auton - Action FF - TEST", group="Test")
+public class AutonVerifyFFAction extends LinearOpMode {
 
     @Override
     public void runOpMode() {
@@ -73,72 +72,7 @@ public class AutonObservationSideTesting extends LinearOpMode {
         waitForStart();
 
         Actions.runBlocking(new SequentialAction(
-                new ParallelAction(
-                        robot.autonStart(),
-                        new SequentialAction(
-                                scoreChamberTab.build(),
-                                robot.cancelMaintain()
-                        )
-                ),
-                robot.scoreSpecimen(),
-                new ParallelAction(
-                        new SequentialAction(
-                                robot.goToReadyPose(),
-                                new SleepAction(0.5),
-                                robot.floorAcquire()
-                        ),
-                        firstSpikeMarkTab.build()
-                ),
-                robot.floorAcquireReach(),
-                new ParallelAction(
-                        firstObservationTab.build(),
-                        robot.goToReadyPose()
-                ),
-                new SequentialAction(
-                        robot.outakeSampleGround(),
-                        new SleepAction(0.3)//may not need sleep for this one as we drive backwards while out-taking
-                ),
-                new ParallelAction(
-                        new SequentialAction(
-                                robot.goToReadyPose()
-                        ),
-                        secondSpikeMarkTab.build()
-                ),
-                robot.floorAcquireReach(),
-                new ParallelAction(
-                        secondObservationZoneTab.build(),
-                        robot.goToReadyPose()
-                ),
-                //may want to reach here to make the sample drop further away from robot before turn
-                new SequentialAction(
-                        robot.outakeSampleGround(),
-                        new SleepAction(0.3)
-                ),
-                robot.goToReadyPose(),
-                turnToSpecimenTab.build(),
-                new ParallelAction(
-                        robot.acquireSpecimen(),
-                        new SleepAction(0.5)
-                ),
-                new ParallelAction(
-                        new SequentialAction(
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart()
-                        ),
-                        secondScoreChamberTab.build()
-                ),
-                robot.scoreSpecimen(),
-                new ParallelAction(
-                        parkInObservationZone.build(),
-                        robot.goToReadyPose()
-                )
+
         ));
     }
 }

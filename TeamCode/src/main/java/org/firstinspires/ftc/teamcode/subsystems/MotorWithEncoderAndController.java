@@ -30,7 +30,7 @@ public class MotorWithEncoderAndController {
         int error = motor.getCurrentPosition() - ffc.targetPosition;
         boolean temp = Math.abs(error) < tolerance;
         if (temp){
-            motor.setPower(0);
+            motor.setPower(-ffc.coefficients.f);
         }
         return temp;
     }

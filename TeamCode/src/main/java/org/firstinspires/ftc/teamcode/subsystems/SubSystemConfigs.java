@@ -7,19 +7,20 @@ public class SubSystemConfigs {
 
     public static final int LIFT_HOME_POS = -50;
     public static final int LIFT_HIGH_BASKET_POS = -5850;
-    public static final int LIFT_HIGH_CHAMBER_POS = -2565;
+    public static final int LIFT_LOW_BASKET_POS = -3000;
+    public static final int LIFT_HIGH_CHAMBER_POS = -2750;
     public static final int LIFT_HIGH_CHAMBER_AUTON_INIT_POS = -2765;
-    public static final int LIFT_HIGH_CHAMBER_AUTON_POS = -2615;
+    public static final int LIFT_HIGH_CHAMBER_AUTON_POS = -3000;
     public static final int LIFT_HIGH_CHAMBER_SCORE_POS = -1850;
     public static final int LIFT_HIGH_CHAMBER_SCORE_AUTO_POS = -1800;
     public static final int REACH_HOME_POS = 0;
     public static final int REACH_FULL_EXTEND_POS = -1500;
-    public static final int REACH_FLOOR_EXTEND_POS = -1200;
+    public static final int REACH_FLOOR_EXTEND_POS = -1000; //-1200
     public static final int REACH_HIGH_BASKET_EXTEND_POS = -600;
     public static final double ELBOW_UP_POS = 0.18;
     public static final double ELBOW_READY_POS = 0.20; // 0.21
     public static final double ELBOW_SCORE_BASKET_POS = 0.38;
-    public static final double ELBOW_ACQUIRE_POS = 0.64;
+    public static final double ELBOW_ACQUIRE_POS = 0.64;//.64
     public static final double WHEEL_STOP_SPD = 0.53;
     public static final double WHEEL_ACQUIRE_SPD = 1.0;
     public static final double WHEEL_SCORE_SPD = 0.0;
@@ -42,7 +43,7 @@ public class SubSystemConfigs {
     public static final MotorWithEncoderAndController.Config liftConfig =
             new MotorWithEncoderAndController.Config(
                 "lift",
-                new PIDFCoefficients(0.02,0.0,0.0,0.3),
+                new PIDFCoefficients(0.02,0.0,0.0,0.25),
                 0.04,
                 DcMotorSimple.Direction.FORWARD,
                 LIFT_FFC_TOLERANCE
