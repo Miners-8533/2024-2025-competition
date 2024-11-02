@@ -10,10 +10,11 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 public class Chassis {
     private MecanumDrive drive;
-    private double gyroOffset = 0;
+    private double gyroOffset;
 
     public Chassis(HardwareMap hardwareMap, Pose2d inital_pose) {
         drive = new MecanumDrive(hardwareMap, inital_pose);
+        gyroOffset = Math.toRadians(270);
     }
 
     public void update(double forward, double strafe, double rotation, boolean isFieldOrientedControl, boolean isGyroReset) {
