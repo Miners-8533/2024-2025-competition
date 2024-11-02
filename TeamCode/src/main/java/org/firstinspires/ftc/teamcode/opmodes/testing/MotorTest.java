@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
 import org.firstinspires.ftc.teamcode.subsystems.FeedForwardController;
-@Disabled
+
 @TeleOp(name="Nobot: Motors Test", group="Nobot")
 @Config
 public class MotorTest extends LinearOpMode {
@@ -29,7 +29,7 @@ public class MotorTest extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         //climb, lift, or reach
-        motor = hardwareMap.get(DcMotorEx.class, "lift");
+        motor = hardwareMap.get(DcMotorEx.class, "reach");
         motor.setDirection(DcMotorEx.Direction.FORWARD);
 
         waitForStart();

@@ -21,7 +21,7 @@ public class AutonObservationSideTesting extends LinearOpMode {
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
-        Pose2d firstSpikeMark = new Pose2d(33, -35, Math.toRadians(27.5));
+        Pose2d firstSpikeMark = new Pose2d(33, -35.5, Math.toRadians(27.5));
         Pose2d secondSpikeMark = new Pose2d(39, -35, Math.toRadians(27.5));
         Pose2d observationZonePose = new Pose2d(47, -58, Math.toRadians(315));
         Pose2d chamberTwoPose = new Pose2d(5,-27, Math.toRadians(90));
