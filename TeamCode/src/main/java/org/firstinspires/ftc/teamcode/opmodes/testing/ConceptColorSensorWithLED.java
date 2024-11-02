@@ -19,10 +19,10 @@ public class ConceptColorSensorWithLED extends LinearOpMode {
     public void runOpMode() {
         final float[] hsvValues = new float[3];
 
-        NormalizedColorSensor colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color_sensor");
+        NormalizedColorSensor colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color");
 
         RevBlinkinLedDriver blinkinLedDriver = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
-        RevBlinkinLedDriver.BlinkinPattern pattern;
+        RevBlinkinLedDriver.BlinkinPattern pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
 
 
         waitForStart();
@@ -64,6 +64,7 @@ public class ConceptColorSensorWithLED extends LinearOpMode {
                 pattern = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
                 telemetry.addData("result", "no match");
             }
+            telemetry.addData("ledDriver connection info: ", blinkinLedDriver.getConnectionInfo());
             /* If this color sensor also has a distance sensor, display the measured distance.
              * Note that the reported distance is only useful at very close range, and is impacted by
              * ambient light and surface reflectivity. */
@@ -71,6 +72,7 @@ public class ConceptColorSensorWithLED extends LinearOpMode {
                 telemetry.addData("Distance (cm)", "%.3f", ((DistanceSensor) colorSensor).getDistance(DistanceUnit.CM));
             }
             blinkinLedDriver.setPattern(pattern);
+
             telemetry.update();
         }
     }
