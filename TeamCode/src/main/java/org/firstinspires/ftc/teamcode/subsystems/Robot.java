@@ -254,7 +254,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return !gantry.isLiftDone();
+                return (!gantry.isLiftDone() || !gantry.isReachDone());
             }
         };
     }
@@ -272,7 +272,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return !gantry.isLiftDone();
+                return (!gantry.isLiftDone() || !gantry.isReachDone());
             }
         };
     }
@@ -308,7 +308,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return !gantry.isLiftDone();
+                return (!gantry.isLiftDone() || !gantry.isReachDone());
             }
         };
     }
@@ -373,7 +373,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return false; //need to use external timer
+                return (!gantry.isLiftDone() || !gantry.isReachDone()); //need to use external timer
             }
         };
     }
@@ -391,7 +391,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return !gantry.isReachDone(); //need to use external timer
+                return (!gantry.isLiftDone() || !gantry.isReachDone()); //need to use external timer
             }
         };
     }
@@ -409,7 +409,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return false; //need to use external timer
+                return (!gantry.isLiftDone() || !gantry.isReachDone()); //need to use external timer
             }
         };
     }
@@ -427,7 +427,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return false; //need to use external timer
+                return (!gantry.isLiftDone() || !gantry.isReachDone());//need to use external timer
             }
         };
     }

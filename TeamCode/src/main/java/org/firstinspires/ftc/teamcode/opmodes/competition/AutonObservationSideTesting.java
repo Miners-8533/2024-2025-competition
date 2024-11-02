@@ -113,8 +113,10 @@ public class AutonObservationSideTesting extends LinearOpMode {
                 ),
                 robot.goToReadyPose(),
                 turnToSpecimenTab.build(),
-                robot.acquireSpecimen(),
-                new SleepAction(2.0),
+                new ParallelAction(
+                        robot.acquireSpecimen(),
+                        new SleepAction(2.0)
+                ),
                 new ParallelAction(
                         robot.autonStart(),
                         secondScoreChamberTab.build()
@@ -125,8 +127,10 @@ public class AutonObservationSideTesting extends LinearOpMode {
                         robot.goToReadyPose()
                 ),
                 turnToSpecimenTab.build(),
-                robot.acquireSpecimen(),
-                new SleepAction(2.0),
+                new ParallelAction(
+                        robot.acquireSpecimen(),
+                        new SleepAction(2.0)
+                ),
                 new ParallelAction(
                         robot.autonStart(),
                         thirdScoreChamberTab.build()
