@@ -73,6 +73,7 @@ public class AutonObservationSideTesting extends LinearOpMode {
         waitForStart();
 
         Actions.runBlocking(new SequentialAction(
+                new SleepAction(3.0),
                 new ParallelAction(
                         robot.autonStart(),
                         new SequentialAction(
