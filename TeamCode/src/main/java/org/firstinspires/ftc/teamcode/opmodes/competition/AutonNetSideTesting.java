@@ -24,7 +24,7 @@ public class AutonNetSideTesting extends LinearOpMode {
         Pose2d scoreHighBasket = new Pose2d(-55, -47, Math.toRadians(225));
         Pose2d firstSpikeMark = new Pose2d(-33, -33, Math.toRadians(152.5));
         Pose2d secondSpikeMark = new Pose2d(-39, -30, Math.toRadians(152.5));
-        Pose2d thirdSpikeMark = new Pose2d(-49, -30, Math.toRadians(152.5));
+        Pose2d thirdSpikeMark = new Pose2d(-49, -27, Math.toRadians(152.5));
         Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);

@@ -7,7 +7,7 @@ public class SubSystemConfigs {
 
     public static final int LIFT_HOME_POS = 0;
     public static final int LIFT_HIGH_BASKET_POS = -5850;
-    public static final int LIFT_LOW_BASKET_POS = -3000;
+    public static final int LIFT_LOW_BASKET_POS = -3300;
     public static final int LIFT_HIGH_CHAMBER_POS = -2750;
     public static final int LIFT_HIGH_CHAMBER_AUTON_INIT_POS = -2765;
     public static final int LIFT_HIGH_CHAMBER_AUTON_POS = -3000;
