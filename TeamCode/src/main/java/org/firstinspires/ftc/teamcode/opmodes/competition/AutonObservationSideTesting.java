@@ -21,8 +21,8 @@ public class AutonObservationSideTesting extends LinearOpMode {
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-28, Math.toRadians(90));
-        Pose2d firstSpikeMark = new Pose2d(33, -36, Math.toRadians(27.5));
-        Pose2d secondSpikeMark = new Pose2d(39, -36, Math.toRadians(27.5));
+        Pose2d firstSpikeMark = new Pose2d(33, -35, Math.toRadians(27.5));
+        Pose2d secondSpikeMark = new Pose2d(39, -35, Math.toRadians(27.5));
         Pose2d observationZonePose = new Pose2d(47, -58, Math.toRadians(315));
         Pose2d chamberTwoPose = new Pose2d(5,-31, Math.toRadians(90));
         Pose2d chamberThreePose = new Pose2d(2,-31, Math.toRadians(90));
@@ -91,9 +91,9 @@ public class AutonObservationSideTesting extends LinearOpMode {
                         firstObservationTab.build(),
                         robot.goToReadyPose()
                 ),
-                new ParallelAction(
+                new SequentialAction(
                         robot.outakeSampleGround(),
-                        new SleepAction(0.3)//may not need sleep for this one as we drive backwards while out-taking
+                        new SleepAction(1.0)//may not need sleep for this one as we drive backwards while out-taking
                 ),
                 new ParallelAction(
                         new SequentialAction(
@@ -107,18 +107,16 @@ public class AutonObservationSideTesting extends LinearOpMode {
                         robot.goToReadyPose()
                 ),
                 //may want to reach here to make the sample drop further away from robot before turn
-                new ParallelAction(
+                new SequentialAction(
                         robot.outakeSampleGround(),
-                        new SleepAction(0.3),
-                        robot.goToReadyPose()
+                        new SleepAction(1.0)
                 ),
+                robot.goToReadyPose(),
                 turnToSpecimenTab.build(),
+                robot.acquireSpecimen(),
+                new SleepAction(2.0),
                 new ParallelAction(
-                        new SequentialAction(
-                                robot.acquireSpecimen(),
-                                new SleepAction(1),
-                                robot.autonStart()
-                        ),
+                        robot.autonStart(),
                         secondScoreChamberTab.build()
                 ),
                 robot.scoreSpecimen(),
@@ -127,12 +125,10 @@ public class AutonObservationSideTesting extends LinearOpMode {
                         robot.goToReadyPose()
                 ),
                 turnToSpecimenTab.build(),
+                robot.acquireSpecimen(),
+                new SleepAction(2.0),
                 new ParallelAction(
-                        new SequentialAction(
-                                robot.acquireSpecimen(),
-                                new SleepAction(1),
-                                robot.autonStart()
-                        ),
+                        robot.autonStart(),
                         thirdScoreChamberTab.build()
                 ),
                 robot.scoreSpecimen(),
