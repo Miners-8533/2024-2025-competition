@@ -77,6 +77,9 @@ public class Robot {
                 } else if(driveStation.isAquireSample) {
                     elbowState = SubSystemConfigs.ELBOW_ACQUIRE_POS;
                     wheelState = SubSystemConfigs.WHEEL_ACQUIRE_SPD;
+                } else if (driveStation.isTargetSample) {
+                    elbowState = SubSystemConfigs.ELBOW_TARGET_POS;
+                    wheelState = SubSystemConfigs.WHEEL_ACQUIRE_SPD;
                 } else {
                     elbowState = SubSystemConfigs.ELBOW_READY_POS;
                     wheelState = SubSystemConfigs.WHEEL_STOP_SPD;

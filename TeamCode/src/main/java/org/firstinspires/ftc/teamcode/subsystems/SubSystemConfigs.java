@@ -21,6 +21,7 @@ public class SubSystemConfigs {
     public static final double ELBOW_READY_POS = 0.20; // 0.21
     public static final double ELBOW_SCORE_BASKET_POS = 0.38;
     public static final double ELBOW_ACQUIRE_POS = 0.64;//.64
+    public static final double ELBOW_TARGET_POS = 0.55;
     public static final double WHEEL_STOP_SPD = 0.53;
     public static final double WHEEL_ACQUIRE_SPD = 1.0;
     public static final double WHEEL_SCORE_SPD = 0.0;

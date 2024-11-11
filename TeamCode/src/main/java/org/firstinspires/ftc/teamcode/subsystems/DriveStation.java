@@ -22,6 +22,7 @@ public class DriveStation {
     public double liftScrub;
     public boolean isBumperDown;
     public boolean isGyroReset;
+    public boolean isTargetSample;
     public DriveStation(Gamepad driverController, Gamepad operatorController) {
         driver = driverController;
         operator = operatorController;
@@ -49,6 +50,7 @@ public class DriveStation {
         //operator acquire
         isAquireSpecimen = operator.right_bumper;
         isAquireSample = operator.a;
+        isTargetSample = operator.right_trigger > 0.5;
 
         //operator bumper overide
         isBumperDown = operator.start;
