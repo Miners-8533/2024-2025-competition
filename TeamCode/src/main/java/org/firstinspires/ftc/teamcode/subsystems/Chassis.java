@@ -12,8 +12,8 @@ public class Chassis {
     private MecanumDrive drive;
     private double gyroOffset;
 
-    public Chassis(HardwareMap hardwareMap, Pose2d inital_pose) {
-        drive = new MecanumDrive(hardwareMap, inital_pose);
+    public Chassis(HardwareMap hardwareMap, Pose2d initialPose) {
+        drive = new MecanumDrive(hardwareMap, initialPose);
         gyroOffset = Math.toRadians(270);
     }
 
