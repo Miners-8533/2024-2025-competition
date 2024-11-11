@@ -26,7 +26,6 @@ public class Robot {
     private int reachScrub = 0;
     private ElapsedTime darylsTimer = new ElapsedTime();
     private boolean isScoreRetract = false;
-    private boolean isMaintain;
     private enum RobotState {
         READY,
         ACQUIRING_SPECIMEN,
@@ -219,11 +218,15 @@ public class Robot {
             robotOutputs.bumper = SubSystemConfigs.BUMPER_DOWN;
         }
 
-        //all outputs update
+        //set all targets
         lights.setPattern(gantry.colorDetected);
         bumper.setPosition(robotOutputs.bumper);
-        climber.update(robotOutputs.climber);
-        gantry.update(robotOutputs.lift,robotOutputs.reach,robotOutputs.elbow,robotOutputs.wheel,robotOutputs.gripper);
+        climber.setTarget(robotOutputs.climber);
+        gantry.setTarget(robotOutputs.lift,robotOutputs.reach,robotOutputs.elbow,robotOutputs.wheel,robotOutputs.gripper);
+
+        //all outputs update
+        climber.update();
+        gantry.update();
         chassis.update(driveStation.forward, driveStation.strafe, driveStation.rotation,true, driveStation.isGyroReset);
 
         telemetry.addData("State ", robotState);
@@ -245,7 +248,7 @@ public class Robot {
         return new Action(){
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_HIGH_CHAMBER_AUTON_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_READY_POS,
@@ -253,8 +256,6 @@ public class Robot {
                         SubSystemConfigs.GRIPPER_CLOSED_POS
                 );
                 bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
-                //maybe use lights?
-                //use log functions? or packet.put("Current Lift Position", pos);
                 return !gantry.isLiftDone();
             }
         };
@@ -263,7 +264,7 @@ public class Robot {
         return new Action(){
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_HIGH_CHAMBER_SCORE_AUTO_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_READY_POS,
@@ -271,18 +272,7 @@ public class Robot {
                         SubSystemConfigs.GRIPPER_CLOSED_POS
                 );
                 bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
-                //maybe use lights?
-                //use log functions? or packet.put("Current Lift Position", pos);
                 return !gantry.isLiftDone(); //|| !gantry.isReachDone());
-            }
-        };
-    }
-    public Action cancelMaintain(){
-        return new Action(){
-            @Override
-            public boolean run(@NonNull TelemetryPacket packet) {
-               isMaintain = false;
-               return false;
             }
         };
     }
@@ -290,7 +280,7 @@ public class Robot {
         return new Action(){
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_HOME_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_READY_POS,
@@ -308,7 +298,7 @@ public class Robot {
         return new Action(){
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_HOME_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_ACQUIRE_POS,
@@ -332,7 +322,7 @@ public class Robot {
                     tempReachVal = 0;
                     intialized = true;
                 }
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_HOME_POS,
                         tempReachVal,
                         SubSystemConfigs.ELBOW_ACQUIRE_POS,
@@ -355,7 +345,7 @@ public class Robot {
         return new Action(){
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_LOW_BASKET_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
@@ -373,7 +363,7 @@ public class Robot {
         return new Action(){
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_LOW_BASKET_POS,
                         SubSystemConfigs.REACH_HIGH_BASKET_EXTEND_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
@@ -391,7 +381,7 @@ public class Robot {
         return new Action(){
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_LOW_BASKET_POS,
                         SubSystemConfigs.REACH_HIGH_BASKET_EXTEND_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
@@ -409,7 +399,7 @@ public class Robot {
         return new Action(){
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_HOME_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
@@ -427,7 +417,7 @@ public class Robot {
         return new Action(){
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
-                gantry.update(
+                gantry.setTarget(
                         SubSystemConfigs.LIFT_HOME_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_READY_POS,
@@ -449,6 +439,16 @@ public class Robot {
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
                 return false;
+            }
+        };
+    }
+    public Action autonUpdate(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                climber.update();
+                gantry.update();
+                return true; //never stop
             }
         };
     }

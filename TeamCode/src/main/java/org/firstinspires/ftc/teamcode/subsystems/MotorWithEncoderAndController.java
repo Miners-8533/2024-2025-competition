@@ -22,14 +22,16 @@ public class MotorWithEncoderAndController {
         motor.setMotorEnable();
         tolerance = config.tolerance;
     }
-    public void update(int targetPosition) {
-        ffc.targetPosition = targetPosition;
+    public void update() {
         int pos = motor.getCurrentPosition();
         //if (targetPosition == 0 && (Math.abs(pos - targetPosition) < 50)){
         //    motor.setPower(0.0);
         //} else {
             motor.setPower(ffc.update(pos));
         //}
+    }
+    public void setTarget(int targetPosition) {
+        ffc.targetPosition = targetPosition;
     }
     public boolean isDone() {
         int error = motor.getCurrentPosition() - ffc.targetPosition;

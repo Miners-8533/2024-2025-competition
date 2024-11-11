@@ -72,14 +72,10 @@ public class AutonObservationSideTesting extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-        Actions.runBlocking(new SequentialAction(
-                new SleepAction(3.0),
+        Actions.runBlocking(new ParallelAction(robot.autonUpdate(), new SequentialAction(
                 new ParallelAction(
                         robot.autonStart(),
-                        new SequentialAction(
-                                scoreChamberTab.build(),
-                                robot.cancelMaintain()
-                        )
+                        scoreChamberTab.build()
                 ),
                 robot.scoreSpecimen(),
                 new ParallelAction(
@@ -97,7 +93,7 @@ public class AutonObservationSideTesting extends LinearOpMode {
                 ),
                 new SequentialAction(
                         robot.outakeSampleGround(),
-                        new SleepAction(0.3)//may not need sleep for this one as we drive backwards while out-taking
+                        new SleepAction(0.3)
                 ),
                 new ParallelAction(
                         new SequentialAction(
@@ -110,7 +106,6 @@ public class AutonObservationSideTesting extends LinearOpMode {
                         secondObservationZoneTab.build(),
                         robot.goToReadyPose()
                 ),
-                //may want to reach here to make the sample drop further away from robot before turn
                 new SequentialAction(
                         robot.outakeSampleGround(),
                         new SleepAction(0.3)
@@ -122,17 +117,7 @@ public class AutonObservationSideTesting extends LinearOpMode {
                         new SleepAction(0.5)
                 ),
                 new ParallelAction(
-                        new SequentialAction(
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart()
-                        ),
+                        robot.autonStart(),
                         secondScoreChamberTab.build()
                 ),
                 robot.scoreSpecimen(),
@@ -140,6 +125,6 @@ public class AutonObservationSideTesting extends LinearOpMode {
                         parkInObservationZone.build(),
                         robot.goToReadyPose()
                 )
-        ));
+        )));
     }
 }

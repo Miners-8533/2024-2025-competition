@@ -73,7 +73,8 @@ public class SweeperTest extends LinearOpMode {
             telemetry.addData("Desired Wheel Set", desiredWheelSet);
             telemetry.addData("Commanded Wheel", wheel);
             telemetry.addData("Commanded Elbow", elbowPos);
-            sweeper.update(elbowPos, wheel);
+            sweeper.setTarget(elbowPos, wheel);
+            sweeper.update();
             telemetry.addData("Color detected:", sweeper.colorDetected);
             telemetry.update();
         }

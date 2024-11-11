@@ -32,7 +32,6 @@ public class Chassis {
             commanded_translation = new Vector2d(forward, strafe);
         }
 
-
         //Chassis drive is run independent of robot state
         drive.setDrivePowers(
                 new PoseVelocity2d(
