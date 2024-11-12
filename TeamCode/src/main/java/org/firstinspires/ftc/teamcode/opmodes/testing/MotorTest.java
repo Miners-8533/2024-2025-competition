@@ -3,10 +3,12 @@ package org.firstinspires.ftc.teamcode.opmodes.testing;
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
+import com.acmerobotics.roadrunner.ftc.Encoder;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -17,6 +19,7 @@ import org.firstinspires.ftc.teamcode.subsystems.FeedForwardController;
 @Config
 public class MotorTest extends LinearOpMode {
     private DcMotorEx motor;
+    private Encoder encoder;
     public static volatile double P = 0.0;
     public static volatile double I = 0.0;
     public static volatile double D = 0.0;
@@ -29,8 +32,9 @@ public class MotorTest extends LinearOpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         //climb, lift, or reach
-        motor = hardwareMap.get(DcMotorEx.class, "reach");
-        motor.setDirection(DcMotorEx.Direction.FORWARD);
+        motor = hardwareMap.get(DcMotorEx.class, "lift");
+
+        motor.setDirection(DcMotorEx.Direction.REVERSE);
 
         waitForStart();
 
@@ -49,7 +53,7 @@ public class MotorTest extends LinearOpMode {
 
             if(gamepad1.right_bumper) {
                 motor.setMotorEnable();
-                motor.setPower(ffc.update(motor.getCurrentPosition()));
+                motor.setPower(ffc.update(-motor.getCurrentPosition()));
                 telemetry.addData("Motor: ", "Enabled");
             } else if(gamepad1.left_bumper) {
                 motor.setMotorEnable();
