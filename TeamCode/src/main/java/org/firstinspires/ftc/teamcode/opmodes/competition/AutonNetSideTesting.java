@@ -57,7 +57,7 @@ public class AutonNetSideTesting extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
 
-        Actions.runBlocking(new SequentialAction(
+        Actions.runBlocking(new ParallelAction(robot.autonUpdate(), new SequentialAction(
                 new ParallelAction(
                         robot.autonStart(),
                         tab1.build()

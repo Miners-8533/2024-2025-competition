@@ -44,7 +44,7 @@ public class SubSystemConfigs {
     public static final MotorWithEncoderAndController.Config liftConfig =
             new MotorWithEncoderAndController.Config(
                 "lift",
-                new PIDFCoefficients(0.02,0.0,0.0,0.25),
+                new PIDFCoefficients(0.01,0.0,0.0,0.25),
                 0.04,
                 DcMotorSimple.Direction.FORWARD,
                 LIFT_FFC_TOLERANCE,
