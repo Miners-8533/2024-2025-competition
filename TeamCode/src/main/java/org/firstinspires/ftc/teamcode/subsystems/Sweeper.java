@@ -46,7 +46,7 @@ public class Sweeper {
         final float blueMin = 200.0F;
         final float blueMax = 250.0F;
 
-        if(distance >= 1.5 ) { // try to ignore background colors
+        if(distance >= 2.0 ) { // try to ignore background colors
             colorDetected = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
         } else if (hsvValues[0] >= redMin && hsvValues[0] <= redMax){
             colorDetected = RevBlinkinLedDriver.BlinkinPattern.RED;
