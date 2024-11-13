@@ -129,6 +129,6 @@ public class AutonNetSideTesting extends LinearOpMode {
                         tab6.build()
                 ),
                 robot.goToReadyPose()
-        ));
+        )));
     }
 }
