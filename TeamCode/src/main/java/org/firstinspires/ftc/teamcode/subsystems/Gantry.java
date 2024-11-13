@@ -20,11 +20,16 @@ public class Gantry {
         gripper.setDirection(Servo.Direction.FORWARD);
         colorDetected = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
     }
-    public void update(int liftPos, int reachPos, double elbowPos, double wheelSpd, double gripperPos) {
-        lift.update(liftPos);
-        reach.update(reachPos);
-        sweeper.update(elbowPos, wheelSpd);
+    public void update() {
+        lift.update();
+        reach.update();
+        sweeper.update();
         colorDetected = sweeper.colorDetected;
+    }
+    public void setTarget(int liftPos, int reachPos, double elbowPos, double wheelSpd, double gripperPos) {
+        lift.setTarget(liftPos);
+        reach.setTarget(reachPos);
+        sweeper.setTarget(elbowPos, wheelSpd);
         gripper.setPosition(gripperPos);
     }
     public boolean isLiftDone() {
