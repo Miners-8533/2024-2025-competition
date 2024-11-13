@@ -21,51 +21,65 @@ public class AutonObservationFourSpecimens extends LinearOpMode {
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
-        Pose2d firstSpikeMark = new Pose2d(33, -35.5, Math.toRadians(27.5));
-        Pose2d secondSpikeMark = new Pose2d(39, -35, Math.toRadians(27.5));
-        Pose2d observationZonePose = new Pose2d(47, -58, Math.toRadians(315));
+        Pose2d intermediatePose = new Pose2d(35, -28,Math.toRadians(90));
+        Pose2d firstSpikeMark = new Pose2d(45, -8, Math.toRadians(90));
+        Pose2d secondSpikeMark = new Pose2d(55, -8, Math.toRadians(90));
+        Pose2d thirdSpikeMark = new Pose2d(68, -8, Math.toRadians(90));
+        Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(90));
+        Pose2d secondObservationZonePose = new Pose2d(57, -55, Math.toRadians(90));
+        Pose2d thirdObservationZonePose = new Pose2d(67, -55, Math.toRadians(90));
+        Pose2d preAcquireSpecimen = new Pose2d(47, -55, Math.toRadians(270));
+        Pose2d acquireSpecimenPose = new Pose2d(47, initialPose.position.y, Math.toRadians(270));
         Pose2d chamberTwoPose = new Pose2d(5,-27, Math.toRadians(90));
         Pose2d chamberThreePose = new Pose2d(2,-27, Math.toRadians(90));
+        Pose2d chamberFourPose = new Pose2d(-1, -27, Math.toRadians(90));
         Pose2d parkOnWall = new Pose2d(47, -65, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
-
-        Robot robot = new Robot(hardwareMap,gamepad1,gamepad2, initialPose);
+        Robot robot = new Robot(hardwareMap,gamepad1,gamepad2, drive.pose);
 
         TrajectoryActionBuilder scoreChamberTab = drive.actionBuilder(initialPose)
                 .splineToLinearHeading(scoreChamber, Math.toRadians(90));
 
-        TrajectoryActionBuilder firstSpikeMarkTab = drive.actionBuilder(scoreChamber)
+        TrajectoryActionBuilder driveToIntermediateTab = drive.actionBuilder(scoreChamber)
                 .setReversed(true)
-                .splineToLinearHeading(firstSpikeMark, Math.toRadians(90));
+                .splineToLinearHeading(intermediatePose,90);
+
+        TrajectoryActionBuilder firstSpikeMarkTab = drive.actionBuilder(intermediatePose)
+                .splineToLinearHeading(firstSpikeMark, Math.toRadians(0));
 
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
-                .splineToLinearHeading(observationZonePose, Math.toRadians(270));
+                .lineToY(observationZonePose.position.y);
 
         TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(observationZonePose)
-                .setReversed(true)
-                .splineToLinearHeading(secondSpikeMark,Math.toRadians(180));
+                .splineToLinearHeading(secondSpikeMark,Math.toRadians(0));
 
         TrajectoryActionBuilder secondObservationZoneTab = drive.actionBuilder(secondSpikeMark)
-                .splineToLinearHeading(observationZonePose, Math.toRadians(180));
+                .lineToY(secondObservationZonePose.position.y);
 
-        TrajectoryActionBuilder turnToSpecimenTab = drive.actionBuilder(observationZonePose)
-                .turnTo(Math.toRadians(270))
-                .lineToY(parkOnWall.position.y);
+        TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(secondObservationZonePose)
+                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
 
-        TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(new Pose2d(observationZonePose.position.x, initialPose.position.y, Math.toRadians(270)))
+        TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
                 .splineToLinearHeading(chamberTwoPose, Math.toRadians(90));
 
-        TrajectoryActionBuilder thirdObservationZoneTab = drive.actionBuilder(chamberTwoPose)
+        TrajectoryActionBuilder acquireThirdSpecimen = drive.actionBuilder(chamberTwoPose)
                 .setReversed(true)
-                .splineToLinearHeading(observationZonePose, Math.toRadians(270));
+                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
 
-        TrajectoryActionBuilder thirdScoreChamberTab = drive.actionBuilder(new Pose2d(observationZonePose.position.x, initialPose.position.y, Math.toRadians(270)))
+        TrajectoryActionBuilder acquireFourthSpecimen = drive.actionBuilder(chamberThreePose)
+                .setReversed(true)
+                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
+
+        TrajectoryActionBuilder thirdScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
                 .splineToLinearHeading(chamberThreePose, Math.toRadians(90));
+        TrajectoryActionBuilder fouthScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
+                .setReversed(true)
+                .splineToLinearHeading(chamberFourPose, Math.toRadians(90));
 
-        TrajectoryActionBuilder parkInObservationZone = drive.actionBuilder(chamberThreePose)
+        TrajectoryActionBuilder parkInObservationZone = drive.actionBuilder(chamberFourPose)
                 .setReversed(true)
                 .splineToLinearHeading(parkOnWall, Math.toRadians(270));
 
@@ -73,7 +87,6 @@ public class AutonObservationFourSpecimens extends LinearOpMode {
         waitForStart();
 
         Actions.runBlocking(new SequentialAction(
-                new SleepAction(3.0),
                 new ParallelAction(
                         robot.autonStart(),
                         new SequentialAction(
@@ -83,63 +96,46 @@ public class AutonObservationFourSpecimens extends LinearOpMode {
                 ),
                 robot.scoreSpecimen(),
                 new ParallelAction(
-                        new SequentialAction(
-                                robot.goToReadyPose(),
-                                new SleepAction(0.5),
-                                robot.floorAcquire()
-                        ),
-                        firstSpikeMarkTab.build()
+                    robot.goToReadyPose(),
+                    driveToIntermediateTab.build()
                 ),
-                robot.floorAcquireReach(),
-                new ParallelAction(
-                        firstObservationTab.build(),
-                        robot.goToReadyPose()
-                ),
-                new SequentialAction(
-                        robot.outakeSampleGround(),
-                        new SleepAction(0.3)//may not need sleep for this one as we drive backwards while out-taking
-                ),
-                new ParallelAction(
-                        new SequentialAction(
-                                robot.goToReadyPose()
-                        ),
-                        secondSpikeMarkTab.build()
-                ),
-                robot.floorAcquireReach(),
-                new ParallelAction(
-                        secondObservationZoneTab.build(),
-                        robot.goToReadyPose()
-                ),
-                //may want to reach here to make the sample drop further away from robot before turn
-                new SequentialAction(
-                        robot.outakeSampleGround(),
-                        new SleepAction(0.3)
-                ),
-                robot.goToReadyPose(),
-                turnToSpecimenTab.build(),
+                firstSpikeMarkTab.build(),
+                firstObservationTab.build(),
+                secondSpikeMarkTab.build(),
+                secondObservationZoneTab.build(),
+                acquireSecondSpecimenTab.build(),
                 new ParallelAction(
                         robot.acquireSpecimen(),
                         new SleepAction(0.5)
                 ),
                 new ParallelAction(
-                        new SequentialAction(
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart(),
-                                new SleepAction(0.2),
-                                robot.autonStart()
-                        ),
+                        robot.autonStart(),
                         secondScoreChamberTab.build()
                 ),
                 robot.scoreSpecimen(),
                 new ParallelAction(
-                        parkInObservationZone.build(),
+                        acquireThirdSpecimen.build(),
                         robot.goToReadyPose()
-                )
+                ),
+                new ParallelAction(
+                        robot.acquireSpecimen(),
+                        new SleepAction(0.5)
+                ),
+                new ParallelAction(
+                        robot.autonStart(),
+                        thirdScoreChamberTab.build()
+                ),
+                robot.scoreSpecimen(),
+                new ParallelAction(
+                        acquireFourthSpecimen.build(),
+                        new SleepAction(0.5)
+                ),
+                new ParallelAction(
+                        robot.autonStart(),
+                        fouthScoreChamberTab.build()
+                ),
+                robot.scoreSpecimen(),
+                parkInObservationZone.build()
         ));
         PoseStorage.poseStorage = drive.pose;
     }
