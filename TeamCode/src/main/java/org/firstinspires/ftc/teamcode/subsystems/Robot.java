@@ -367,7 +367,7 @@ public class Robot {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.setTarget(
-                        SubSystemConfigs.LIFT_LOW_BASKET_POS,
+                        SubSystemConfigs.LIFT_HIGH_BASKET_POS,
                         SubSystemConfigs.REACH_HIGH_BASKET_EXTEND_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
                         SubSystemConfigs.WHEEL_SCORE_SPD,
