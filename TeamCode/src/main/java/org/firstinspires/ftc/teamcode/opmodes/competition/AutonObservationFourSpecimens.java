@@ -89,10 +89,8 @@ public class AutonObservationFourSpecimens extends LinearOpMode {
         Actions.runBlocking(new SequentialAction(
                 new ParallelAction(
                         robot.autonStart(),
-                        new SequentialAction(
-                                scoreChamberTab.build(),
-                                robot.cancelMaintain()
-                        )
+                        scoreChamberTab.build()
+
                 ),
                 robot.scoreSpecimen(),
                 new ParallelAction(
