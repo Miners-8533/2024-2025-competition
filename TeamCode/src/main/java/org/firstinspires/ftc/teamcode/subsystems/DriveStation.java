@@ -33,7 +33,7 @@ public class DriveStation {
         forward = -driver.left_stick_y;
         strafe = -driver.left_stick_x;
         rotation = -driver.right_stick_x / 2.0;
-        isGyroReset = driver.start;
+        isGyroReset = driver.back;
 
         //driver score
         isScoreSpecimen = driver.a;
