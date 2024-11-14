@@ -43,9 +43,9 @@ public class Robot {
         public double bumper;
     }
     private RobotOutputs robotOutputs;
-    public Robot(HardwareMap hardwareMap, Gamepad driverController, Gamepad operatorController) {
-        Pose2d initialPos = new Pose2d(0,0,Math.toRadians(90));
-        chassis = new Chassis(hardwareMap, initialPos);
+    public Robot(HardwareMap hardwareMap, Gamepad driverController, Gamepad operatorController, Pose2d initialPose) {
+//        Pose2d initialPos = new Pose2d(0,0,Math.toRadians(90));
+        chassis = new Chassis(hardwareMap, initialPose);
         driveStation = new DriveStation(driverController, operatorController);
         bumper = hardwareMap.get(Servo.class, "bumper");
         gantry = new Gantry(hardwareMap);
