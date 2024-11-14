@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
+import org.firstinspires.ftc.teamcode.subsystems.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 @Disabled
 @TeleOp(name="TeleOp Test")
@@ -16,7 +17,7 @@ public class TeleOpTest extends LinearOpMode {
     public void runOpMode() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
-        Robot robot = new Robot(hardwareMap, gamepad1, gamepad2);
+        Robot robot = new Robot(hardwareMap, gamepad1, gamepad2, PoseStorage.poseStorage);
 
         waitForStart();
 

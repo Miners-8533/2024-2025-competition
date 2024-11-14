@@ -31,7 +31,7 @@ public class AutonObservationSide extends LinearOpMode {
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-        Robot robot = new Robot(hardwareMap,gamepad1,gamepad2);
+        Robot robot = new Robot(hardwareMap,gamepad1,gamepad2, initialPose);
 
         TrajectoryActionBuilder scoreChamberTab = drive.actionBuilder(initialPose)
                 .splineToLinearHeading(scoreChamber, Math.toRadians(90));

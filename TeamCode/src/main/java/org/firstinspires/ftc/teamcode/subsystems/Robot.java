@@ -13,6 +13,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.R;
+import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 
 public class Robot {
     private Chassis chassis;
@@ -349,7 +350,7 @@ public class Robot {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.setTarget(
-                        SubSystemConfigs.LIFT_LOW_BASKET_POS,
+                        SubSystemConfigs.LIFT_HIGH_BASKET_AUTON_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
                         SubSystemConfigs.WHEEL_HOLD_SPD,
@@ -367,7 +368,7 @@ public class Robot {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.setTarget(
-                        SubSystemConfigs.LIFT_HIGH_BASKET_POS,
+                        SubSystemConfigs.LIFT_HIGH_BASKET_AUTON_POS,
                         SubSystemConfigs.REACH_HIGH_BASKET_EXTEND_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
                         SubSystemConfigs.WHEEL_SCORE_SPD,
@@ -385,7 +386,7 @@ public class Robot {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 gantry.setTarget(
-                        SubSystemConfigs.LIFT_LOW_BASKET_POS,
+                        SubSystemConfigs.LIFT_HIGH_BASKET_AUTON_POS,
                         SubSystemConfigs.REACH_HIGH_BASKET_EXTEND_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
                         SubSystemConfigs.WHEEL_SCORE_SPD,
@@ -441,6 +442,15 @@ public class Robot {
                 lights.setPattern(blinkinPattern);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
+                return false;
+            }
+        };
+    }
+    public Action setLastPose(MecanumDrive drive){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                PoseStorage.poseStorage = drive.pose;
                 return false;
             }
         };
