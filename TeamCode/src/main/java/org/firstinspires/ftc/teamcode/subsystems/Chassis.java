@@ -14,7 +14,7 @@ public class Chassis {
 
     public Chassis(HardwareMap hardwareMap, Pose2d initialPose) {
         drive = new MecanumDrive(hardwareMap, initialPose);
-        gyroOffset = Math.toRadians(270);
+        gyroOffset = Math.toRadians(initialPose.heading.toDouble());
     }
 
     public void update(double forward, double strafe, double rotation, boolean isFieldOrientedControl, boolean isGyroReset) {
