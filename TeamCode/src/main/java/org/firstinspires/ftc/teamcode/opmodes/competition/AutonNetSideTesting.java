@@ -21,6 +21,7 @@ public class AutonNetSideTesting extends LinearOpMode {
 
         Pose2d initialPose = new Pose2d(-16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(-8,-28, Math.toRadians(90));
+        Pose2d intermediatePose = new Pose2d(-31, -31,Math.toRadians(90));
         Pose2d scoreHighBasket = new Pose2d(-55, -47, Math.toRadians(225));
         Pose2d firstSpikeMark = new Pose2d(-33, -31, Math.toRadians(152.5));
         Pose2d secondSpikeMark = new Pose2d(-39, -28, Math.toRadians(152.5));
@@ -29,12 +30,16 @@ public class AutonNetSideTesting extends LinearOpMode {
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
-        Robot robot = new Robot(hardwareMap,gamepad1,gamepad2);
+        Robot robot = new Robot(hardwareMap,gamepad1,gamepad2, initialPose);
 
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
                 .splineToLinearHeading(scoreChamber, Math.toRadians(90));
 
-        TrajectoryActionBuilder tab2 = drive.actionBuilder(scoreChamber)
+        TrajectoryActionBuilder driveToIntermediate = drive.actionBuilder(scoreChamber)
+                .setReversed(true)
+                .splineToLinearHeading(intermediatePose, Math.toRadians(180));
+
+        TrajectoryActionBuilder tab2 = drive.actionBuilder(intermediatePose)
                 .setReversed(true)
                 .splineToLinearHeading(firstSpikeMark, Math.toRadians(180));
 
@@ -63,9 +68,10 @@ public class AutonNetSideTesting extends LinearOpMode {
                         tab1.build()
                 ),
                 robot.scoreSpecimen(),
+                robot.goToReadyPose(),
+                driveToIntermediate.build(),
                 new ParallelAction(
                         new SequentialAction(
-                                robot.goToReadyPose(),
                                 new SleepAction(0.5),
                                 robot.floorAcquire()
                         ),
@@ -128,7 +134,8 @@ public class AutonNetSideTesting extends LinearOpMode {
                         robot.goToReadyPose(),
                         tab6.build()
                 ),
-                robot.goToReadyPose()
+                robot.goToReadyPose(),
+                robot.setLastPose(drive)
         )));
     }
 }

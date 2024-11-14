@@ -7,6 +7,7 @@ public class SubSystemConfigs {
 
     public static final int LIFT_HOME_POS = 0;
     public static final int LIFT_HIGH_BASKET_POS = -4200;
+    public static final int LIFT_HIGH_BASKET_AUTON_POS = -4250;
     public static final int LIFT_LOW_BASKET_POS = -3300;
     public static final int LIFT_HIGH_CHAMBER_POS = -1857;
     public static final int LIFT_HIGH_CHAMBER_AUTON_INIT_POS = -2765;
@@ -44,7 +45,7 @@ public class SubSystemConfigs {
     public static final MotorWithEncoderAndController.Config liftConfig =
             new MotorWithEncoderAndController.Config(
                 "lift",
-                new PIDFCoefficients(0.01,0.0,0.0,0.25),
+                new PIDFCoefficients(0.02,0.0,0.0,0.25),
                 0.04,
                 DcMotorSimple.Direction.FORWARD,
                 LIFT_FFC_TOLERANCE,
