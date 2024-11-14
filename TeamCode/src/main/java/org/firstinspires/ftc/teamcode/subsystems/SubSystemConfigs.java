@@ -19,7 +19,7 @@ public class SubSystemConfigs {
     public static final int REACH_FLOOR_EXTEND_POS = -1000; //-1200
     public static final int REACH_HIGH_BASKET_EXTEND_POS = -600;
     public static final double ELBOW_UP_POS = 0.18;
-    public static final double ELBOW_READY_POS = 0.20; // 0.21
+    public static final double ELBOW_READY_POS = 0.18; // 0.21
     public static final double ELBOW_SCORE_BASKET_POS = 0.38;
     public static final double ELBOW_ACQUIRE_POS = 0.64;//.64
     public static final double ELBOW_TARGET_POS = 0.55;
