@@ -13,6 +13,7 @@ public class MotorWithEncoderAndController {
     private DcMotorEx motor;
     private FeedForwardController ffc;
     private final String name;
+    private boolean isFlipped;
     public MotorWithEncoderAndController(HardwareMap hardwareMap, Config config) {
         name = config.deviceName;
         motor = hardwareMap.get(DcMotorEx.class, config.deviceName);
@@ -21,15 +22,22 @@ public class MotorWithEncoderAndController {
         motor.setDirection(config.direction);
         motor.setMotorEnable();
         tolerance = config.tolerance;
+        isFlipped = config.isFlipped;
     }
-    public void update(int targetPosition) {
-        ffc.targetPosition = targetPosition;
+    public void update() {
         int pos = motor.getCurrentPosition();
         //if (targetPosition == 0 && (Math.abs(pos - targetPosition) < 50)){
         //    motor.setPower(0.0);
         //} else {
+        if (isFlipped){
+            motor.setPower(-ffc.update(pos));
+        } else {
             motor.setPower(ffc.update(pos));
+        }
         //}
+    }
+    public void setTarget(int targetPosition) {
+        ffc.targetPosition = targetPosition;
     }
     public boolean isDone() {
         int error = motor.getCurrentPosition() - ffc.targetPosition;
@@ -50,16 +58,18 @@ public class MotorWithEncoderAndController {
         public PIDFCoefficients coefficients;
         public double kStiction;
         public DcMotorSimple.Direction direction;
+        public boolean isFlipped;
         public int tolerance;
         public Config(String deviceName,
                       PIDFCoefficients coefficients,
                       double kStiction,
-                      DcMotorSimple.Direction direction, int tolerance) {
+                      DcMotorSimple.Direction direction, int tolerance, boolean isFlipped) {
             this.deviceName = deviceName;
             this.coefficients = coefficients;
             this.kStiction = kStiction;
             this.direction = direction;
             this.tolerance = tolerance;
+            this.isFlipped = isFlipped;
         }
     }
 }

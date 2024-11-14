@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.hardware.NormalizedColorSensor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
-@Disabled
+
 @TeleOp(name="Color Sensor w/ LED", group="Testing")
 public class ConceptColorSensorWithLED extends LinearOpMode {
 

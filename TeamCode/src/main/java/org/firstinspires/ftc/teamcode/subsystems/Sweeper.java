@@ -24,10 +24,12 @@ public class Sweeper {
         colorSensor = hardwareMap.get(NormalizedColorSensor.class, "color");
         colorDetected = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
     }
-    public void update(double elbow_pos, double wheel_speed) {
+    public void update() {
+        parse_color();
+    }
+    public void setTarget(double elbow_pos, double wheel_speed) {
         elbow.setPosition(elbow_pos);
         wheel.setPosition(wheel_speed);
-        parse_color();
     }
     private void parse_color() {
         final float[] hsvValues = new float[3];
@@ -44,7 +46,7 @@ public class Sweeper {
         final float blueMin = 200.0F;
         final float blueMax = 250.0F;
 
-        if(distance >= 1.5 ) { // try to ignore background colors
+        if(distance >= 2.0 ) { // try to ignore background colors
             colorDetected = RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE;
         } else if (hsvValues[0] >= redMin && hsvValues[0] <= redMax){
             colorDetected = RevBlinkinLedDriver.BlinkinPattern.RED;
