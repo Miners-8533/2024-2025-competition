@@ -1,9 +1,11 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
@@ -12,8 +14,11 @@ public class MotorWithEncoderAndController {
     private int tolerance;
     private DcMotorEx motor;
     private FeedForwardController ffc;
+    private ElapsedTime timer = new ElapsedTime();
     private final String name;
     private boolean isFlipped;
+    private boolean isHoming;
+    private boolean isHomed;
     public MotorWithEncoderAndController(HardwareMap hardwareMap, Config config) {
         name = config.deviceName;
         motor = hardwareMap.get(DcMotorEx.class, config.deviceName);
@@ -23,21 +28,40 @@ public class MotorWithEncoderAndController {
         motor.setMotorEnable();
         tolerance = config.tolerance;
         isFlipped = config.isFlipped;
+        isHoming = config.isHoming;
+        isHomed = false;
     }
     public void update() {
         int pos = motor.getCurrentPosition();
-        //if (targetPosition == 0 && (Math.abs(pos - targetPosition) < 50)){
-        //    motor.setPower(0.0);
-        //} else {
-        if (isFlipped){
-            motor.setPower(-ffc.update(pos));
+        int targetPosition = ffc.targetPosition;
+        double motorPower = 0.0;
+        if(isHoming && targetPosition==0 && (Math.abs(pos - targetPosition) < 100)) {
+            if(timer.seconds() < 0.2) {
+                motorPower = 0.2;
+            } else if (!isHomed) {
+                motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                isHomed = true;
+                motorPower = 0.0;
+            } else {
+                motorPower = 0.0;
+            }
         } else {
-            motor.setPower(ffc.update(pos));
+            motorPower = ffc.update(pos);
         }
-        //}
+
+        if (isFlipped){
+            motor.setPower(-motorPower);
+        } else {
+            motor.setPower(motorPower);
+        }
     }
     public void setTarget(int targetPosition) {
         ffc.targetPosition = targetPosition;
+        isHomed = false;
+        if(targetPosition == 0) {
+            timer.reset();
+        }
     }
     public boolean isDone() {
         int error = motor.getCurrentPosition() - ffc.targetPosition;
@@ -60,16 +84,18 @@ public class MotorWithEncoderAndController {
         public DcMotorSimple.Direction direction;
         public boolean isFlipped;
         public int tolerance;
+        public boolean isHoming;
         public Config(String deviceName,
                       PIDFCoefficients coefficients,
                       double kStiction,
-                      DcMotorSimple.Direction direction, int tolerance, boolean isFlipped) {
+                      DcMotorSimple.Direction direction, int tolerance, boolean isFlipped, boolean isHoming) {
             this.deviceName = deviceName;
             this.coefficients = coefficients;
             this.kStiction = kStiction;
             this.direction = direction;
             this.tolerance = tolerance;
             this.isFlipped = isFlipped;
+            this.isHoming = isHoming;
         }
     }
 }

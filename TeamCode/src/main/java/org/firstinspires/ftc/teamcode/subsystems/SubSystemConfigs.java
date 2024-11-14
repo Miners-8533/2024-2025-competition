@@ -48,7 +48,8 @@ public class SubSystemConfigs {
                 0.04,
                 DcMotorSimple.Direction.FORWARD,
                 LIFT_FFC_TOLERANCE,
-                    true
+                    true,
+                    false
             );
     public static final MotorWithEncoderAndController.Config reachConfig =
             new MotorWithEncoderAndController.Config(
@@ -57,7 +58,8 @@ public class SubSystemConfigs {
                 0.08,
                 DcMotorSimple.Direction.FORWARD,
                 FFC_TOLERANCE,
-                    false
+                    false,
+                    true
             );
     public static final MotorWithEncoderAndController.Config climbConfig =
             new MotorWithEncoderAndController.Config(
@@ -66,6 +68,7 @@ public class SubSystemConfigs {
                 0.08,
                 DcMotorSimple.Direction.FORWARD,
                 FFC_TOLERANCE,
+                    false,
                     false
             );
 }
