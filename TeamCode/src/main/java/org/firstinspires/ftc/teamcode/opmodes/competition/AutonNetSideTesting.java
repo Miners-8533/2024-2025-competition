@@ -14,6 +14,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
+import org.firstinspires.ftc.teamcode.subsystems.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 
 @Autonomous(name="Auton - Net Side", group="Competition")
@@ -146,5 +147,6 @@ public class AutonNetSideTesting extends LinearOpMode {
                 robot.goToReadyPose(),
                 robot.setLastPose(drive)
         )));
+        PoseStorage.poseStorage = drive.pose;
     }
 }
