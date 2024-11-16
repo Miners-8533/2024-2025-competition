@@ -52,8 +52,8 @@ public class DriveStation {
         isAquireSample = operator.a;
         isTargetSample = operator.right_trigger > 0.5;
 
-        //operator bumper overide
-        isBumperDown = operator.start;
+        //operator bumper override
+        isBumperDown = operator.left_trigger > 0.5;
 
         //operator prepare for high basket
         isScoreBasket = operator.y;

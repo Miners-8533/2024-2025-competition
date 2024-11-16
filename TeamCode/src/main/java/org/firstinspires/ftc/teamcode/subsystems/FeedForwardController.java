@@ -31,8 +31,10 @@ public class FeedForwardController {
 
             double output = error * coefficients.p +
                     errorSum +
-                    errorDeriv * coefficients.d +
-                    coefficients.f;
+                    errorDeriv * coefficients.d;
+            if (targetPosition != 0) {
+                output += coefficients.f;
+            }
             output = (Math.abs(output) < 0.01) ? (0.0) : (output + Math.signum(output) * kStiction);
             return Math.min(Math.max(output, -1.0), 1.0);
         }

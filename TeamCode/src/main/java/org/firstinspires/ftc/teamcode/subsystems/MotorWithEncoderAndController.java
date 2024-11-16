@@ -44,7 +44,7 @@ public class MotorWithEncoderAndController {
                     timer.reset();
                     isOverdrive = true;
                     motorPower = 0.2;
-                } else if (timer.seconds() < 0.2) {
+                } else if (timer.seconds() < 0.5) {
                     motorPower = 0.2;
                 } else {
                     motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);

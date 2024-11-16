@@ -14,13 +14,13 @@ public class Chassis {
 
     public Chassis(HardwareMap hardwareMap, Pose2d initialPose) {
         drive = new MecanumDrive(hardwareMap, initialPose);
-        gyroOffset = Math.toRadians(initialPose.heading.toDouble());
+        gyroOffset = 0;
     }
 
     public void update(double forward, double strafe, double rotation, boolean isFieldOrientedControl, boolean isGyroReset) {
+        drive.updatePoseEstimate();
         Vector2d commanded_translation;
-        double heading = drive.lazyImu.get().getRobotYawPitchRollAngles().getYaw();
-        heading = Math.toRadians(heading);
+        double heading = drive.pose.heading.toDouble();
         if (isGyroReset){
             gyroOffset = heading;
         }
