@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -41,5 +42,10 @@ public class Gantry {
         reach.log(tele);
         sweeper.log(tele);
         tele.addData("Gripper Position: ", gripper.getPosition());
+    }
+
+    public void autonLog(TelemetryPacket packet) {
+        lift.autonLog(packet);
+        reach.autonLog(packet);
     }
 }

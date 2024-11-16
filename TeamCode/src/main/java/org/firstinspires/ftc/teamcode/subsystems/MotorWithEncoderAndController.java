@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.acmerobotics.dashboard.telemetry.TelemetryPacket;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -82,6 +83,12 @@ public class MotorWithEncoderAndController {
         tele.addData(name + " motor current (A)",       motor.getCurrent(CurrentUnit.AMPS));
         tele.addData(name + " current target position", ffc.targetPosition);
         tele.addData(name + " motor power (+/-%FS)",    motor.getPower());
+    }
+
+    public void autonLog(TelemetryPacket packet) {
+        packet.put(name + " current encoder ticks",   motor.getCurrentPosition());
+        packet.put(name + " current target position", ffc.targetPosition);
+        packet.put(name + " motor power (+/-%FS)",    motor.getPower());
     }
     public static class Config {
         public String deviceName;

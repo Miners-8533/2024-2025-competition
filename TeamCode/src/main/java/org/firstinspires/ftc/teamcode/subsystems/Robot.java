@@ -294,7 +294,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return (!gantry.isLiftDone() || !gantry.isReachDone());
+                return false;//(!gantry.isLiftDone() || !gantry.isReachDone());
             }
         };
     }
@@ -312,7 +312,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return (!gantry.isLiftDone() || !gantry.isReachDone());
+                return false;//(!gantry.isLiftDone() || !gantry.isReachDone());
             }
         };
     }
@@ -359,7 +359,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return (!gantry.isLiftDone() || !gantry.isReachDone());
+                return (!gantry.isLiftDone());
             }
         };
     }
@@ -461,6 +461,7 @@ public class Robot {
             public boolean run(@NonNull TelemetryPacket packet) {
                 climber.update();
                 gantry.update();
+                gantry.autonLog(packet);
                 return true; //never stop
             }
         };

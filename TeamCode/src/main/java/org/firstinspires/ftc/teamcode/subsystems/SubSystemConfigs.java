@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 public class SubSystemConfigs {
 
     public static final int LIFT_HOME_POS = 0;
-    public static final int LIFT_HIGH_BASKET_POS = -4250;
+    public static final int LIFT_HIGH_BASKET_POS = -4200;
     public static final int LIFT_HIGH_BASKET_AUTON_POS = -4250;
     public static final int LIFT_LOW_BASKET_POS = -3300;
     public static final int LIFT_HIGH_CHAMBER_POS = -1857;
@@ -16,8 +16,8 @@ public class SubSystemConfigs {
     public static final int LIFT_HIGH_CHAMBER_SCORE_AUTO_POS = -1200;
     public static final int REACH_HOME_POS = 0;
     public static final int REACH_FULL_EXTEND_POS = -1500;
-    public static final int REACH_FLOOR_EXTEND_POS = -1000; //-1200
-    public static final int REACH_HIGH_BASKET_EXTEND_POS = -600;
+    public static final int REACH_FLOOR_EXTEND_POS = -750; //-1200
+    public static final int REACH_HIGH_BASKET_EXTEND_POS = -700;
     public static final double ELBOW_UP_POS = 0.18;
     public static final double ELBOW_READY_POS = 0.18; // 0.21
     public static final double ELBOW_SCORE_BASKET_POS = 0.36; //0.38
@@ -36,7 +36,7 @@ public class SubSystemConfigs {
     public static final double BUMPER_UP = 0.0;
     public static final double BUMPER_DOWN = 1.0;
     public static final int REACH_SCRUB_SPD = 50;
-    public static final int REACH_SCRUB_SPD_AUTON = 15;
+    public static final int REACH_SCRUB_SPD_AUTON = 30;
     public static final int LIFT_SCRUB_SPD = 50;
     public static final int LIFT_FFC_TOLERANCE = 50;
     public static final int FFC_TOLERANCE = 30;
@@ -56,7 +56,7 @@ public class SubSystemConfigs {
             new MotorWithEncoderAndController.Config(
                 "reach",
                 new PIDFCoefficients(0.006,0.0,0.0,0.0),
-                0.08,
+                0.12,
                 DcMotorSimple.Direction.REVERSE,
                 FFC_TOLERANCE,
                     false,
