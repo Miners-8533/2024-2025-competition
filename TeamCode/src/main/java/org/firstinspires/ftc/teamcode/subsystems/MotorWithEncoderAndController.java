@@ -19,6 +19,7 @@ public class MotorWithEncoderAndController {
     private boolean isFlipped;
     private boolean isHoming;
     private boolean isHomed;
+    private boolean isOverdrive;
     public MotorWithEncoderAndController(HardwareMap hardwareMap, Config config) {
         name = config.deviceName;
         motor = hardwareMap.get(DcMotorEx.class, config.deviceName);
@@ -30,24 +31,29 @@ public class MotorWithEncoderAndController {
         isFlipped = config.isFlipped;
         isHoming = config.isHoming;
         isHomed = false;
+        isOverdrive = false;
     }
     public void update() {
         int pos = motor.getCurrentPosition();
         int targetPosition = ffc.targetPosition;
-        double motorPower = 0.0;
-        if(isHoming && targetPosition==0 && (Math.abs(pos - targetPosition) < 100)) {
-            if(timer.seconds() < 0.2) {
-                motorPower = 0.2;
-            } else if (!isHomed) {
-                motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
-                isHomed = true;
-                motorPower = 0.0;
-            } else {
-                motorPower = 0.0;
+        double motorPower = ffc.update(pos);
+
+        if(isHoming) {
+            if (!isHomed && (targetPosition == 0) && (Math.abs(pos - targetPosition) < 100)) {
+                if (!isOverdrive) {
+                    timer.reset();
+                    isOverdrive = true;
+                    motorPower = 0.2;
+                } else if (timer.seconds() < 0.2) {
+                    motorPower = 0.2;
+                } else {
+                    motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+                    motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                    isHomed = true;
+                    isOverdrive = false;
+                    motorPower = 0.0;
+                }
             }
-        } else {
-            motorPower = ffc.update(pos);
         }
 
         if (isFlipped){
@@ -58,9 +64,9 @@ public class MotorWithEncoderAndController {
     }
     public void setTarget(int targetPosition) {
         ffc.targetPosition = targetPosition;
-        isHomed = false;
-        if(targetPosition == 0) {
-            timer.reset();
+        if(targetPosition != 0) {
+            isOverdrive = false;
+            isHomed = false;
         }
     }
     public boolean isDone() {
