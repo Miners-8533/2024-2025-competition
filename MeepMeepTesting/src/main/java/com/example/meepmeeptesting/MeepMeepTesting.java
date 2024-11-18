@@ -54,7 +54,7 @@ public class MeepMeepTesting {
 
         TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(scoreChamber)
                 .setTangent(Math.toRadians(300))
-                .splineToLinearHeading(secondSpikeMark,Math.toRadians(45));
+                .splineToLinearHeading(secondSpikeMark,Math.toRadians(55));
 
         TrajectoryActionBuilder thirdSpikeMarkTab = drive.actionBuilder(secondObservationZonePose)
                 .setTangent(Math.toRadians(90))

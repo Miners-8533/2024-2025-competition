@@ -53,13 +53,21 @@ public class AutonObservationFourSpecimens extends LinearOpMode {
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
                 .lineToY(observationZonePose.position.y);
 
-        TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(observationZonePose)
-                .splineToLinearHeading(secondSpikeMark,Math.toRadians(0));
+        TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(scoreChamber)
+                .setTangent(Math.toRadians(300))
+                .splineToLinearHeading(secondSpikeMark,Math.toRadians(55));
+
+        TrajectoryActionBuilder thirdSpikeMarkTab = drive.actionBuilder(secondObservationZonePose)
+                .setTangent(Math.toRadians(90))
+                .splineToLinearHeading(thirdSpikeMark, Math.toRadians(0));
 
         TrajectoryActionBuilder secondObservationZoneTab = drive.actionBuilder(secondSpikeMark)
                 .lineToY(secondObservationZonePose.position.y);
 
-        TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(secondObservationZonePose)
+        TrajectoryActionBuilder thirdObservationZoneTab = drive.actionBuilder(thirdSpikeMark)
+                .lineToY(thirdObservationZonePose.position.y);
+
+        TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(thirdObservationZonePose)
                 .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
 
         TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
@@ -95,13 +103,12 @@ public class AutonObservationFourSpecimens extends LinearOpMode {
                 ),
                 robot.scoreSpecimen(),
                 new ParallelAction(
-                    robot.goToReadyPose(),
-                    driveToIntermediateTab.build()
+                        robot.goToReadyPose(),
+                        secondSpikeMarkTab.build()
                 ),
-                firstSpikeMarkTab.build(),
-                firstObservationTab.build(),
-                secondSpikeMarkTab.build(),
                 secondObservationZoneTab.build(),
+                thirdSpikeMarkTab.build(),
+                thirdObservationZoneTab.build(),
                 acquireSecondSpecimenTab.build(),
                 new ParallelAction(
                         robot.acquireSpecimen(),
