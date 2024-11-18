@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.opmodes.testing;
 
 import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.config.Config;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -8,17 +9,18 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.subsystems.Sweeper;
+@Config
 @Disabled
 @TeleOp(name="Nobot: Sweeper Test", group="Nobot")
 public class SweeperTest extends LinearOpMode {
     Sweeper sweeper;
+    public static double elbowPosSet = 0.5;
 
     @Override
     public void runOpMode() {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         double elbowPos;
         double wheel;
-        double elbowPosSet = 0.5;
         double wheelSet = 0.5;
         sweeper = new Sweeper(hardwareMap);
         Servo gripper = hardwareMap.get(Servo.class, "gripper");
@@ -53,10 +55,10 @@ public class SweeperTest extends LinearOpMode {
                 elbowPos = 1.0;
             }
             else if(gamepad1.dpad_down) {
-                elbowPos = 0.0;
+                elbowPos = 0.18;
             }
             else if(gamepad1.dpad_right || gamepad1.dpad_left) {
-                elbowPos = 0.5;
+                elbowPos = 0.68;
             }
             else if(gamepad1.left_bumper) {
                 elbowPos = desiredElbowSet;
