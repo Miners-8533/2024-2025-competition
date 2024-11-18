@@ -26,9 +26,9 @@ public class MeepMeepTesting {
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
         Pose2d intermediatePose = new Pose2d(35, -28,Math.toRadians(90));
-        Pose2d firstSpikeMark = new Pose2d(45, -8, Math.toRadians(90));
-        Pose2d secondSpikeMark = new Pose2d(55, -8, Math.toRadians(90));
-        Pose2d thirdSpikeMark = new Pose2d(68, -8, Math.toRadians(90));
+        Pose2d firstSpikeMark = new Pose2d(45, -12, Math.toRadians(90));
+        Pose2d secondSpikeMark = new Pose2d(55, -12, Math.toRadians(90));
+        Pose2d thirdSpikeMark = new Pose2d(68, -12, Math.toRadians(90));
         Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(90));
         Pose2d secondObservationZonePose = new Pose2d(57, -55, Math.toRadians(90));
         Pose2d thirdObservationZonePose = new Pose2d(67, -55, Math.toRadians(90));
@@ -52,10 +52,12 @@ public class MeepMeepTesting {
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
                 .lineToY(observationZonePose.position.y);
 
-        TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(observationZonePose)
-                .splineToLinearHeading(secondSpikeMark,Math.toRadians(0));
+        TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(scoreChamber)
+                .setTangent(Math.toRadians(300))
+                .splineToLinearHeading(secondSpikeMark,Math.toRadians(45));
 
         TrajectoryActionBuilder thirdSpikeMarkTab = drive.actionBuilder(secondObservationZonePose)
+                .setTangent(Math.toRadians(90))
                 .splineToLinearHeading(thirdSpikeMark, Math.toRadians(0));
 
         TrajectoryActionBuilder secondObservationZoneTab = drive.actionBuilder(secondSpikeMark)
@@ -68,7 +70,7 @@ public class MeepMeepTesting {
                 .strafeToLinearHeading(new Vector2d(observationZonePose.position.x, observationZonePose.position.y), Math.toRadians(270));
 //                .strafeTo(new Vector2d(observationZonePose.position.x, observationZonePose.position.y));
 
-        TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(secondObservationZonePose)
+        TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(thirdObservationZonePose)
                 .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
 
         TrajectoryActionBuilder turnToSpecimenTab = drive.actionBuilder(observationZonePose)
@@ -80,8 +82,7 @@ public class MeepMeepTesting {
                 .splineToLinearHeading(chamberTwoPose, Math.toRadians(90));
 
         TrajectoryActionBuilder thirdObservationZoneTab = drive.actionBuilder(thirdSpikeMark)
-                .lineToY(thirdObservationZonePose.position.y)
-                .splineToLinearHeading(preAcquireSpecimen, Math.toRadians(90));
+                .lineToY(thirdObservationZonePose.position.y);
 
         TrajectoryActionBuilder acquireThirdSpecimen = drive.actionBuilder(chamberTwoPose)
                 .setReversed(true)
@@ -106,11 +107,13 @@ public class MeepMeepTesting {
 
         myBot.runAction(new SequentialAction(
                 scoreChamberTab.build(),
-                driveToIntermediateTab.build(),
-                firstSpikeMarkTab.build(),
-                firstObservationTab.build(),
+//                driveToIntermediateTab.build(),
+//                firstSpikeMarkTab.build(),
+//                firstObservationTab.build(),
                 secondSpikeMarkTab.build(),
                 secondObservationZoneTab.build(),
+                thirdSpikeMarkTab.build(),
+                thirdObservationZoneTab.build(),
                 acquireSecondSpecimenTab.build(),
                 secondScoreChamberTab.build(),
                 acquireThirdSpecimen.build(),
