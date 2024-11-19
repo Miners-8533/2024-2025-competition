@@ -55,7 +55,7 @@ public class AutonObservationFourSpecimens extends LinearOpMode {
 
         TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(scoreChamber)
                 .setTangent(Math.toRadians(300))
-                .splineToLinearHeading(secondSpikeMark,Math.toRadians(0));
+                .splineToLinearHeading(secondSpikeMark,Math.toRadians(30));
 
         TrajectoryActionBuilder thirdSpikeMarkTab = drive.actionBuilder(secondObservationZonePose)
                 .setTangent(Math.toRadians(90))

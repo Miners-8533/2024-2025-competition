@@ -46,13 +46,14 @@ public class MeepMeepTesting {
                 .setReversed(true)
                 .splineToLinearHeading(intermediatePose,90);
 
-        TrajectoryActionBuilder firstSpikeMarkTab = drive.actionBuilder(intermediatePose)
+        TrajectoryActionBuilder firstSpikeMarkTab = drive.actionBuilder(scoreChamber)
+                .setTangent(Math.toRadians(300))
                 .splineToLinearHeading(firstSpikeMark, Math.toRadians(0));
 
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
                 .lineToY(observationZonePose.position.y);
 
-        TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(scoreChamber)
+        TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(observationZonePose)
                 .setTangent(Math.toRadians(300))
                 .splineToLinearHeading(secondSpikeMark,Math.toRadians(0));
 
@@ -108,12 +109,12 @@ public class MeepMeepTesting {
         myBot.runAction(new SequentialAction(
                 scoreChamberTab.build(),
 //                driveToIntermediateTab.build(),
-//                firstSpikeMarkTab.build(),
-//                firstObservationTab.build(),
+                firstSpikeMarkTab.build(),
+                firstObservationTab.build(),
                 secondSpikeMarkTab.build(),
                 secondObservationZoneTab.build(),
-                thirdSpikeMarkTab.build(),
-                thirdObservationZoneTab.build(),
+//                thirdSpikeMarkTab.build(),
+//                thirdObservationZoneTab.build(),
                 acquireSecondSpecimenTab.build(),
                 secondScoreChamberTab.build(),
                 acquireThirdSpecimen.build(),
