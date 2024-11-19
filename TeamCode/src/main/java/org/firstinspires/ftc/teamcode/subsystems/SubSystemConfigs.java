@@ -55,8 +55,8 @@ public class SubSystemConfigs {
     public static final MotorWithEncoderAndController.Config reachConfig =
             new MotorWithEncoderAndController.Config(
                 "reach",
-                new PIDFCoefficients(0.006,0.0,0.0,0.0),
-                0.12,
+                new PIDFCoefficients(0.002,0.0,0.0,0.0),
+                0.10,
                 DcMotorSimple.Direction.REVERSE,
                 FFC_TOLERANCE,
                     false,
