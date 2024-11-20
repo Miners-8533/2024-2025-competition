@@ -43,18 +43,22 @@ public class MeepMeepTesting {
                 .splineToLinearHeading(scoreChamber, Math.toRadians(90));
 
         TrajectoryActionBuilder driveToIntermediateTab = drive.actionBuilder(scoreChamber)
-                .setReversed(true)
-                .splineToLinearHeading(intermediatePose,90);
+                .setTangent(Math.toRadians(300))
+                .splineToLinearHeading(intermediatePose,Math.toRadians(45));
 
         TrajectoryActionBuilder firstSpikeMarkTab = drive.actionBuilder(scoreChamber)
                 .setTangent(Math.toRadians(300))
+                .splineToLinearHeading(intermediatePose, Math.toRadians(45))
                 .splineToLinearHeading(firstSpikeMark, Math.toRadians(0));
 
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
-                .lineToY(observationZonePose.position.y);
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(observationZonePose, Math.toRadians(270));
+//                .lineToY(observationZonePose.position.y);
+
 
         TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(observationZonePose)
-                .setTangent(Math.toRadians(300))
+                .setTangent(Math.toRadians(0))
                 .splineToLinearHeading(secondSpikeMark,Math.toRadians(0));
 
         TrajectoryActionBuilder thirdSpikeMarkTab = drive.actionBuilder(secondObservationZonePose)
@@ -71,7 +75,7 @@ public class MeepMeepTesting {
                 .strafeToLinearHeading(new Vector2d(observationZonePose.position.x, observationZonePose.position.y), Math.toRadians(270));
 //                .strafeTo(new Vector2d(observationZonePose.position.x, observationZonePose.position.y));
 
-        TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(thirdObservationZonePose)
+        TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(secondObservationZonePose)
                 .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
 
         TrajectoryActionBuilder turnToSpecimenTab = drive.actionBuilder(observationZonePose)
