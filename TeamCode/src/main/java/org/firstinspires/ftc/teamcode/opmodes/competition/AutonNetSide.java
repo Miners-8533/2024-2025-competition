@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.hardware.rev.RevBlinkinLedDriver;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -15,6 +16,8 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 
+import java.util.Collections;
+
 @Autonomous(name="Auton - Net Side", group="Competition")
 public class AutonNetSide extends LinearOpMode {
 
@@ -23,11 +26,11 @@ public class AutonNetSide extends LinearOpMode {
 
         Pose2d initialPose = new Pose2d(-16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(-8,-28, Math.toRadians(90));
-        Pose2d intermediatePose = new Pose2d(-28, -36,Math.toRadians(120));
+        Pose2d intermediatePose = new Pose2d(-21, -37,Math.toRadians(120));
         Pose2d scoreHighBasket = new Pose2d(-55, -47, Math.toRadians(225));
-        Pose2d firstSpikeMark = new Pose2d(-33, -30, Math.toRadians(152.5));
-        Pose2d secondSpikeMark = new Pose2d(-42, -19, Math.toRadians(180));
-        Pose2d thirdSpikeMark = new Pose2d(-50, -18.5, Math.toRadians(175));
+        Pose2d firstSpikeMark = new Pose2d(-34.5, -21.5, Math.toRadians(180));
+        Pose2d secondSpikeMark = new Pose2d(-44.5, -20.5, Math.toRadians(180));
+        Pose2d thirdSpikeMark = new Pose2d(-52.5, -20, Math.toRadians(175));
         Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
@@ -44,6 +47,7 @@ public class AutonNetSide extends LinearOpMode {
         TrajectoryActionBuilder tab2 = drive.actionBuilder(scoreChamber)
                 .setReversed(true)
                 .setTangent(Math.toRadians(270.0))
+                .splineToLinearHeading(intermediatePose, Math.toRadians(180), null, new ProfileAccelConstraint(-30,30))
                 .splineToLinearHeading(firstSpikeMark, Math.toRadians(90),null, new ProfileAccelConstraint(-30,30));
 
         TrajectoryActionBuilder tab3  = drive.actionBuilder(firstSpikeMark)
@@ -51,7 +55,7 @@ public class AutonNetSide extends LinearOpMode {
 
         TrajectoryActionBuilder tab4 = drive.actionBuilder(scoreHighBasket)
                 .setTangent(0)
-                .splineToLinearHeading(secondSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-25,15));
+                .splineToLinearHeading(secondSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-15,50));
 
         TrajectoryActionBuilder tab5 = drive.actionBuilder(secondSpikeMark)
                 .splineToLinearHeading(scoreHighBasket, Math.toRadians(180),null, new ProfileAccelConstraint(-40,40));
@@ -62,7 +66,7 @@ public class AutonNetSide extends LinearOpMode {
 
         TrajectoryActionBuilder tab7 = drive.actionBuilder(scoreHighBasket)
                 .setTangent(0)
-                .splineToLinearHeading(thirdSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-25,15));
+                .splineToLinearHeading(thirdSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-15,50));
 
         // Wait for the game to start (driver presses START)
         waitForStart();
@@ -74,13 +78,10 @@ public class AutonNetSide extends LinearOpMode {
                 ),
                 robot.scoreSpecimen(),
                 robot.goToReadyPose(),
-                //driveToIntermediate.build(),
+                tab2.build(),
                 new ParallelAction(
-                        new SequentialAction(
-                                new SleepAction(0.5),//time to get off chamber before moving elbow
-                                robot.floorAcquire()
-                        ),
-                        tab2.build()
+                        new SleepAction(1.0),
+                        robot.floorAcquire()
                 ),
                 robot.floorAcquireReach(),
                 new ParallelAction(
@@ -89,20 +90,17 @@ public class AutonNetSide extends LinearOpMode {
                 ),
                 robot.highBasketReach(),
                 new ParallelAction(
-                        new SleepAction(0.4),
+                        new SleepAction(0.5),
                         robot.scoreHighBasket()
                 ),
                 robot.prepareScoreHighBasket(),
                 new ParallelAction(
-                        new SequentialAction(
-                                robot.goToReadyPose(),
-                                new SleepAction(1.0),
-                                robot.floorAcquire()
-                        ),
-                        new SequentialAction(
-                                tab4.build(),
-                                new SleepAction(0.1)
-                        )
+                        robot.goToReadyPose(),
+                        tab4.build()
+                ),
+                new ParallelAction(
+                        new SleepAction(1.0),
+                        robot.floorAcquire()
                 ),
                 robot.floorAcquireReach(),
                 new ParallelAction(
@@ -111,30 +109,26 @@ public class AutonNetSide extends LinearOpMode {
                 ),
                 robot.highBasketReach(),
                 new ParallelAction(
-                        new SleepAction(0.3),
+                        new SleepAction(0.5),
                         robot.scoreHighBasket()
                 ),
                 robot.prepareScoreHighBasket(),
                 new ParallelAction(
-                        new SequentialAction(
-                                robot.goToReadyPose(),
-                                new SleepAction(1.0),
-                                robot.floorAcquire()
-                        ),
-                        new SequentialAction(
-                                tab7.build(),
-                                new SleepAction(0.1)
-                        )
+                        robot.goToReadyPose(),
+                        tab7.build()
+                ),
+                new ParallelAction(
+                        new SleepAction(1.0),
+                        robot.floorAcquire()
                 ),
                 robot.floorAcquireReach(),
-                new SleepAction(0.5), //give time new wall to suck in sample
                 new ParallelAction(
                         robot.prepareScoreHighBasket(),
                         tab5.build()
                 ),
                 robot.highBasketReach(),
                 new ParallelAction(
-                        new SleepAction(0.4),
+                        new SleepAction(0.5),
                         robot.scoreHighBasket()
                 ),
                 robot.prepareScoreHighBasket(),
