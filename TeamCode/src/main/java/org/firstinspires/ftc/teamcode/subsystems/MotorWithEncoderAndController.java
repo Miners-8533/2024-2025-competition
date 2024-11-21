@@ -49,7 +49,7 @@ public class MotorWithEncoderAndController {
                     motorPower = 0.2;
                 } else {
                     motor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                    motor.setMode(DcMotorEx.RunMode.RUN_USING_ENCODER);
+                    motor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
                     isHomed = true;
                     isOverdrive = false;
                     motorPower = 0.0;
@@ -83,6 +83,8 @@ public class MotorWithEncoderAndController {
         tele.addData(name + " motor current (A)",       motor.getCurrent(CurrentUnit.AMPS));
         tele.addData(name + " current target position", ffc.targetPosition);
         tele.addData(name + " motor power (+/-%FS)",    motor.getPower());
+//        tele.addData(name + " daryl's timer",           timer.seconds());
+//        tele.addData(name + " motor mode", motor.getMode());
     }
 
     public void autonLog(TelemetryPacket packet) {
