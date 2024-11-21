@@ -25,9 +25,9 @@ public class MeepMeepTesting {
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
-        Pose2d intermediatePose = new Pose2d(33, -33,Math.toRadians(90));
-        Pose2d firstSpikeMark = new Pose2d(45, -12, Math.toRadians(90));
-        Pose2d secondSpikeMark = new Pose2d(55, -12, Math.toRadians(90));
+        Pose2d intermediatePose = new Pose2d(32, -40,Math.toRadians(90));
+        Pose2d firstSpikeMark = new Pose2d(40, -12, Math.toRadians(90));
+        Pose2d secondSpikeMark = new Pose2d(48, -12, Math.toRadians(90));
         Pose2d thirdSpikeMark = new Pose2d(68, -12, Math.toRadians(90));
         Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(90));
         Pose2d secondObservationZonePose = new Pose2d(57, -55, Math.toRadians(90));
@@ -49,7 +49,10 @@ public class MeepMeepTesting {
         TrajectoryActionBuilder firstSpikeMarkTab = drive.actionBuilder(scoreChamber)
                 .setTangent(Math.toRadians(300))
                 .splineToLinearHeading(intermediatePose, Math.toRadians(45))
-                .splineToLinearHeading(firstSpikeMark, Math.toRadians(0));
+                .splineToLinearHeading(firstSpikeMark, Math.toRadians(0))
+                .splineToLinearHeading(observationZonePose,Math.toRadians(270))
+                .splineToLinearHeading(secondSpikeMark, Math.toRadians(0))
+                .splineToLinearHeading(secondObservationZonePose, Math.toRadians(270));
 
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
                 .setTangent(Math.toRadians(0))
@@ -114,9 +117,9 @@ public class MeepMeepTesting {
                 scoreChamberTab.build(),
 //                driveToIntermediateTab.build(),
                 firstSpikeMarkTab.build(),
-                firstObservationTab.build(),
-                secondSpikeMarkTab.build(),
-                secondObservationZoneTab.build(),
+//                firstObservationTab.build(),
+//                secondSpikeMarkTab.build(),
+//                secondObservationZoneTab.build(),
 //                thirdSpikeMarkTab.build(),
 //                thirdObservationZoneTab.build(),
                 acquireSecondSpecimenTab.build(),
