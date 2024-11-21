@@ -16,7 +16,7 @@ public class SubSystemConfigs {
     public static final int LIFT_HIGH_CHAMBER_SCORE_AUTO_POS = -1200;
     public static final int REACH_HOME_POS = 0;
     public static final int REACH_FULL_EXTEND_POS = -1500;
-    public static final int REACH_FLOOR_EXTEND_POS = -750; //-1200
+    public static final int REACH_FLOOR_EXTEND_POS = -550; //-1200
     public static final int REACH_HIGH_BASKET_EXTEND_POS = -700;
     public static final double ELBOW_UP_POS = 0.23;
     public static final double ELBOW_READY_POS = 0.24;
@@ -60,7 +60,7 @@ public class SubSystemConfigs {
                 DcMotorSimple.Direction.REVERSE,
                 FFC_TOLERANCE,
                     false,
-                    false
+                    true
             );
     public static final MotorWithEncoderAndController.Config climbConfig =
             new MotorWithEncoderAndController.Config(

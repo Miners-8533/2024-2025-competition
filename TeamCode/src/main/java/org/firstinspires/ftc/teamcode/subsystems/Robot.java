@@ -275,7 +275,7 @@ public class Robot {
                         SubSystemConfigs.WHEEL_STOP_SPD,
                         SubSystemConfigs.GRIPPER_CLOSED_POS
                 );
-                bumper.setPosition(SubSystemConfigs.BUMPER_DOWN);
+                bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 return !gantry.isLiftDone(); //|| !gantry.isReachDone());
             }
         };
@@ -389,7 +389,7 @@ public class Robot {
                         SubSystemConfigs.LIFT_HIGH_BASKET_AUTON_POS,
                         SubSystemConfigs.REACH_HIGH_BASKET_EXTEND_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
-                        SubSystemConfigs.WHEEL_SCORE_SPD,
+                        SubSystemConfigs.WHEEL_HOLD_SPD,
                         SubSystemConfigs.GRIPPER_OPEN_POS
                 );
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
@@ -431,7 +431,7 @@ public class Robot {
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
                 //maybe use lights?
                 //use log functions? or packet.put("Current Lift Position", pos);
-                return (!gantry.isLiftDone() || !gantry.isReachDone());//need to use external timer
+                return !gantry.isLiftDone(); //|| !gantry.isReachDone());//need to use external timer
             }
         };
     }
