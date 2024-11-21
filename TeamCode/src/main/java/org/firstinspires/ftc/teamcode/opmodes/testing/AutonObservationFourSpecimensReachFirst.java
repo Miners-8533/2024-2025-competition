@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.opmodes.competition;
+package org.firstinspires.ftc.teamcode.opmodes.testing;
 
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
@@ -8,22 +8,22 @@ import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
-import org.firstinspires.ftc.teamcode.subsystems.PoseStorage;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
-
-@Autonomous(name="Auton - Observation Side - four specimens", group="Testing")
-public class AutonObservationFourSpecimens extends LinearOpMode {
+@Disabled
+@Autonomous(name="Auton - Observation-Reach", group="Testing")
+public class AutonObservationFourSpecimensReachFirst extends LinearOpMode {
 
     @Override
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
-        Pose2d intermediatePose = new Pose2d(33, -33,Math.toRadians(90));
-        Pose2d firstSpikeMark = new Pose2d(45, -12, Math.toRadians(90));
+        Pose2d intermediatePose = new Pose2d(35, -28,Math.toRadians(90));
+        Pose2d firstSpikeMark = new Pose2d(33, -30, Math.toRadians(27.5));
         Pose2d secondSpikeMark = new Pose2d(55, -12, Math.toRadians(90));
         Pose2d thirdSpikeMark = new Pose2d(68, -12, Math.toRadians(90));
         Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(90));
@@ -105,10 +105,22 @@ public class AutonObservationFourSpecimens extends LinearOpMode {
                 ),
                 robot.scoreSpecimen(),
                 new ParallelAction(
-                        robot.goToReadyPose(),
+                        new SequentialAction(
+                                robot.goToReadyPose(),
+                                new SleepAction(0.5),
+                                robot.floorAcquire()
+                        ),
                         firstSpikeMarkTab.build()
                 ),
-                firstObservationTab.build(),
+                robot.floorAcquireReach(),
+                new ParallelAction(
+                        firstObservationTab.build(),
+                        robot.goToReadyPose()
+                ),
+                new SequentialAction(
+                        robot.outakeSampleGround(),
+                        new SleepAction(0.3)
+                ),
                 secondSpikeMarkTab.build(),
                 secondObservationZoneTab.build(),
                 acquireSecondSpecimenTab.build(),

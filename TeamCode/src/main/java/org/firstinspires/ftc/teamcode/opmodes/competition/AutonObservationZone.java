@@ -13,23 +13,23 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 
-@Autonomous(name="Auton - Observation Side - four specimens", group="Testing")
-public class AutonObservationFourSpecimensReachFirst extends LinearOpMode {
+@Autonomous(name="Auton - Observation Side", group="Competition")
+public class AutonObservationZone extends LinearOpMode {
 
     @Override
     public void runOpMode() {
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
-        Pose2d intermediatePose = new Pose2d(35, -28,Math.toRadians(90));
-        Pose2d firstSpikeMark = new Pose2d(33, -30, Math.toRadians(27.5));
-        Pose2d secondSpikeMark = new Pose2d(55, -12, Math.toRadians(90));
-        Pose2d thirdSpikeMark = new Pose2d(68, -12, Math.toRadians(90));
-        Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(90));
-        Pose2d secondObservationZonePose = new Pose2d(57, -55, Math.toRadians(90));
-        Pose2d thirdObservationZonePose = new Pose2d(67, -55, Math.toRadians(90));
+        Pose2d intermediatePose = new Pose2d(32, -40,Math.toRadians(90));
+        Pose2d firstSpikeMark = new Pose2d(34.5, -27.5, Math.toRadians(0));
+        Pose2d secondSpikeMark = new Pose2d(44.5, -26, Math.toRadians(0));
+        Pose2d thirdSpikeMark = new Pose2d(52.5, -25.5, Math.toRadians(0));
+        Pose2d observationZonePose = new Pose2d(47, -48, Math.toRadians(315));
+        Pose2d secondObservationZonePose = new Pose2d(57, -48, Math.toRadians(315));
+        Pose2d thirdObservationZonePose = new Pose2d(67, -48, Math.toRadians(315));
         Pose2d preAcquireSpecimen = new Pose2d(47, -55, Math.toRadians(270));
-        Pose2d acquireSpecimenPose = new Pose2d(47, initialPose.position.y, Math.toRadians(270));
+        Pose2d acquireSpecimenPose = new Pose2d(47, -65, Math.toRadians(270));
         Pose2d chamberTwoPose = new Pose2d(5,-23, Math.toRadians(90));
         Pose2d chamberThreePose = new Pose2d(2,-23, Math.toRadians(90));
         Pose2d chamberFourPose = new Pose2d(-1, -23, Math.toRadians(90));
@@ -47,29 +47,30 @@ public class AutonObservationFourSpecimensReachFirst extends LinearOpMode {
                 .splineToLinearHeading(intermediatePose,Math.toRadians(90));
 
         TrajectoryActionBuilder firstSpikeMarkTab = drive.actionBuilder(scoreChamber)
-                .setTangent(Math.toRadians(300))
-                .splineToLinearHeading(intermediatePose, Math.toRadians(45))
-                .splineToLinearHeading(firstSpikeMark, Math.toRadians(0));
+                .setReversed(true)
+                .setTangent(Math.toRadians(270.0))
+//                .splineToLinearHeading(intermediatePose, Math.toRadians(180))
+                .splineToLinearHeading(firstSpikeMark, Math.toRadians(90),null, new ProfileAccelConstraint(-30,50));
 
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
-                .lineToY(observationZonePose.position.y);
+                .splineToLinearHeading(observationZonePose, Math.toRadians(90));
 
         TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(observationZonePose)
-                .setTangent(Math.toRadians(300))
-                .splineToLinearHeading(secondSpikeMark,Math.toRadians(30));
+                .setTangent(180)
+                .splineToLinearHeading(secondSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-20,50));
 
         TrajectoryActionBuilder thirdSpikeMarkTab = drive.actionBuilder(secondObservationZonePose)
                 .setTangent(Math.toRadians(90))
                 .splineToLinearHeading(thirdSpikeMark, Math.toRadians(0));
 
         TrajectoryActionBuilder secondObservationZoneTab = drive.actionBuilder(secondSpikeMark)
-                .lineToY(secondObservationZonePose.position.y);
+                .splineToLinearHeading(secondObservationZonePose, Math.toRadians(90));
 
-        TrajectoryActionBuilder thirdObservationZoneTab = drive.actionBuilder(thirdSpikeMark)
-                .lineToY(thirdObservationZonePose.position.y);
+//        TrajectoryActionBuilder thirdObservationZoneTab = drive.actionBuilder(thirdSpikeMark)
+//                .lineToY(thirdObservationZonePose.position.y);
 
-        TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(thirdObservationZonePose)
-                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
+        TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(secondObservationZonePose)
+                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(0), null, new ProfileAccelConstraint(-30,30));
 
         TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
@@ -92,7 +93,7 @@ public class AutonObservationFourSpecimensReachFirst extends LinearOpMode {
 
         TrajectoryActionBuilder parkInObservationZone = drive.actionBuilder(chamberFourPose)
                 .setReversed(true)
-                .splineToLinearHeading(parkOnWall, Math.toRadians(270));
+                .splineToLinearHeading(parkOnWall, Math.toRadians(270), null, new ProfileAccelConstraint(-100,100));
 
         // Wait for the game to start (driver presses START)
         waitForStart();
@@ -103,25 +104,33 @@ public class AutonObservationFourSpecimensReachFirst extends LinearOpMode {
                         scoreChamberTab.build()
                 ),
                 robot.scoreSpecimen(),
+                robot.goToReadyPose(),
+                firstSpikeMarkTab.build(),
                 new ParallelAction(
-                        new SequentialAction(
-                                robot.goToReadyPose(),
-                                new SleepAction(0.5),
-                                robot.floorAcquire()
-                        ),
-                        firstSpikeMarkTab.build()
+                        new SleepAction(1.0),
+                        robot.floorAcquire()
                 ),
                 robot.floorAcquireReach(),
-                new ParallelAction(
-                        firstObservationTab.build(),
-                        robot.goToReadyPose()
-                ),
+                robot.goToReadyPose(),
+                firstObservationTab.build(),
                 new SequentialAction(
                         robot.outakeSampleGround(),
                         new SleepAction(0.3)
                 ),
+                robot.goToReadyPose(),
                 secondSpikeMarkTab.build(),
+                new ParallelAction(
+                        new SleepAction(1.0),
+                        robot.floorAcquire()
+                ),
+                robot.floorAcquireReach(),
+                robot.goToReadyPose(),
                 secondObservationZoneTab.build(),
+                new SequentialAction(
+                        robot.outakeSampleGround(),
+                        new SleepAction(0.3)
+                ),
+                robot.goToReadyPose(),
                 acquireSecondSpecimenTab.build(),
                 new ParallelAction(
                         robot.acquireSpecimen(),
@@ -145,20 +154,7 @@ public class AutonObservationFourSpecimensReachFirst extends LinearOpMode {
                         thirdScoreChamberTab.build()
                 ),
                 robot.scoreSpecimen(),
-                new ParallelAction(
-                        acquireFourthSpecimen.build(),
-                        robot.goToReadyPose()
-                ),
-                new ParallelAction(
-                        robot.acquireSpecimen(),
-                        new SleepAction(0.3)
-                ),
-                new ParallelAction(
-                        robot.autonStart(),
-                        fouthScoreChamberTab.build()
-                ),
-                robot.scoreSpecimen(),
-                parkInObservationZone.build()
+                robot.goToReadyPose()
         )));
     }
 }
