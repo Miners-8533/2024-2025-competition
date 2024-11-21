@@ -50,9 +50,10 @@ public class MeepMeepTesting {
                 .setTangent(Math.toRadians(300))
                 .splineToLinearHeading(intermediatePose, Math.toRadians(45))
                 .splineToLinearHeading(firstSpikeMark, Math.toRadians(0))
-                .splineToLinearHeading(observationZonePose,Math.toRadians(270))
-                .splineToLinearHeading(secondSpikeMark, Math.toRadians(0))
-                .splineToLinearHeading(secondObservationZonePose, Math.toRadians(270));
+                .splineToLinearHeading(observationZonePose,Math.toRadians(90))
+                .setTangent(Math.toRadians(90))
+                .splineToLinearHeading(secondSpikeMark, Math.toRadians(0));
+//                .splineToLinearHeading(secondObservationZonePose, Math.toRadians(270));
 
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
                 .setTangent(Math.toRadians(0))
