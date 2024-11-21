@@ -57,7 +57,7 @@ public class AutonObservationZone extends LinearOpMode {
 
         TrajectoryActionBuilder secondSpikeMarkTab = drive.actionBuilder(observationZonePose)
                 .setTangent(180)
-                .splineToLinearHeading(secondSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-20,50));
+                .splineToLinearHeading(secondSpikeMark,Math.toRadians(0),null, new ProfileAccelConstraint(-15,50));
 
         TrajectoryActionBuilder thirdSpikeMarkTab = drive.actionBuilder(secondObservationZonePose)
                 .setTangent(Math.toRadians(90))
