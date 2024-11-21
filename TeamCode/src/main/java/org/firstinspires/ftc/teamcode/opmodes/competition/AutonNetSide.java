@@ -38,7 +38,7 @@ public class AutonNetSide extends LinearOpMode {
         Robot robot = new Robot(hardwareMap,gamepad1,gamepad2, initialPose);
 
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
-                .splineToLinearHeading(scoreChamber, Math.toRadians(90),null, new ProfileAccelConstraint(-30,30));
+                .splineToLinearHeading(scoreChamber, Math.toRadians(90),null, new ProfileAccelConstraint(-30,50));
 
         TrajectoryActionBuilder driveToIntermediate = drive.actionBuilder(scoreChamber)
                 .setReversed(true)
@@ -47,18 +47,18 @@ public class AutonNetSide extends LinearOpMode {
         TrajectoryActionBuilder tab2 = drive.actionBuilder(scoreChamber)
                 .setReversed(true)
                 .setTangent(Math.toRadians(270.0))
-                .splineToLinearHeading(intermediatePose, Math.toRadians(180), null, new ProfileAccelConstraint(-30,30))
-                .splineToLinearHeading(firstSpikeMark, Math.toRadians(90),null, new ProfileAccelConstraint(-30,30));
+                .splineToLinearHeading(intermediatePose, Math.toRadians(180))
+                .splineToLinearHeading(firstSpikeMark, Math.toRadians(90),null, new ProfileAccelConstraint(-30,50));
 
         TrajectoryActionBuilder tab3  = drive.actionBuilder(firstSpikeMark)
                 .splineToLinearHeading(scoreHighBasket, Math.toRadians(180));
 
         TrajectoryActionBuilder tab4 = drive.actionBuilder(scoreHighBasket)
                 .setTangent(0)
-                .splineToLinearHeading(secondSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-15,50));
+                .splineToLinearHeading(secondSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-20,50));
 
         TrajectoryActionBuilder tab5 = drive.actionBuilder(secondSpikeMark)
-                .splineToLinearHeading(scoreHighBasket, Math.toRadians(180),null, new ProfileAccelConstraint(-40,40));
+                .splineToLinearHeading(scoreHighBasket, Math.toRadians(180),null, new ProfileAccelConstraint(-40,50));
 
         TrajectoryActionBuilder tab6 = drive.actionBuilder(scoreHighBasket)
                 .setReversed(true)
@@ -66,7 +66,7 @@ public class AutonNetSide extends LinearOpMode {
 
         TrajectoryActionBuilder tab7 = drive.actionBuilder(scoreHighBasket)
                 .setTangent(0)
-                .splineToLinearHeading(thirdSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-15,50));
+                .splineToLinearHeading(thirdSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-20,50));
 
         // Wait for the game to start (driver presses START)
         waitForStart();
