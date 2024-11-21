@@ -124,8 +124,7 @@ public class AutonObservationSide extends LinearOpMode {
                 new ParallelAction(
                         parkInObservationZone.build(),
                         robot.goToReadyPose()
-                ),
-                robot.setLastPose(drive)
+                )
         )));
     }
 }

@@ -158,8 +158,7 @@ public class AutonObservationFourSpecimensReachFirst extends LinearOpMode {
                         fouthScoreChamberTab.build()
                 ),
                 robot.scoreSpecimen(),
-                parkInObservationZone.build(),
-                robot.setLastPose(drive)
+                parkInObservationZone.build()
         )));
     }
 }

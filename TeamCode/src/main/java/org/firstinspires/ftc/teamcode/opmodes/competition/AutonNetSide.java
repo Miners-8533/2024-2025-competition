@@ -142,8 +142,7 @@ public class AutonNetSide extends LinearOpMode {
                         robot.goToReadyPose(),
                         tab6.build()
                 ),
-                robot.goToReadyPose(),
-                robot.setLastPose(drive)
+                robot.goToReadyPose()
         )));
     }
 }

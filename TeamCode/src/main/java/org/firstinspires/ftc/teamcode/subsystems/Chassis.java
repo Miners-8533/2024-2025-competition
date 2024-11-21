@@ -41,6 +41,10 @@ public class Chassis {
         );
     }
 
+    public void setPose(){
+        PoseStorage.poseStorage = drive.pose;
+    }
+
     private Vector2d rotate(double x, double y, double theta) {
         return new Vector2d(x * Math.cos(theta) + y * Math.sin(theta),
                 -x * Math.sin(theta) + y * Math.cos(theta));

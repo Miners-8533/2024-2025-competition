@@ -25,7 +25,7 @@ public class MeepMeepTesting {
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
-        Pose2d intermediatePose = new Pose2d(35, -28,Math.toRadians(90));
+        Pose2d intermediatePose = new Pose2d(33, -33,Math.toRadians(90));
         Pose2d firstSpikeMark = new Pose2d(45, -12, Math.toRadians(90));
         Pose2d secondSpikeMark = new Pose2d(55, -12, Math.toRadians(90));
         Pose2d thirdSpikeMark = new Pose2d(68, -12, Math.toRadians(90));

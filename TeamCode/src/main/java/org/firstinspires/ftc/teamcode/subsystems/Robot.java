@@ -462,6 +462,7 @@ public class Robot {
                 climber.update();
                 gantry.update();
                 gantry.autonLog(packet);
+                chassis.setPose();
                 return true; //never stop
             }
         };
