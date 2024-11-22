@@ -47,8 +47,8 @@ public class AutonNetSide extends LinearOpMode {
         TrajectoryActionBuilder tab2 = drive.actionBuilder(scoreChamber)
                 .setReversed(true)
                 .setTangent(Math.toRadians(270.0))
-                .splineToLinearHeading(intermediatePose, Math.toRadians(180))
-                .splineToLinearHeading(firstSpikeMark, Math.toRadians(90),null, new ProfileAccelConstraint(-30,50));
+                .splineToSplineHeading(intermediatePose, Math.toRadians(180))
+                .splineToSplineHeading(firstSpikeMark, Math.toRadians(90),null, new ProfileAccelConstraint(-30,50));
 
         TrajectoryActionBuilder tab3  = drive.actionBuilder(firstSpikeMark)
                 .splineToLinearHeading(scoreHighBasket, Math.toRadians(180));

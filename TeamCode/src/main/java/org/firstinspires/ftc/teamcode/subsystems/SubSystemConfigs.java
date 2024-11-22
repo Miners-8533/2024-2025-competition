@@ -31,11 +31,11 @@ public class SubSystemConfigs {
     public static final double GRIPPER_CLOSED_POS = 0.9;
     public static final double GRIPPER_HOLD_POS = 0.9;
     public static final int CLIMB_HOME = -50;
-    public static final int CLIMB_PRE_CLIMB = -3666;
-    public static final int CLIMB_ASCENT_1 = -7626;
+    public static final int CLIMB_PRE_CLIMB = -5300;
+    public static final int CLIMB_ASCENT_1 = -10750;
     public static final double BUMPER_UP = 0.0;
     public static final double BUMPER_DOWN = 1.0;
-    public static final int REACH_SCRUB_SPD = 50;
+    public static final int REACH_SCRUB_SPD = 100;
     public static final int REACH_SCRUB_SPD_AUTON = 30;
     public static final int LIFT_SCRUB_SPD = 50;
     public static final int LIFT_FFC_TOLERANCE = 50;
@@ -50,7 +50,7 @@ public class SubSystemConfigs {
                 DcMotorSimple.Direction.FORWARD,
                 LIFT_FFC_TOLERANCE,
                     true,
-                    false
+                    true
             );
     public static final MotorWithEncoderAndController.Config reachConfig =
             new MotorWithEncoderAndController.Config(
@@ -69,7 +69,7 @@ public class SubSystemConfigs {
                 0.08,
                 DcMotorSimple.Direction.FORWARD,
                 FFC_TOLERANCE,
-                    false,
+                    true,
                     false
             );
 }
