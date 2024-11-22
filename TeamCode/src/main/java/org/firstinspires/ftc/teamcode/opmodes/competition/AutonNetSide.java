@@ -28,9 +28,9 @@ public class AutonNetSide extends LinearOpMode {
         Pose2d scoreChamber = new Pose2d(-8,-28, Math.toRadians(90));
         Pose2d intermediatePose = new Pose2d(-21, -37,Math.toRadians(120));
         Pose2d scoreHighBasket = new Pose2d(-55, -47, Math.toRadians(225));
-        Pose2d firstSpikeMark = new Pose2d(-34.5, -22, Math.toRadians(180));
-        Pose2d secondSpikeMark = new Pose2d(-44.5, -20.5, Math.toRadians(180));
-        Pose2d thirdSpikeMark = new Pose2d(-52.5, -20, Math.toRadians(175));
+        Pose2d firstSpikeMark = new Pose2d(-34.5, -21, Math.toRadians(180));
+        Pose2d secondSpikeMark = new Pose2d(-44.5, -19.5, Math.toRadians(180));
+        Pose2d thirdSpikeMark = new Pose2d(-52.5, -19, Math.toRadians(175));
         Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
