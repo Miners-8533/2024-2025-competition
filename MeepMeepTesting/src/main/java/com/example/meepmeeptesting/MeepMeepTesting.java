@@ -3,6 +3,7 @@ package com.example.meepmeeptesting;
 import com.acmerobotics.roadrunner.Action;
 import com.acmerobotics.roadrunner.ParallelAction;
 import com.acmerobotics.roadrunner.Pose2d;
+import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
@@ -18,20 +19,20 @@ public class MeepMeepTesting {
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(45, 45, Math.toRadians(180), Math.toRadians(180), 11)
+                .setConstraints(45, 30, Math.toRadians(360), 0.666, 11)
                 .build();
 
         DriveShim drive = myBot.getDrive();
 
         Pose2d initialPose = new Pose2d(16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
-        Pose2d intermediatePose = new Pose2d(32, -40,Math.toRadians(90));
-        Pose2d firstSpikeMark = new Pose2d(40, -12, Math.toRadians(90));
-        Pose2d secondSpikeMark = new Pose2d(48, -12, Math.toRadians(90));
-        Pose2d thirdSpikeMark = new Pose2d(68, -12, Math.toRadians(90));
-        Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(90));
-        Pose2d secondObservationZonePose = new Pose2d(57, -55, Math.toRadians(90));
-        Pose2d thirdObservationZonePose = new Pose2d(67, -55, Math.toRadians(90));
+        Pose2d intermediatePose = new Pose2d(30, -36,Math.toRadians(30));
+        Pose2d firstSpikeMark = new Pose2d(38, -30, Math.toRadians(300));
+        Pose2d secondSpikeMark = new Pose2d(48, -30, Math.toRadians(270));
+        Pose2d thirdSpikeMark = new Pose2d(68, -24, Math.toRadians(270));
+        Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(270));
+        Pose2d secondObservationZonePose = new Pose2d(57, -55, Math.toRadians(270));
+        Pose2d thirdObservationZonePose = new Pose2d(67, -55, Math.toRadians(270));
         Pose2d preAcquireSpecimen = new Pose2d(47, -55, Math.toRadians(270));
         Pose2d acquireSpecimenPose = new Pose2d(47, initialPose.position.y, Math.toRadians(270));
         Pose2d chamberTwoPose = new Pose2d(5,-27, Math.toRadians(90));
@@ -47,13 +48,16 @@ public class MeepMeepTesting {
                 .splineToLinearHeading(intermediatePose,Math.toRadians(45));
 
         TrajectoryActionBuilder firstSpikeMarkTab = drive.actionBuilder(scoreChamber)
-                .setTangent(Math.toRadians(300))
-                .splineToLinearHeading(intermediatePose, Math.toRadians(45))
-                .splineToLinearHeading(firstSpikeMark, Math.toRadians(0))
-                .splineToLinearHeading(observationZonePose,Math.toRadians(90))
-                .setTangent(Math.toRadians(90))
-                .splineToLinearHeading(secondSpikeMark, Math.toRadians(0));
-//                .splineToLinearHeading(secondObservationZonePose, Math.toRadians(270));
+//                .setTangent(Math.toRadians(300))
+                .setReversed(true)
+                .splineToLinearHeading(intermediatePose, Math.toRadians(0))
+                .splineToSplineHeading(firstSpikeMark, Math.toRadians(0))
+                .setTangent(Math.toRadians(0))
+                .splineToLinearHeading(observationZonePose,Math.toRadians(270))
+//                .setTangent(Math.toRadians(90))
+                .setReversed(true)
+                .splineToSplineHeading(secondSpikeMark, Math.toRadians(270))
+                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
 
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
                 .setTangent(Math.toRadians(0))
@@ -82,13 +86,13 @@ public class MeepMeepTesting {
         TrajectoryActionBuilder acquireSecondSpecimenTab = drive.actionBuilder(secondObservationZonePose)
                 .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
 
-        TrajectoryActionBuilder turnToSpecimenTab = drive.actionBuilder(observationZonePose)
-                .turnTo(Math.toRadians(270))
-                .lineToY(parkOnWall.position.y);
+//        TrajectoryActionBuilder turnToSpecimenTab = drive.actionBuilder(observationZonePose)
+//                .turnTo(Math.toRadians(270))
+//                .lineToY(parkOnWall.position.y);
 
         TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
-                .splineToLinearHeading(chamberTwoPose, Math.toRadians(90));
+                .splineToSplineHeading(chamberTwoPose, Math.toRadians(90),null, new ProfileAccelConstraint(-40,40));
 
         TrajectoryActionBuilder thirdObservationZoneTab = drive.actionBuilder(thirdSpikeMark)
                 .lineToY(thirdObservationZonePose.position.y);
@@ -103,10 +107,10 @@ public class MeepMeepTesting {
 
         TrajectoryActionBuilder thirdScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
-                .splineToLinearHeading(chamberThreePose, Math.toRadians(90));
+                .splineToLinearHeading(chamberThreePose, Math.toRadians(90),null, new ProfileAccelConstraint(-40,40));
         TrajectoryActionBuilder fouthScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
-                .splineToLinearHeading(chamberFourPose, Math.toRadians(90));
+                .splineToLinearHeading(chamberFourPose, Math.toRadians(90),null, new ProfileAccelConstraint(-40,40));
 
         TrajectoryActionBuilder parkInObservationZone = drive.actionBuilder(chamberFourPose)
                 .setReversed(true)
@@ -116,20 +120,12 @@ public class MeepMeepTesting {
 
         myBot.runAction(new SequentialAction(
                 scoreChamberTab.build(),
-//                driveToIntermediateTab.build(),
                 firstSpikeMarkTab.build(),
-//                firstObservationTab.build(),
-//                secondSpikeMarkTab.build(),
-//                secondObservationZoneTab.build(),
-//                thirdSpikeMarkTab.build(),
-//                thirdObservationZoneTab.build(),
-                acquireSecondSpecimenTab.build(),
                 secondScoreChamberTab.build(),
                 acquireThirdSpecimen.build(),
                 thirdScoreChamberTab.build(),
                 acquireFourthSpecimen.build(),
-                fouthScoreChamberTab.build(),
-                parkInObservationZone.build()
+                fouthScoreChamberTab.build()
         ));
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_INTO_THE_DEEP_JUICE_DARK)
