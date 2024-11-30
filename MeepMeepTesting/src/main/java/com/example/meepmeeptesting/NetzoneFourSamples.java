@@ -22,23 +22,24 @@ public class NetzoneFourSamples {
 
         Pose2d initialPose = new Pose2d(-16,-62, Math.toRadians(90));
         Pose2d scoreChamber = new Pose2d(-8,-28, Math.toRadians(90));
-        Pose2d intermediatePose = new Pose2d(-21, -37,Math.toRadians(120));
+        Pose2d intermediatePose = new Pose2d(-30, -37,Math.toRadians(180));
         Pose2d scoreHighBasket = new Pose2d(-55, -47, Math.toRadians(225));
-        Pose2d firstSpikeMark = new Pose2d(-36, -21, Math.toRadians(180));
-        Pose2d secondSpikeMark = new Pose2d(-45.5, -20.5, Math.toRadians(180));
-        Pose2d thirdSpikeMark = new Pose2d(-53.5, -20, Math.toRadians(175));
-        Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(180));
+        Pose2d firstSpikeMark = new Pose2d(-34.5, -21.5, Math.toRadians(180));
+        Pose2d secondSpikeMark = new Pose2d(-44.5, -20.5, Math.toRadians(180));
+        Pose2d thirdSpikeMark = new Pose2d(-52.5, -20, Math.toRadians(175));
+        Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(0));
 
         TrajectoryActionBuilder tab1 = drive.actionBuilder(initialPose)
-                .splineToLinearHeading(scoreChamber, Math.toRadians(90),null, new ProfileAccelConstraint(-30,30));
+                .splineToLinearHeading(scoreHighBasket, Math.toRadians(180),null, new ProfileAccelConstraint(-30,30));
 
         TrajectoryActionBuilder driveToIntermediate = drive.actionBuilder(scoreChamber)
                 .setReversed(true)
                 .splineToLinearHeading(intermediatePose, Math.toRadians(180));
 
-        TrajectoryActionBuilder tab2 = drive.actionBuilder(scoreChamber)
+        TrajectoryActionBuilder tab2 = drive.actionBuilder(scoreHighBasket)
+                .setReversed(true)
                 .setTangent(Math.toRadians(270))
-                .splineToLinearHeading(intermediatePose, Math.toRadians(180), null, new ProfileAccelConstraint(-30,30))
+//                .splineToSplineHeading(intermediatePose, Math.toRadians(180), null, new ProfileAccelConstraint(-30,30))
                 .splineToLinearHeading(firstSpikeMark, Math.toRadians(90),null, new ProfileAccelConstraint(-30,30));
 
         TrajectoryActionBuilder tab3  = drive.actionBuilder(firstSpikeMark)
@@ -49,6 +50,11 @@ public class NetzoneFourSamples {
                 .splineToLinearHeading(secondSpikeMark,Math.toRadians(180),null, new ProfileAccelConstraint(-15,50));
 
         TrajectoryActionBuilder tab5 = drive.actionBuilder(secondSpikeMark)
+                .setReversed(true)
+                .splineToLinearHeading(scoreHighBasket, Math.toRadians(180),null, new ProfileAccelConstraint(-40,40));
+
+        TrajectoryActionBuilder scoreThirdSampleTab = drive.actionBuilder(thirdSpikeMark)
+                .setReversed(true)
                 .splineToLinearHeading(scoreHighBasket, Math.toRadians(180),null, new ProfileAccelConstraint(-40,40));
 
         TrajectoryActionBuilder tab6 = drive.actionBuilder(scoreHighBasket)
@@ -67,7 +73,7 @@ public class NetzoneFourSamples {
                 tab4.build(),
                 tab5.build(),
                 tab7.build(),
-                tab5.build(),
+                scoreThirdSampleTab.build(),
                 tab6.build()
         ));
 
