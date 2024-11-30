@@ -121,7 +121,7 @@ public class Robot {
                         SubSystemConfigs.BUMPER_DOWN,
                         SubSystemConfigs.ELBOW_READY_POS,
                         SubSystemConfigs.GRIPPER_HOLD_POS,
-                        SubSystemConfigs.WHEEL_SCORE_SPD
+                        SubSystemConfigs.WHEEL_STOP_SPD
                 );
 
                 if(driveStation.isScoreSpecimen) {
