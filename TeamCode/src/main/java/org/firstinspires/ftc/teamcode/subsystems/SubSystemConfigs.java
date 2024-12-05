@@ -40,7 +40,8 @@ public class SubSystemConfigs {
     public static final int LIFT_SCRUB_SPD = 50;
     public static final int LIFT_FFC_TOLERANCE = 50;
     public static final int FFC_TOLERANCE = 30;
-
+    public static final double WING_UP = 0.34;
+    public static final double WING_DOWN = 0.91;
 
     public static final MotorWithEncoderAndController.Config liftConfig =
             new MotorWithEncoderAndController.Config(
