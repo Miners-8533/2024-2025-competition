@@ -23,6 +23,7 @@ public class DriveStation {
     public boolean isBumperDown;
     public boolean isGyroReset;
     public boolean isTargetSample;
+    public boolean isWingDown;
     public DriveStation(Gamepad driverController, Gamepad operatorController) {
         driver = driverController;
         operator = operatorController;
@@ -54,6 +55,8 @@ public class DriveStation {
 
         //operator bumper override
         isBumperDown = operator.left_trigger > 0.5;
+
+        isWingDown = operator.left_bumper;
 
         //operator prepare for high basket
         isScoreBasket = operator.y;

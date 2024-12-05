@@ -19,6 +19,7 @@ public class Robot {
     private Chassis chassis;
     private Gantry gantry;
     private Servo bumper;
+    private Servo wing;
     private MotorWithEncoderAndController climber;
     private RevBlinkinLedDriver lights;
     private DriveStation driveStation;
@@ -42,6 +43,7 @@ public class Robot {
         public double gripper;
         public double wheel;
         public double bumper;
+        public double wing;
     }
     private RobotOutputs robotOutputs;
     public Robot(HardwareMap hardwareMap, Gamepad driverController, Gamepad operatorController, Pose2d initialPose) {
@@ -52,10 +54,10 @@ public class Robot {
         gantry = new Gantry(hardwareMap);
         climber = new MotorWithEncoderAndController(hardwareMap,SubSystemConfigs.climbConfig);
         lights = hardwareMap.get(RevBlinkinLedDriver.class, "blinkin");
+        wing = hardwareMap.get(Servo.class, "wing");
 
         robotState = RobotState.READY;
         robotOutputs = new RobotOutputs();
-        //may not need to set initial states
     }
     public void updateTeleOp(Telemetry telemetry) {
         //get fresh inputs first
@@ -168,6 +170,7 @@ public class Robot {
         //reach manual control
         if(robotState == RobotState.READY) {
             reachScrub += SubSystemConfigs.REACH_SCRUB_SPD * driveStation.reachScrub;
+
             //limit scrub to between max and min targets
             if(gantry.colorDetected == RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE) {
                 reachScrub = Math.max(Math.min(reachScrub, SubSystemConfigs.REACH_HOME_POS), SubSystemConfigs.REACH_FULL_EXTEND_POS);
@@ -193,13 +196,6 @@ public class Robot {
         }
         robotOutputs.reach = reachScrub;
 
-        telemetry.addData("Daryl's timer ", darylsTimer);
-        telemetry.addData("isScoreRetract", isScoreRetract);
-        telemetry.addData("isOutakeSample",driveStation.isOutakeSample);
-
-        //TODO WE NEED GYRO RESET
-        //TODO Movement limits when lift is up high basket
-
         //state independent
         if(driveStation.isClimb) {
             robotOutputs.climber = SubSystemConfigs.CLIMB_ASCENT_1;
@@ -217,15 +213,22 @@ public class Robot {
             liftScrub = 0;
         }
 
-        //bumper down overide
+        //bumper down override
         if(driveStation.isBumperDown) {
             robotOutputs.bumper = SubSystemConfigs.BUMPER_DOWN;
+        }
+
+        if(driveStation.isWingDown) {
+            robotOutputs.wing = SubSystemConfigs.WING_DOWN;
+        } else {
+            robotOutputs.wing = SubSystemConfigs.WING_UP;
         }
 
         //set all targets
         lights.setPattern(gantry.colorDetected);
         bumper.setPosition(robotOutputs.bumper);
         climber.setTarget(robotOutputs.climber);
+        wing.setPosition(robotOutputs.wing);
         gantry.setTarget(robotOutputs.lift,robotOutputs.reach,robotOutputs.elbow,robotOutputs.wheel,robotOutputs.gripper);
 
         //all outputs update
