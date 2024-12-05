@@ -458,6 +458,17 @@ public class Robot {
             }
         };
     }
+
+    public Action setWing(double wingPosition){
+        return new Action() {
+            @Override
+            public boolean run(@NonNull TelemetryPacket telemetryPacket) {
+                wing.setPosition(wingPosition);
+                return false;
+            }
+        };
+    }
+
     public Action autonUpdate(){
         return new Action(){
             @Override
