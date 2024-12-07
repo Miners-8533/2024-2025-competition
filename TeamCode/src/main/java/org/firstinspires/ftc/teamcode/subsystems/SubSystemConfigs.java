@@ -7,8 +7,8 @@ public class SubSystemConfigs {
 
     public static final int LIFT_HOME_POS = 0;
     public static final int LIFT_PARTIAL_POS = -200; //TODO verify
-    public static final int LIFT_HIGH_BASKET_POS = -4200;
-    public static final int LIFT_HIGH_BASKET_AUTON_POS = -4250;
+    public static final int LIFT_HIGH_BASKET_POS = -5000;
+    public static final int LIFT_HIGH_BASKET_AUTON_POS = -5100;
     public static final int LIFT_LOW_BASKET_POS = -3300;
     public static final int LIFT_HIGH_CHAMBER_POS = -1857;
     public static final int LIFT_HIGH_CHAMBER_AUTON_INIT_POS = -2765;
@@ -21,7 +21,7 @@ public class SubSystemConfigs {
     public static final int REACH_HIGH_BASKET_EXTEND_POS = -700;
     public static final double ELBOW_UP_POS = 0.23;
     public static final double ELBOW_READY_POS = 0.24;
-    public static final double ELBOW_SCORE_BASKET_POS = 0.45;
+    public static final double ELBOW_SCORE_BASKET_POS = 0.43;
     public static final double ELBOW_ACQUIRE_POS = 0.73;
     public static final double ELBOW_TARGET_POS = 0.63;
     public static final double WHEEL_STOP_SPD = 0.53;
