@@ -25,7 +25,7 @@ public class ObservationzoneFourSpecimen {
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
         Pose2d intermediatePose = new Pose2d(30, -36,Math.toRadians(30));
         Pose2d firstSpikeMark = new Pose2d(38, -30, Math.toRadians(300));
-        Pose2d secondSpikeMark = new Pose2d(48, -30, Math.toRadians(270));
+        Pose2d secondSpikeMark = new Pose2d(48, -30, Math.toRadians(300));
         Pose2d thirdSpikeMark = new Pose2d(68, -24, Math.toRadians(270));
         Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(270));
         Pose2d secondObservationZonePose = new Pose2d(57, -55, Math.toRadians(270));
@@ -54,7 +54,7 @@ public class ObservationzoneFourSpecimen {
 //                .setTangent(Math.toRadians(90))
                 .setReversed(true)
                 .splineToSplineHeading(secondSpikeMark, Math.toRadians(270))
-                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
+                .splineToSplineHeading(acquireSpecimenPose, Math.toRadians(270));
 
         TrajectoryActionBuilder firstObservationTab = drive.actionBuilder(firstSpikeMark)
                 .setTangent(Math.toRadians(0))

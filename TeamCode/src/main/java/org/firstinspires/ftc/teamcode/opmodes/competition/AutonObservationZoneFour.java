@@ -10,8 +10,10 @@ import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.onbotjava.handlers.file.NewFile;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
+import org.firstinspires.ftc.teamcode.subsystems.SubSystemConfigs;
 
 @Autonomous(name="Auton - Observation Side - 4 Specimen", group="Competition")
 public class AutonObservationZoneFour extends LinearOpMode {
@@ -23,7 +25,7 @@ public class AutonObservationZoneFour extends LinearOpMode {
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
         Pose2d intermediatePose = new Pose2d(30, -36,Math.toRadians(30));
         Pose2d firstSpikeMark = new Pose2d(38, -30, Math.toRadians(300));
-        Pose2d secondSpikeMark = new Pose2d(48, -30, Math.toRadians(270));
+        Pose2d secondSpikeMark = new Pose2d(48, -30, Math.toRadians(300));
         Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(270));
         Pose2d acquireSpecimenPose = new Pose2d(47, initialPose.position.y, Math.toRadians(270));
         Pose2d chamberTwoPose = new Pose2d(5,-27, Math.toRadians(90));
@@ -44,7 +46,7 @@ public class AutonObservationZoneFour extends LinearOpMode {
                 .splineToLinearHeading(observationZonePose,Math.toRadians(270))
                 .setReversed(true)
                 .splineToSplineHeading(secondSpikeMark, Math.toRadians(270))
-                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
+                .splineToSplineHeading(acquireSpecimenPose, Math.toRadians(270));
 
         TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
@@ -76,7 +78,14 @@ public class AutonObservationZoneFour extends LinearOpMode {
                 ),
                 robot.scoreSpecimen(),
                 robot.goToReadyPose(),
-                firstSpikeMarkTab.build(),
+                new ParallelAction(
+                        firstSpikeMarkTab.build(),
+                        new SequentialAction(
+                                new SleepAction(1.0),
+                                robot.setWing(SubSystemConfigs.WING_DOWN)
+                        )
+                ),
+                robot.setWing(SubSystemConfigs.WING_UP),
                 new ParallelAction(
                         robot.acquireSpecimen(),
                         new SleepAction(0.3)

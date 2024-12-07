@@ -31,7 +31,7 @@ public class AutonNetSide extends LinearOpMode {
         Pose2d firstSpikeMark = new Pose2d(-34.5, -21.5, Math.toRadians(180));
         Pose2d secondSpikeMark = new Pose2d(-44.5, -20.5, Math.toRadians(180));
         Pose2d thirdSpikeMark = new Pose2d(-52.5, -20, Math.toRadians(175));
-        Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(180));
+        Pose2d parkNearSubmersible = new Pose2d(-15, -6.5, Math.toRadians(0));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
 
