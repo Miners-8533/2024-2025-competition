@@ -43,8 +43,8 @@ public class DriveStation {
         isGyroReset = driver.back;
 
         //driver score
-        isScoreSpecimen = driver.a;
-        isOutakeSample = driver.a;
+        isScoreSpecimen = driver.right_bumper;
+        isOutakeSample = driver.right_bumper;
 
         //driver reset
         isReady = driver.y;
@@ -55,9 +55,9 @@ public class DriveStation {
         isClimbReset = operator.dpad_down;
 
         //operator acquire
-        isAquireSpecimen = operator.right_bumper;
+        isAquireSpecimen = operator.a;
         lastAcquire = isAquireSample;
-        isAquireSample = operator.a;
+        isAquireSample = operator.right_bumper;
         isTargetSample = operator.right_trigger > 0.5;
         if(isAquireSample != lastAcquire) {
             acquireTimer.reset();
@@ -72,7 +72,17 @@ public class DriveStation {
         isScoreBasket = operator.y;
 
         //operator scrubs
-        reachScrub = operator.left_stick_y;
-        liftScrub = operator.right_stick_y;
+        reachScrub = operator.right_stick_y;
+        liftScrub = operator.left_stick_y;
+
+        //operator conditional drive
+        if(isTargetSample) {
+            forward = forward - operator.left_stick_y;
+            forward = Math.max(Math.min(1.0, forward), -1.0);
+            strafe = strafe - operator.left_stick_x;
+            strafe = Math.max(Math.min(1.0, strafe), -1.0);
+            rotation = rotation - operator.right_stick_x / 2.0;
+            rotation = Math.max(Math.min(1.0, rotation), -1.0);
+        }
     }
 }

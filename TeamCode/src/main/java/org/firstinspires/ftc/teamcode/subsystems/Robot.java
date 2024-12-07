@@ -28,6 +28,7 @@ public class Robot {
     private int reachScrub = 0;
     private ElapsedTime darylsTimer = new ElapsedTime();
     private boolean isScoreRetract = false;
+    private boolean isScoreLiftRetract = false;
     private enum RobotState {
         READY,
         ACQUIRING_SPECIMEN,
@@ -164,6 +165,10 @@ public class Robot {
 
                 if(driveStation.isReady) {
                     robotState = RobotState.READY;
+                    isScoreLiftRetract = false;
+                } else if (isScoreLiftRetract && darylsTimer.seconds() > 0.2) {
+                    robotState = RobotState.READY;
+                    isScoreLiftRetract = false;
                 }
         }
 
@@ -180,10 +185,12 @@ public class Robot {
                 reachScrub = SubSystemConfigs.REACH_HOME_POS;
             }
         } else if(robotState == RobotState.SCORE_HIGH_BASKET) {
-            if(driveStation.isOutakeSample && (darylsTimer.seconds() > 0.5)) {
+            if(driveStation.isOutakeSample && (darylsTimer.seconds() > 0.3)) {
                 if(isScoreRetract) {
                     reachScrub = SubSystemConfigs.REACH_HOME_POS;
                     isScoreRetract = false;
+                    isScoreLiftRetract = true;
+                    darylsTimer.reset();
                 } else {
                     darylsTimer.reset();
                     isScoreRetract = true;
