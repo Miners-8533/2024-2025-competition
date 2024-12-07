@@ -257,7 +257,7 @@ public class Robot {
         }
 
         if(robotState == RobotState.AUTO_DROP && (darylsTimer.seconds() > 0.2)) {
-            desiredForward = -1.0;
+            desiredForward = 1.0;
             desiredStrafe = driveStation.strafe;
             desiredRotation = driveStation.rotation;
         } else {
