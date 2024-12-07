@@ -51,7 +51,7 @@ public class AutonNetSideFourSamples extends LinearOpMode {
 
         TrajectoryActionBuilder parkNearSubmersibleTab = drive.actionBuilder(scoreHighBasket)
                 .setReversed(true)
-                .splineToLinearHeading(parkNearSubmersible, Math.toRadians(0),null, new ProfileAccelConstraint(-30,50));
+                .splineToLinearHeading(parkNearSubmersible, Math.toRadians(0),null, new ProfileAccelConstraint(-50,50));
 
         TrajectoryActionBuilder thirdSpikeMarkTab = drive.actionBuilder(scoreHighBasket)
                 .setTangent(0)
@@ -66,14 +66,25 @@ public class AutonNetSideFourSamples extends LinearOpMode {
 
         Actions.runBlocking(new ParallelAction(robot.autonUpdate(), new SequentialAction(
                 new ParallelAction(
-                        robot.autonStart(),
-                        scoreFirstSampleTab.build()
+                        scoreFirstSampleTab.build(),
+                        robot.prepareScoreHighBasket()
                 ),
-                robot.scoreSpecimen(),
-                robot.goToReadyPose(),
-                firstSpikeMarkTab.build(),
+                robot.highBasketReach(),
                 new ParallelAction(
-                        new SleepAction(1.0),
+                        new SleepAction(0.5),
+                        robot.scoreHighBasket()
+                ),
+                new ParallelAction(
+                        new SequentialAction(
+                                robot.prepareScoreHighBasket(),
+                                robot.goToReadyPose(),
+                                new SleepAction(0.5),
+                                robot.floorHover()
+                        ),
+                        firstSpikeMarkTab.build()
+                ),
+                new ParallelAction(
+                        new SleepAction(0.1),
                         robot.floorAcquire()
                 ),
                 robot.floorAcquireReach(),
@@ -88,11 +99,15 @@ public class AutonNetSideFourSamples extends LinearOpMode {
                 ),
                 robot.prepareScoreHighBasket(),
                 new ParallelAction(
-                        robot.goToReadyPose(),
+                        new SequentialAction(
+                                robot.goToReadyPose(),
+                                new SleepAction(0.5),
+                                robot.floorHover()
+                        ),
                         secondSpikeMarkTab.build()
                 ),
                 new ParallelAction(
-                        new SleepAction(1.0),
+                        new SleepAction(0.1),
                         robot.floorAcquire()
                 ),
                 robot.floorAcquireReach(),
@@ -107,11 +122,15 @@ public class AutonNetSideFourSamples extends LinearOpMode {
                 ),
                 robot.prepareScoreHighBasket(),
                 new ParallelAction(
-                        robot.goToReadyPose(),
+                        new SequentialAction(
+                                robot.goToReadyPose(),
+                                new SleepAction(0.5),
+                                robot.floorHover()
+                        ),
                         thirdSpikeMarkTab.build()
                 ),
                 new ParallelAction(
-                        new SleepAction(1.0),
+                        new SleepAction(0.1),
                         robot.floorAcquire()
                 ),
                 robot.floorAcquireReach(),

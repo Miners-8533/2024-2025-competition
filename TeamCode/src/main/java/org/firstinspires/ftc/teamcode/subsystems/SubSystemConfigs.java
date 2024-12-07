@@ -14,7 +14,7 @@ public class SubSystemConfigs {
     public static final int LIFT_HIGH_CHAMBER_AUTON_INIT_POS = -2765;
     public static final int LIFT_HIGH_CHAMBER_AUTON_POS = -1950;
     public static final int LIFT_HIGH_CHAMBER_SCORE_POS = -1250;
-    public static final int LIFT_HIGH_CHAMBER_SCORE_AUTO_POS = -1250;
+    public static final int LIFT_HIGH_CHAMBER_SCORE_AUTO_POS = -1300;
     public static final int REACH_HOME_POS = 0;
     public static final int REACH_FULL_EXTEND_POS = -1500;
     public static final int REACH_FLOOR_EXTEND_POS = -550; //-1200

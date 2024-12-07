@@ -368,6 +368,24 @@ public class Robot {
             }
         };
     }
+    public Action floorHover(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gantry.setTarget(
+                        SubSystemConfigs.LIFT_HOME_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_TARGET_POS,
+                        SubSystemConfigs.WHEEL_ACQUIRE_SPD,
+                        SubSystemConfigs.GRIPPER_OPEN_POS
+                );
+                bumper.setPosition(SubSystemConfigs.BUMPER_UP);
+                //maybe use lights?
+                //use log functions? or packet.put("Current Lift Position", pos);
+                return false;//(!gantry.isLiftDone() || !gantry.isReachDone());
+            }
+        };
+    }
     public Action floorAcquireReach(){
         return new Action(){
             private boolean intialized = false;
