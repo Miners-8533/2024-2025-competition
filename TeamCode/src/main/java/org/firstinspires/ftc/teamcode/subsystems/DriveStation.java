@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class DriveStation {
     private Gamepad driver;
@@ -14,6 +15,7 @@ public class DriveStation {
     public boolean isClimbReset;
     public boolean isAquireSpecimen;
     public boolean isAquireSample;
+    public boolean lastAcquire;
     public boolean isOutakeSample;
     public boolean isReady;
     public boolean isScoreSpecimen;
@@ -24,9 +26,13 @@ public class DriveStation {
     public boolean isGyroReset;
     public boolean isTargetSample;
     public boolean isWingDown;
+
+    public ElapsedTime acquireTimer;
     public DriveStation(Gamepad driverController, Gamepad operatorController) {
         driver = driverController;
         operator = operatorController;
+        acquireTimer = new ElapsedTime();
+        lastAcquire = false;
     }
 
     public void update() {
@@ -50,8 +56,12 @@ public class DriveStation {
 
         //operator acquire
         isAquireSpecimen = operator.right_bumper;
+        lastAcquire = isAquireSample;
         isAquireSample = operator.a;
         isTargetSample = operator.right_trigger > 0.5;
+        if(isAquireSample != lastAcquire) {
+            acquireTimer.reset();
+        }
 
         //operator bumper override
         isBumperDown = operator.left_trigger > 0.5;

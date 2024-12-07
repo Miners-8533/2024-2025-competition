@@ -170,7 +170,9 @@ public class Robot {
         //reach manual control
         if(robotState == RobotState.READY) {
             reachScrub += SubSystemConfigs.REACH_SCRUB_SPD * driveStation.reachScrub;
-
+            if(driveStation.isAquireSample && driveStation.acquireTimer.seconds() > 0.4) {
+                reachScrub -= SubSystemConfigs.REACH_SCRUB_SPD / 2;
+            }
             //limit scrub to between max and min targets
             if(gantry.colorDetected == RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE) {
                 reachScrub = Math.max(Math.min(reachScrub, SubSystemConfigs.REACH_HOME_POS), SubSystemConfigs.REACH_FULL_EXTEND_POS);
