@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 public class SubSystemConfigs {
 
     public static final int LIFT_HOME_POS = 0;
+    public static final int LIFT_PARTIAL_POS = -200; //TODO verify
     public static final int LIFT_HIGH_BASKET_POS = -4200;
     public static final int LIFT_HIGH_BASKET_AUTON_POS = -4250;
     public static final int LIFT_LOW_BASKET_POS = -3300;

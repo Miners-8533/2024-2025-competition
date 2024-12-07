@@ -31,6 +31,7 @@ public class Robot {
     private enum RobotState {
         READY,
         ACQUIRING_SPECIMEN,
+        AUTO_DROP,
         ACQUIRED_SPECIMEN,
         SCORE_CHAMBER,
         SCORE_HIGH_BASKET
@@ -60,6 +61,10 @@ public class Robot {
         robotOutputs = new RobotOutputs();
     }
     public void updateTeleOp(Telemetry telemetry) {
+        double desiredStrafe;
+        double desiredForward;
+        double desiredRotation;
+
         //get fresh inputs first
         driveStation.update();
 
@@ -109,9 +114,24 @@ public class Robot {
                         SubSystemConfigs.BUMPER_UP,
                         SubSystemConfigs.ELBOW_READY_POS,
                         SubSystemConfigs.GRIPPER_HOLD_POS,
-                        SubSystemConfigs.WHEEL_STOP_SPD
+                        SubSystemConfigs.WHEEL_SCORE_SPD
                 );
                 if (darylsTimer.seconds() > 0.5) {
+                    robotState = RobotState.AUTO_DROP;
+                    darylsTimer.reset();
+                } else if (driveStation.isReady) {
+                    robotState = RobotState.READY;
+                }
+                break;
+            case AUTO_DROP:
+                newRobotOutputs(
+                        SubSystemConfigs.LIFT_PARTIAL_POS,
+                        SubSystemConfigs.BUMPER_UP,
+                        SubSystemConfigs.ELBOW_READY_POS,
+                        SubSystemConfigs.GRIPPER_HOLD_POS,
+                        SubSystemConfigs.WHEEL_SCORE_SPD
+                );
+                if (darylsTimer.seconds() > 0.4) {
                     robotState = RobotState.ACQUIRED_SPECIMEN;
                 } else if (driveStation.isReady) {
                     robotState = RobotState.READY;
@@ -126,8 +146,10 @@ public class Robot {
                         SubSystemConfigs.WHEEL_STOP_SPD
                 );
 
-                if(driveStation.isScoreSpecimen) {
+                if(driveStation.isScoreSpecimen && !driveStation.isAquireSpecimen) {
+                    //not acquire constraint so we do no transition too quickly after a miss
                     robotState = RobotState.SCORE_CHAMBER;
+                    darylsTimer.reset();
                 } else if (driveStation.isReady) {
                     robotState = RobotState.READY;
                 }
@@ -142,9 +164,17 @@ public class Robot {
                 );
 
                 if(driveStation.isReady) {
+                    //override
                     robotState = RobotState.READY;
                 } else if (driveStation.isAquireSpecimen){
+                    //we did not score properly go back up
                     robotState = RobotState.ACQUIRED_SPECIMEN;
+                } else if (!driveStation.isScoreSpecimen && (darylsTimer.seconds() > 0.3)) {
+                    //as soon as the score button is release go to ready
+                    /* Note there is a time constraint so if the button is tapped we do not
+                       immediately go to ready which will drop the specimen.
+                     */
+                    robotState = RobotState.READY;
                 }
                 break;
             case SCORE_HIGH_BASKET:
@@ -226,6 +256,16 @@ public class Robot {
             robotOutputs.wing = SubSystemConfigs.WING_UP;
         }
 
+        if(robotState == RobotState.AUTO_DROP && (darylsTimer.seconds() > 0.2)) {
+            desiredForward = -1.0;
+            desiredStrafe = driveStation.strafe;
+            desiredRotation = driveStation.rotation;
+        } else {
+            desiredForward = driveStation.forward;
+            desiredStrafe = driveStation.strafe;
+            desiredRotation = driveStation.rotation;
+        }
+
         //set all targets
         lights.setPattern(gantry.colorDetected);
         bumper.setPosition(robotOutputs.bumper);
@@ -236,7 +276,7 @@ public class Robot {
         //all outputs update
         climber.update();
         gantry.update();
-        chassis.update(driveStation.forward, driveStation.strafe, driveStation.rotation,true, driveStation.isGyroReset);
+        chassis.update(desiredForward, desiredStrafe, desiredRotation,true, driveStation.isGyroReset);
 
         telemetry.addData("State ", robotState);
         telemetry.addData("Reach Scrub", driveStation.reachScrub);
