@@ -6,6 +6,7 @@ import com.acmerobotics.roadrunner.ProfileAccelConstraint;
 import com.acmerobotics.roadrunner.SequentialAction;
 import com.acmerobotics.roadrunner.SleepAction;
 import com.acmerobotics.roadrunner.TrajectoryActionBuilder;
+import com.acmerobotics.roadrunner.TranslationalVelConstraint;
 import com.acmerobotics.roadrunner.Vector2d;
 import com.acmerobotics.roadrunner.ftc.Actions;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -25,12 +26,13 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
         Pose2d intermediatePose = new Pose2d(30, -36,Math.toRadians(30));
         Pose2d firstSpikeMark = new Pose2d(38, -30, Math.toRadians(300));
-        Pose2d secondSpikeMark = new Pose2d(48, -30, Math.toRadians(300));
-        Pose2d thirdSpikeMark = new Pose2d(58, -30, Math.toRadians(300));
-        Pose2d observationZonePose = new Pose2d(47, -55, Math.toRadians(270));
-        Pose2d acquireSpecimenPose = new Pose2d(47, initialPose.position.y, Math.toRadians(270));
-        Pose2d chamberTwoPose = new Pose2d(5,-27, Math.toRadians(90));
-        Pose2d chamberThreePose = new Pose2d(2,-27, Math.toRadians(90));
+        Pose2d secondSpikeMark = new Pose2d(43, -30, Math.toRadians(270));
+        Pose2d thirdSpikeMark = new Pose2d(48, -30, Math.toRadians(270));
+        Pose2d observationZonePose = new Pose2d(47, -58, Math.toRadians(270));
+        Pose2d acquireSpecimenPose = new Pose2d(41, -65, Math.toRadians(270));
+        Pose2d chamberTwoPose = new Pose2d(5,-22, Math.toRadians(90));
+        Pose2d chamberThreePose = new Pose2d(3,-22, Math.toRadians(90));
+        Pose2d parkOnWall = new Pose2d(47, -65, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
         Robot robot = new Robot(hardwareMap,gamepad1,gamepad2, drive.pose);
@@ -45,22 +47,29 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
                 .setTangent(Math.toRadians(0))
                 .splineToLinearHeading(observationZonePose,Math.toRadians(270))
                 .setReversed(true)
-                .splineToLinearHeading(secondSpikeMark, Math.toRadians(270))
-                .splineToSplineHeading(observationZonePose, Math.toRadians(270))
-                .splineToSplineHeading(thirdSpikeMark, Math.toRadians(270))
-                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
+                .splineToConstantHeading(secondSpikeMark.position, Math.toRadians(90))
+                .setTangent(270)
+                .splineToLinearHeading(observationZonePose,Math.toRadians(270))
+                .setReversed(true)
+                .splineToConstantHeading(thirdSpikeMark.position, Math.toRadians(90))
+                .setTangent(270)
+                .splineToSplineHeading(acquireSpecimenPose, Math.toRadians(270), new TranslationalVelConstraint(20), new ProfileAccelConstraint(-35, 50));
 
         TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
-                .splineToSplineHeading(chamberTwoPose, Math.toRadians(90),null, new ProfileAccelConstraint(-40,40));
+                .splineToSplineHeading(chamberTwoPose, Math.toRadians(90), null, new ProfileAccelConstraint(-40,40));
 
         TrajectoryActionBuilder acquireThirdSpecimen = drive.actionBuilder(chamberTwoPose)
                 .setReversed(true)
-                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270));
+                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270),null, new ProfileAccelConstraint(-35, 50));
 
         TrajectoryActionBuilder thirdScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
-                .splineToLinearHeading(chamberThreePose, Math.toRadians(90),null, new ProfileAccelConstraint(-40,40));
+                .splineToSplineHeading(chamberThreePose, Math.toRadians(90), null, new ProfileAccelConstraint(-35,40));
+
+        TrajectoryActionBuilder parkInObservationZone = drive.actionBuilder(chamberThreePose)
+                .setReversed(true)
+                .splineToLinearHeading(parkOnWall, Math.toRadians(270));
 
         // Wait for the game to start (driver presses START)
         waitForStart();
@@ -102,7 +111,8 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
                         thirdScoreChamberTab.build()
                 ),
                 robot.scoreSpecimen(),
-                robot.goToReadyPose()
+                robot.goToReadyPose(),
+                parkInObservationZone.build()
         )));
     }
 }
