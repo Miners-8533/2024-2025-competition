@@ -206,7 +206,7 @@ public class Robot {
         if(robotState == RobotState.READY) {
             reachScrub += SubSystemConfigs.REACH_SCRUB_SPD * driveStation.reachScrub;
             if(driveStation.isAquireSample && driveStation.acquireTimer.seconds() > 0.4) {
-                reachScrub -= SubSystemConfigs.REACH_SCRUB_SPD / 2;
+                reachScrub -= SubSystemConfigs.REACH_SCRUB_SPD / 3;
             }
             //limit scrub to between max and min targets
             if(gantry.colorDetected == RevBlinkinLedDriver.BlinkinPattern.SHOT_WHITE) {
