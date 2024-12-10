@@ -81,8 +81,8 @@ public class DriveStation {
             forward = Math.max(Math.min(1.0, forward), -1.0);
             strafe = strafe - operator.left_stick_x;
             strafe = Math.max(Math.min(1.0, strafe), -1.0);
-            rotation = rotation - operator.right_stick_x / 3.0;
-            rotation = Math.max(Math.min(1.0, rotation), -1.0);
+            //rotation = rotation - operator.right_stick_x / 3.0;
+            //rotation = Math.max(Math.min(1.0, rotation), -1.0);
         }
     }
 }
