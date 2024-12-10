@@ -19,7 +19,7 @@ public class Sweeper {
     private ElapsedTime timer;
     private RevBlinkinLedDriver.BlinkinPattern lastColor;
     private NormalizedColorSensor colorSensor;
-    private static final double TIME_DELAY = 0.2;
+    private static final double TIME_DELAY = 0.15;
     public RevBlinkinLedDriver.BlinkinPattern colorDetected;
 
     public Sweeper(HardwareMap hardwareMap) {
