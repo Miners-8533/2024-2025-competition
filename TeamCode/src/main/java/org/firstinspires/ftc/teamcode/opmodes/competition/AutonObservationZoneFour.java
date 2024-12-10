@@ -28,10 +28,11 @@ public class AutonObservationZoneFour extends LinearOpMode {
         Pose2d intermediatePose = new Pose2d(30, -36,Math.toRadians(30));
         Pose2d firstSpikeMark = new Pose2d(38, -30, Math.toRadians(300));
         Pose2d secondSpikeMark = new Pose2d(43, -30, Math.toRadians(270));
+        Pose2d secondSpikeMarkIntermediate = new Pose2d(47, -32, Math.toRadians(300));
         Pose2d observationZonePose = new Pose2d(47, -58, Math.toRadians(270));
         Pose2d acquireSpecimenPose = new Pose2d(41, -65, Math.toRadians(270));
-        Pose2d chamberTwoPose = new Pose2d(5,-22, Math.toRadians(90));
-        Pose2d chamberThreePose = new Pose2d(3,-22, Math.toRadians(90));
+        Pose2d chamberTwoPose = new Pose2d(6,-22, Math.toRadians(90));
+        Pose2d chamberThreePose = new Pose2d(4,-22, Math.toRadians(90));
         Pose2d chamberFourPose = new Pose2d(1, -22, Math.toRadians(90));
         Pose2d parkChamberPose = new Pose2d(-4, -21,Math.toRadians(90));
 
@@ -48,7 +49,8 @@ public class AutonObservationZoneFour extends LinearOpMode {
                 .setTangent(Math.toRadians(0))
                 .splineToLinearHeading(observationZonePose,Math.toRadians(270))
                 .setReversed(true)
-                .splineToConstantHeading(secondSpikeMark.position, Math.toRadians(90))
+                .splineToConstantHeading(secondSpikeMark.position, Math.toRadians(0))
+                .splineToSplineHeading(secondSpikeMarkIntermediate, Math.toRadians(270))
                 .setTangent(270)
                 .splineToSplineHeading(acquireSpecimenPose, Math.toRadians(270), new TranslationalVelConstraint(20), new ProfileAccelConstraint(-35, 50));
 
