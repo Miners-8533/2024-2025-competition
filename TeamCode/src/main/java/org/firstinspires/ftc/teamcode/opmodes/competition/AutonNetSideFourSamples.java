@@ -65,6 +65,8 @@ public class AutonNetSideFourSamples extends LinearOpMode {
         waitForStart();
 
         Actions.runBlocking(new ParallelAction(robot.autonUpdate(), new SequentialAction(
+                robot.startGrip(),
+                new SleepAction(0.5),
                 new ParallelAction(
                         scoreFirstSampleTab.build(),
                         robot.prepareScoreHighBasket()

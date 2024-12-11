@@ -350,6 +350,22 @@ public class Robot {
             }
         };
     }
+    public Action startGrip(){
+        return new Action(){
+            @Override
+            public boolean run(@NonNull TelemetryPacket packet) {
+                gantry.setTarget(
+                        SubSystemConfigs.LIFT_HOME_POS,
+                        SubSystemConfigs.REACH_HOME_POS,
+                        SubSystemConfigs.ELBOW_READY_POS,
+                        SubSystemConfigs.WHEEL_ACQUIRE_SPD,
+                        SubSystemConfigs.GRIPPER_OPEN_POS
+                );
+                bumper.setPosition(SubSystemConfigs.BUMPER_UP);
+                return false;
+            }
+        };
+    }
     public Action floorAcquire(){
         return new Action(){
             @Override
@@ -423,7 +439,7 @@ public class Robot {
                         SubSystemConfigs.LIFT_HIGH_BASKET_AUTON_POS,
                         SubSystemConfigs.REACH_HOME_POS,
                         SubSystemConfigs.ELBOW_SCORE_BASKET_POS,
-                        SubSystemConfigs.WHEEL_HOLD_SPD,
+                        SubSystemConfigs.WHEEL_ACQUIRE_SPD,
                         SubSystemConfigs.GRIPPER_OPEN_POS
                 );
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
