@@ -27,9 +27,10 @@ public class AutonObservationZoneFour extends LinearOpMode {
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
         Pose2d intermediatePose = new Pose2d(30, -36,Math.toRadians(30));
         Pose2d firstSpikeMark = new Pose2d(38, -30, Math.toRadians(300));
-        Pose2d secondSpikeMark = new Pose2d(45, -30, Math.toRadians(300));
-        Pose2d secondSpikeMarkIntermediate = new Pose2d(53, -34, Math.toRadians(300));
-        Pose2d observationZonePose = new Pose2d(47, -58, Math.toRadians(270));
+        Pose2d secondSpikeMark = new Pose2d(43, -23, Math.toRadians(270));
+        Pose2d secondSpikeMarkIntermediate = new Pose2d(51, -23, Math.toRadians(270));
+        Pose2d observationZonePose = new Pose2d(42, -58, Math.toRadians(270));
+        Pose2d secondObservationZonePose = new Pose2d(52, -65, Math.toRadians(270));
         Pose2d acquireSpecimenPose = new Pose2d(41, -65, Math.toRadians(270));
         Pose2d chamberTwoPose = new Pose2d(7,-22, Math.toRadians(90));
         Pose2d chamberThreePose = new Pose2d(5.5,-22, Math.toRadians(90));
@@ -49,10 +50,12 @@ public class AutonObservationZoneFour extends LinearOpMode {
                 .setTangent(Math.toRadians(0))
                 .splineToLinearHeading(observationZonePose,Math.toRadians(270))
                 .setReversed(true)
-                .splineToLinearHeading(secondSpikeMark, Math.toRadians(0))
-                .splineToSplineHeading(secondSpikeMarkIntermediate, Math.toRadians(270))
-                .setTangent(30)
-                .splineToLinearHeading(acquireSpecimenPose, Math.toRadians(270), new TranslationalVelConstraint(20), new ProfileAccelConstraint(-35, 50));
+                .lineToY(secondSpikeMark.position.y)
+                .strafeTo(secondSpikeMarkIntermediate.position, null, new ProfileAccelConstraint(-20,20))
+//                .lineToY(secondObservationZonePose.position.y);
+                .setTangent(180)
+//                .splineTo(new Vector2d(secondObservationZonePose.position.x, secondObservationZonePose.position.y), Math.toRadians(180),null, new ProfileAccelConstraint(-35, 50));
+                .splineToConstantHeading(secondObservationZonePose.position, Math.toRadians(270), null, new ProfileAccelConstraint(-35, 50));
 
         TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
