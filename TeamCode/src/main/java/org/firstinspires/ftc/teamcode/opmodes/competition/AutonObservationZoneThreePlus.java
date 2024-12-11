@@ -26,12 +26,14 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
         Pose2d scoreChamber = new Pose2d(8,-27, Math.toRadians(90));
         Pose2d intermediatePose = new Pose2d(30, -36,Math.toRadians(30));
         Pose2d firstSpikeMark = new Pose2d(38, -30, Math.toRadians(300));
-        Pose2d secondSpikeMark = new Pose2d(43, -30, Math.toRadians(270));
-        Pose2d thirdSpikeMark = new Pose2d(48, -30, Math.toRadians(270));
-        Pose2d observationZonePose = new Pose2d(47, -58, Math.toRadians(270));
+        Pose2d secondSpikeMark = new Pose2d(45, -23, Math.toRadians(270));
+        Pose2d thirdSpikeMark = new Pose2d(54, -23, Math.toRadians(270));
+        Pose2d observationZonePose = new Pose2d(42, -58, Math.toRadians(270));
+        Pose2d secondObservationZonePose = new Pose2d(52, -65, Math.toRadians(270));
         Pose2d acquireSpecimenPose = new Pose2d(41, -65, Math.toRadians(270));
-        Pose2d chamberTwoPose = new Pose2d(5,-22, Math.toRadians(90));
-        Pose2d chamberThreePose = new Pose2d(3,-22, Math.toRadians(90));
+        Pose2d chamberTwoPose = new Pose2d(7,-22, Math.toRadians(90));
+        Pose2d chamberThreePose = new Pose2d(5.5,-22, Math.toRadians(90));
+        Pose2d chamberFourPose = new Pose2d(3.5, -22, Math.toRadians(90));
         Pose2d parkOnWall = new Pose2d(47, -65, Math.toRadians(180));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
@@ -47,15 +49,13 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
                 .setTangent(Math.toRadians(0))
                 .splineToLinearHeading(observationZonePose,Math.toRadians(270))
                 .setReversed(true)
-                .splineToConstantHeading(secondSpikeMark.position, Math.toRadians(90))
-                .setTangent(270)
-                .splineToLinearHeading(observationZonePose,Math.toRadians(270))
+                .splineToConstantHeading(secondSpikeMark.position, Math.toRadians(0))
+                .splineToSplineHeading(secondObservationZonePose, Math.toRadians(270),null, new ProfileAccelConstraint(-25,30))
                 .setReversed(true)
-                .splineToConstantHeading(thirdSpikeMark.position, Math.toRadians(90))
-                .setTangent(270)
-                .splineToSplineHeading(acquireSpecimenPose, Math.toRadians(270), new TranslationalVelConstraint(20), new ProfileAccelConstraint(-35, 50));
+                .splineToConstantHeading(thirdSpikeMark.position, Math.toRadians(0))
+                .splineToSplineHeading(secondObservationZonePose, Math.toRadians(270),null, new ProfileAccelConstraint(-25,30));
 
-        TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
+        TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(secondObservationZonePose)
                 .setReversed(true)
                 .splineToSplineHeading(chamberTwoPose, Math.toRadians(90), null, new ProfileAccelConstraint(-40,40));
 
