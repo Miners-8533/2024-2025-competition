@@ -16,7 +16,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 import org.firstinspires.ftc.teamcode.subsystems.SubSystemConfigs;
 
-@Autonomous(name="Auton - Observation Side - 3 Specimen plus", group="Competition")
+@Autonomous(name="Observation - 3.5", group="Competition")
 public class AutonObservationZoneThreePlus extends LinearOpMode {
 
     @Override
@@ -27,7 +27,7 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
         Pose2d intermediatePose = new Pose2d(30, -36,Math.toRadians(30));
         Pose2d firstSpikeMark = new Pose2d(38, -30, Math.toRadians(300));
         Pose2d secondSpikeMark = new Pose2d(45, -23, Math.toRadians(270));
-        Pose2d thirdSpikeMark = new Pose2d(54, -23, Math.toRadians(270));
+        Pose2d thirdSpikeMark = new Pose2d(52, -23, Math.toRadians(270));
         Pose2d observationZonePose = new Pose2d(42, -58, Math.toRadians(270));
         Pose2d secondObservationZonePose = new Pose2d(52, -65, Math.toRadians(270));
         Pose2d acquireSpecimenPose = new Pose2d(41, -65, Math.toRadians(270));
@@ -57,7 +57,7 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
 
         TrajectoryActionBuilder secondScoreChamberTab = drive.actionBuilder(secondObservationZonePose)
                 .setReversed(true)
-                .splineToSplineHeading(chamberTwoPose, Math.toRadians(90), null, new ProfileAccelConstraint(-40,40));
+                .splineToSplineHeading(chamberTwoPose, Math.toRadians(90), null, new ProfileAccelConstraint(-30,40));
 
         TrajectoryActionBuilder acquireThirdSpecimen = drive.actionBuilder(chamberTwoPose)
                 .setReversed(true)
@@ -65,7 +65,7 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
 
         TrajectoryActionBuilder thirdScoreChamberTab = drive.actionBuilder(acquireSpecimenPose)
                 .setReversed(true)
-                .splineToSplineHeading(chamberThreePose, Math.toRadians(90), null, new ProfileAccelConstraint(-35,40));
+                .splineToSplineHeading(chamberThreePose, Math.toRadians(90), null, new ProfileAccelConstraint(-30,40));
 
         TrajectoryActionBuilder parkInObservationZone = drive.actionBuilder(chamberThreePose)
                 .setReversed(true)
@@ -91,7 +91,7 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
                 robot.setWing(SubSystemConfigs.WING_UP),
                 new ParallelAction(
                         robot.acquireSpecimen(),
-                        new SleepAction(0.3)
+                        new SleepAction(0.4)
                 ),
                 new ParallelAction(
                         robot.autonStart(),
@@ -104,7 +104,7 @@ public class AutonObservationZoneThreePlus extends LinearOpMode {
                 ),
                 new ParallelAction(
                         robot.acquireSpecimen(),
-                        new SleepAction(0.3)
+                        new SleepAction(0.4)
                 ),
                 new ParallelAction(
                         robot.autonStart(),

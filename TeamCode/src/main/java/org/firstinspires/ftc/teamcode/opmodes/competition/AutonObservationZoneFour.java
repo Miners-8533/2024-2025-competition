@@ -17,7 +17,7 @@ import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 import org.firstinspires.ftc.teamcode.subsystems.SubSystemConfigs;
 
-@Autonomous(name="Auton - Observation Side - 4 Specimen", group="Competition")
+@Autonomous(name="Observation - 4", group="Competition")
 public class AutonObservationZoneFour extends LinearOpMode {
 
     @Override
@@ -95,7 +95,7 @@ public class AutonObservationZoneFour extends LinearOpMode {
                 robot.setWing(SubSystemConfigs.WING_UP),
                 new ParallelAction(
                         robot.acquireSpecimen(),
-                        new SleepAction(0.3)
+                        new SleepAction(0.4)
                 ),
                 new ParallelAction(
                         robot.autonStart(),
@@ -108,7 +108,7 @@ public class AutonObservationZoneFour extends LinearOpMode {
                 ),
                 new ParallelAction(
                         robot.acquireSpecimen(),
-                        new SleepAction(0.3)
+                        new SleepAction(0.4)
                 ),
                 new ParallelAction(
                         robot.autonStart(),
@@ -121,7 +121,7 @@ public class AutonObservationZoneFour extends LinearOpMode {
                 ),
                 new ParallelAction(
                         robot.acquireSpecimen(),
-                        new SleepAction(0.3)
+                        new SleepAction(0.4)
                 ),
                 new ParallelAction(
                         robot.autonStart(),

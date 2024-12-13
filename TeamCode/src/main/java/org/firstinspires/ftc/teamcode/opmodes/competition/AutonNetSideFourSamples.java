@@ -13,7 +13,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.teamcode.roadrunner.MecanumDrive;
 import org.firstinspires.ftc.teamcode.subsystems.Robot;
 
-@Autonomous(name="Auton - Net Side - 4 Samples", group="Competition")
+@Autonomous(name="Net - 4", group="Competition")
 public class AutonNetSideFourSamples extends LinearOpMode {
 
     @Override

@@ -515,8 +515,6 @@ public class Robot {
                         SubSystemConfigs.GRIPPER_CLOSED_POS
                 );
                 bumper.setPosition(SubSystemConfigs.BUMPER_UP);
-                //maybe use lights?
-                //use log functions? or packet.put("Current Lift Position", pos);
                 return !gantry.isLiftDone(); //|| !gantry.isReachDone());//need to use external timer
             }
         };
