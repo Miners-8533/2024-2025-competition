@@ -29,8 +29,8 @@ public class SubSystemConfigs {
     public static final double WHEEL_SCORE_SPD = 0.0;
     public static final double WHEEL_HOLD_SPD = 0.53;
     public static final double GRIPPER_OPEN_POS = 0.0;
-    public static final double GRIPPER_CLOSED_POS = 0.9;
-    public static final double GRIPPER_HOLD_POS = 0.9;
+    public static final double GRIPPER_CLOSED_POS = 0.87;
+    public static final double GRIPPER_HOLD_POS = 0.87;
     public static final int CLIMB_HOME = -50;
     public static final int CLIMB_PRE_CLIMB = -5300;
     public static final int CLIMB_ASCENT_1 = -11000;
