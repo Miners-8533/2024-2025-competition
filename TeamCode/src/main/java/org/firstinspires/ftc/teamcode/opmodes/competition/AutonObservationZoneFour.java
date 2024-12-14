@@ -31,9 +31,9 @@ public class AutonObservationZoneFour extends LinearOpMode {
         Pose2d observationZonePose = new Pose2d(42, -58, Math.toRadians(270));
         Pose2d secondObservationZonePose = new Pose2d(52, -65, Math.toRadians(270));
         Pose2d acquireSpecimenPose = new Pose2d(41, -65, Math.toRadians(270));
-        Pose2d chamberTwoPose = new Pose2d(7,-22, Math.toRadians(90));
-        Pose2d chamberThreePose = new Pose2d(5.5,-22, Math.toRadians(90));
-        Pose2d chamberFourPose = new Pose2d(3.5, -22, Math.toRadians(90));
+        Pose2d chamberTwoPose = new Pose2d(6,-22, Math.toRadians(90));
+        Pose2d chamberThreePose = new Pose2d(4,-22, Math.toRadians(90));
+        Pose2d chamberFourPose = new Pose2d(2, -22, Math.toRadians(90));
         Pose2d parkChamberPose = new Pose2d(-5, -21,Math.toRadians(90));
 
         MecanumDrive drive = new MecanumDrive(hardwareMap, initialPose);
